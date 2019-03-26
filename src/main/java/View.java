@@ -15,6 +15,6 @@ public class View {
     }
 
     void setRendererBackgroundColor(float r, float g, float b) {
-        rend.setBackground(r, g, b);
+        rend.setBackgroundColor(r, g, b);
     }
 }
