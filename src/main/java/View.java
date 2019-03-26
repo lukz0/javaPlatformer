@@ -1,6 +1,6 @@
 import org.lwjgl.glfw.GLFWKeyCallback;
 
-public class View {
+class View {
     private GLFWKeyCallback keyHandler;
 
     View(GLFWKeyCallback keyHandler) {
@@ -9,7 +9,7 @@ public class View {
 
     Renderer rend;
 
-    public void startRenderer() {
+    void startRenderer() {
         rend = new Renderer(keyHandler);
         rend.start();
     }

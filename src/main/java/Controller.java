@@ -1,13 +1,12 @@
 import org.lwjgl.glfw.GLFWKeyCallback;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
-public class Controller {
-    View v;
+class Controller {
+    private View v;
 
     Controller() {
-        v = new View(this.defaultKeyHandler);
+        v = new View(new KeyboardHandler());
         // starts renderer on a separate thread
         v.startRenderer();
     }
@@ -16,17 +15,15 @@ public class Controller {
 
         @Override
         public void invoke(long window, int key, int scancode, int action, int modifier) {
-            if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE ) {
+            if ( key == GLFW_KEY_ESCAPE && action == GLFW_PRESS ) {
                 glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-            } else if ( key == GLFW_KEY_R && action == GLFW_RELEASE ) {
+            } else if ( key == GLFW_KEY_R && action == GLFW_PRESS ) {
                 v.setRendererBackgroundColor(1.0f, 0.0f, 0.0f);
-            } else if ( key == GLFW_KEY_G && action == GLFW_RELEASE ) {
+            } else if ( key == GLFW_KEY_G && action == GLFW_PRESS ) {
                 v.setRendererBackgroundColor(0.0f, 1.0f, 0.0f);
-            } else if ( key == GLFW_KEY_B && action == GLFW_RELEASE ) {
+            } else if ( key == GLFW_KEY_B && action == GLFW_PRESS ) {
                 v.setRendererBackgroundColor(0.0f, 0.0f, 1.0f);
             }
         }
     }
-
-    public KeyboardHandler defaultKeyHandler = new KeyboardHandler();
 }
