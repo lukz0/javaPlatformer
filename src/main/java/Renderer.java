@@ -219,13 +219,41 @@ public class Renderer implements Runnable {
         public Matrix4f multiply(Matrix4f matrix) {
             // TODO
             return new Matrix4f(
-              this.values[0+0*4]*matrix.values[0+0*4] + this.values[0+1*4]*matrix.values[1+0*4] + this.values[0+2*4]*matrix.values[2+0*4] + this.values[0+3*4]*matrix.values[3+0*4],
+                    // first row this, first column matrix
+                    this.values[0+0*4]*matrix.values[0+0*4] + this.values[0+1*4]*matrix.values[1+0*4] + this.values[0+2*4]*matrix.values[2+0*4] + this.values[0+3*4]*matrix.values[3+0*4],
+                    // second row this, first column matrix
+                    this.values[1+0*4]*matrix.values[0+0*4] + this.values[1+1*4]*matrix.values[1+0*4] + this.values[1+2*4]*matrix.values[2+0*4] + this.values[1+3*4]*matrix.values[3+0*4],
+                    // third row this, first column matrix
+                    this.values[2+0*4]*matrix.values[0+0*4] + this.values[2+1*4]*matrix.values[1+0*4] + this.values[2+2*4]*matrix.values[2+0*4] + this.values[2+3*4]*matrix.values[3+0*4],
+                    // fourth row this, first column matrix
+                    this.values[3+0*4]*matrix.values[0+0*4] + this.values[3+1*4]*matrix.values[1+0*4] + this.values[3+2*4]*matrix.values[2+0*4] + this.values[3+3*4]*matrix.values[3+0*4],
+                    //
+                    // first row this, second column matrix
+                    this.values[0+0*4]*matrix.values[0+1*4] + this.values[0+1*4]*matrix.values[1+1*4] + this.values[0+2*4]*matrix.values[2+1*4] + this.values[0+3*4]*matrix.values[3+1*4],
+                    // second row this, second column matrix
                     this.values[1+0*4]*matrix.values[0+1*4] + this.values[1+1*4]*matrix.values[1+1*4] + this.values[1+2*4]*matrix.values[2+1*4] + this.values[1+3*4]*matrix.values[3+1*4],
+                    // third row this, second column matrix
+                    this.values[2+0*4]*matrix.values[0+1*4] + this.values[2+1*4]*matrix.values[1+1*4] + this.values[2+2*4]*matrix.values[2+1*4] + this.values[2+3*4]*matrix.values[3+1*4],
+                    // fourth row this, second column matrix
+                    this.values[3+0*4]*matrix.values[0+1*4] + this.values[3+1*4]*matrix.values[1+1*4] + this.values[3+2*4]*matrix.values[2+1*4] + this.values[3+3*4]*matrix.values[3+1*4],
+                    //
+                    // first row this, third column matrix
+                    this.values[0+0*4]*matrix.values[0+2*4] + this.values[0+1*4]*matrix.values[1+2*4] + this.values[0+2*4]*matrix.values[2+2*4] + this.values[0+3*4]*matrix.values[3+2*4],
+                    // second row this, third column matrix
+                    this.values[1+0*4]*matrix.values[0+2*4] + this.values[1+1*4]*matrix.values[1+2*4] + this.values[1+2*4]*matrix.values[2+2*4] + this.values[1+3*4]*matrix.values[3+2*4],
+                    // third row this, third column matrix
                     this.values[2+0*4]*matrix.values[0+2*4] + this.values[2+1*4]*matrix.values[1+2*4] + this.values[2+2*4]*matrix.values[2+2*4] + this.values[2+3*4]*matrix.values[3+2*4],
-                    this.values[3+0*4]*matrix.values[0+3*4] + this.values[3+1*4]*matrix.values[1+3*4] + this.values[3+2*4]*matrix.values[2+3*4] + this.values[3+3*4]*matrix.values[3+3*4],
-              0, 0, 0, 0,
-              0, 0, 0, 0,
-              0, 0, 0, 0
+                    // fourth row this, third column matrix
+                    this.values[3+0*4]*matrix.values[0+2*4] + this.values[3+1*4]*matrix.values[1+2*4] + this.values[3+2*4]*matrix.values[2+2*4] + this.values[3+3*4]*matrix.values[3+2*4],
+                    //
+                    // first row this, fourth column matrix
+                    this.values[0+0*4]*matrix.values[0+3*4] + this.values[0+1*4]*matrix.values[1+3*4] + this.values[0+2*4]*matrix.values[2+3*4] + this.values[0+3*4]*matrix.values[3+3*4],
+                    // second row this, fourth column matrix
+                    this.values[1+0*4]*matrix.values[0+3*4] + this.values[1+1*4]*matrix.values[1+3*4] + this.values[1+2*4]*matrix.values[2+3*4] + this.values[1+3*4]*matrix.values[3+3*4],
+                    // third row this, fourth column matrix
+                    this.values[2+0*4]*matrix.values[0+3*4] + this.values[2+1*4]*matrix.values[1+3*4] + this.values[2+2*4]*matrix.values[2+3*4] + this.values[2+3*4]*matrix.values[3+3*4],
+                    // fourth row this, fourth column matrix
+                    this.values[3+0*4]*matrix.values[0+3*4] + this.values[3+1*4]*matrix.values[1+3*4] + this.values[3+2*4]*matrix.values[2+3*4] + this.values[3+3*4]*matrix.values[3+3*4]
             );
         }
     }
