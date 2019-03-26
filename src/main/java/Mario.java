@@ -9,4 +9,9 @@ class Mario extends Entity{
 
         this.icon = new ImageIcon(this.getClass().getResource("Mario.png")); // TODO: add Mario sprite
     }
+
+    public void doMove(){
+        this.posX+=this.vX;
+        this.posY+=this.vY;
+    }
 }
