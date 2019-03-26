@@ -19,7 +19,7 @@ public class Renderer implements Runnable {
 
     private float background_color_red = 1;
     private float background_color_green = 0;
-    private float background_color_blue = 0;
+    private float background_color_blue = 1;
 
     private Thread t;
 

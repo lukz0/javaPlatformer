@@ -12,7 +12,6 @@ public class View {
     public void startRenderer() {
         rend = new Renderer(keyHandler);
         rend.start();
-        rend.setBackground(1, 1, 1);
     }
 
     void setRendererBackground(float r, float g, float b) {
