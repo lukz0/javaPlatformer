@@ -6,6 +6,8 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.IntBuffer;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -17,9 +19,11 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class Renderer implements Runnable {
     private long window;
 
+    private final Lock background_color_lock = new ReentrantLock(true);
     private float background_color_red = 1;
     private float background_color_green = 0;
     private float background_color_blue = 1;
+    private boolean background_color_modified = false;
 
     private Thread t;
 
@@ -31,7 +35,6 @@ public class Renderer implements Runnable {
 
     public void run() {
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
-
         init();
         loop();
 
@@ -113,12 +116,20 @@ public class Renderer implements Runnable {
         GL.createCapabilities();
 
         // Set the clear color
-        //glClearColor(background_color_red, background_color_green, background_color_blue, 0.0f);
+        glClearColor(background_color_red, background_color_green, background_color_blue, 0.0f);
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while ( !glfwWindowShouldClose(window) ) {
-            glClearColor(background_color_red, background_color_green, background_color_blue, 0.0f);
+            if (this.background_color_modified) {
+                this.background_color_lock.lock();
+                glClearColor(this.background_color_red,
+                        this.background_color_green,
+                        this.background_color_blue,
+                        0.0f);
+                this.background_color_modified = false;
+                this.background_color_lock.unlock();
+            }
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
             glfwSwapBuffers(window); // swap the color buffers
@@ -130,8 +141,11 @@ public class Renderer implements Runnable {
     }
 
     public void setBackground(float r, float g, float b) {
+        this.background_color_lock.lock();
+        this.background_color_modified = true;
         this.background_color_red = r;
         this.background_color_green = g;
         this.background_color_blue = b;
+        this.background_color_lock.unlock();
     }
 }
