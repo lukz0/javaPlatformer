@@ -1,5 +1,6 @@
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
@@ -22,10 +23,10 @@ public class Renderer implements Runnable {
 
     private Thread t;
 
-    Controller contr;
+    private GLFWKeyCallback keyHandler;
 
-    Renderer(Controller c) {
-        this.contr = c;
+    Renderer(GLFWKeyCallback keyHandler) {
+        this.keyHandler = keyHandler;
     }
 
     public void run() {
@@ -73,7 +74,7 @@ public class Renderer implements Runnable {
             throw new RuntimeException("Failed to create the GLFW window");
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        glfwSetKeyCallback(window, this.contr.defaultKeyHandler);
+        glfwSetKeyCallback(window, this.keyHandler);
 
         // Get the thread stack and push a new frame
         try ( MemoryStack stack = stackPush() ) {

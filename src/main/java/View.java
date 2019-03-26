@@ -1,14 +1,16 @@
-public class View {
-    Controller parent;
+import org.lwjgl.glfw.GLFWKeyCallback;
 
-    View(Controller parent) {
-        this.parent = parent;
+public class View {
+    private GLFWKeyCallback keyHandler;
+
+    View(GLFWKeyCallback keyHandler) {
+        this.keyHandler = keyHandler;
     }
 
     Renderer rend;
 
     public void startRenderer() {
-        rend = new Renderer(parent);
+        rend = new Renderer(keyHandler);
         rend.start();
         rend.setBackground(1, 1, 1);
     }

@@ -1,5 +1,4 @@
 import org.lwjgl.glfw.GLFWKeyCallback;
-import org.lwjgl.glfw.GLFWKeyCallbackI;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
@@ -8,7 +7,8 @@ public class Controller {
     View v;
 
     Controller() {
-        v = new View(this);
+        v = new View(this.defaultKeyHandler);
+        // starts renderer on a separate thread
         v.startRenderer();
     }
 
