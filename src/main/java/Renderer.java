@@ -140,7 +140,7 @@ public class Renderer implements Runnable {
         }
     }
 
-    public void setBackground(float r, float g, float b) {
+    public void setBackgroundColor(float r, float g, float b) {
         this.background_color_lock.lock();
         this.background_color_modified = true;
         this.background_color_red = r;
