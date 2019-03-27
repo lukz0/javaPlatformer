@@ -17,13 +17,13 @@ class Controller {
 
         @Override
         public void invoke(long window, int key, int scancode, int action, int modifier) {
-            if ( key == GLFW_KEY_ESCAPE && action == GLFW_PRESS ) {
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
                 glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-            } else if ( key == GLFW_KEY_R && action == GLFW_PRESS ) {
+            } else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
                 v.setRendererBackgroundColor(1.0f, 0.0f, 0.0f);
-            } else if ( key == GLFW_KEY_G && action == GLFW_PRESS ) {
+            } else if (key == GLFW_KEY_G && action == GLFW_PRESS) {
                 v.setRendererBackgroundColor(0.0f, 1.0f, 0.0f);
-            } else if ( key == GLFW_KEY_B && action == GLFW_PRESS ) {
+            } else if (key == GLFW_KEY_B && action == GLFW_PRESS) {
                 v.setRendererBackgroundColor(0.0f, 0.0f, 1.0f);
             }
         }

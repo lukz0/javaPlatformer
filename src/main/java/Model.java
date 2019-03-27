@@ -1,6 +1,8 @@
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileReader;
 
 public class Model {
     static Renderer.ShaderUtils.DoubleString loadShaderFiles(String vertPath, String fragPath) {

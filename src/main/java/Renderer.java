@@ -11,19 +11,19 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
-//import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL45.*;
-//import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-//import static org.lwjgl.opengl.GL20C.glCreateProgram;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
+
+//import static org.lwjgl.opengl.GL11.*;
+//import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+//import static org.lwjgl.opengl.GL20C.glCreateProgram;
 
 public class Renderer implements Runnable {
     private long window;
@@ -73,7 +73,7 @@ public class Renderer implements Runnable {
         GLFWErrorCallback.createPrint(System.err).set();
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
-        if ( !glfwInit() )
+        if (!glfwInit())
             throw new IllegalStateException("Unable to initialize GLFW");
 
         // Configure GLFW
@@ -84,14 +84,14 @@ public class Renderer implements Runnable {
 
         // Create the window
         window = glfwCreateWindow(800, 800, "Project Mario!", NULL, NULL);
-        if ( window == NULL )
+        if (window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         glfwSetKeyCallback(window, this.keyHandler);
 
         // Get the thread stack and push a new frame
-        try ( MemoryStack stack = stackPush() ) {
+        try (MemoryStack stack = stackPush()) {
             IntBuffer pWidth = stack.mallocInt(1); // int*
             IntBuffer pHeight = stack.mallocInt(1); // int*
 
@@ -133,20 +133,20 @@ public class Renderer implements Runnable {
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
-        while ( !glfwWindowShouldClose(window) ) {
+        while (!glfwWindowShouldClose(window)) {
             if (!textureLoadQueue.isEmpty()) {
-                    Collection<Texture.StringAndTexReturnQueue> texturesInQueue = new ArrayList<>();
-                    do {
-                        texturesInQueue.clear();
-                        textureLoadQueue.drainTo(texturesInQueue);
-                        for (Texture.StringAndTexReturnQueue sq : texturesInQueue) {
-                            try {
-                                sq.returnQueue.put(new Texture(sq.path));
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                Collection<Texture.StringAndTexReturnQueue> texturesInQueue = new ArrayList<>();
+                do {
+                    texturesInQueue.clear();
+                    textureLoadQueue.drainTo(texturesInQueue);
+                    for (Texture.StringAndTexReturnQueue sq : texturesInQueue) {
+                        try {
+                            sq.returnQueue.put(new Texture(sq.path));
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-                    } while (!textureLoadQueue.isEmpty());
+                    }
+                } while (!textureLoadQueue.isEmpty());
             }
 
             if (this.background_color_modified) {
@@ -190,24 +190,27 @@ public class Renderer implements Runnable {
 
     static class Vector3f {
         float[] values;
+
         Vector3f(float x1, float x2, float x3) {
-            this.values = new float[] {x1, x2, x3};
+            this.values = new float[]{x1, x2, x3};
         }
     }
 
     static class Matrix4f {
         float[] values;
+
         // v(row)(column)
         Matrix4f(float v11, float v21, float v31, float v41,
                  float v12, float v22, float v32, float v42,
                  float v13, float v23, float v33, float v43,
                  float v14, float v24, float v34, float v44) {
-            this.values = new float[] {
+            this.values = new float[]{
                     v11, v21, v31, v41,
                     v12, v22, v32, v42,
                     v13, v23, v33, v43,
                     v14, v24, v34, v44};
         }
+
         public static Matrix4f createIdentity() {
             return new Matrix4f(
                     1, 0, 0, 0,
@@ -240,8 +243,8 @@ public class Renderer implements Runnable {
                     2.0f / (right - left), 0, 0, 0,
                     0, 2.0f / (top - bottom), 0, 0,
                     0, 0, 2.0f / (far - near), 0,
-                    -(left + right)/2.0f, -(top + bottom)/2.0f, -(near + far)/2.0f, 1
-                    );
+                    -(left + right) / 2.0f, -(top + bottom) / 2.0f, -(near + far) / 2.0f, 1
+            );
         }
 
         public static Matrix4f createTranslate(Vector3f vector) {
@@ -257,40 +260,40 @@ public class Renderer implements Runnable {
             // TODO
             return new Matrix4f(
                     // first row this, first column matrix
-                    this.values[0+0*4]*matrix.values[0+0*4] + this.values[0+1*4]*matrix.values[1+0*4] + this.values[0+2*4]*matrix.values[2+0*4] + this.values[0+3*4]*matrix.values[3+0*4],
+                    this.values[0 + 0 * 4] * matrix.values[0 + 0 * 4] + this.values[0 + 1 * 4] * matrix.values[1 + 0 * 4] + this.values[0 + 2 * 4] * matrix.values[2 + 0 * 4] + this.values[0 + 3 * 4] * matrix.values[3 + 0 * 4],
                     // second row this, first column matrix
-                    this.values[1+0*4]*matrix.values[0+0*4] + this.values[1+1*4]*matrix.values[1+0*4] + this.values[1+2*4]*matrix.values[2+0*4] + this.values[1+3*4]*matrix.values[3+0*4],
+                    this.values[1 + 0 * 4] * matrix.values[0 + 0 * 4] + this.values[1 + 1 * 4] * matrix.values[1 + 0 * 4] + this.values[1 + 2 * 4] * matrix.values[2 + 0 * 4] + this.values[1 + 3 * 4] * matrix.values[3 + 0 * 4],
                     // third row this, first column matrix
-                    this.values[2+0*4]*matrix.values[0+0*4] + this.values[2+1*4]*matrix.values[1+0*4] + this.values[2+2*4]*matrix.values[2+0*4] + this.values[2+3*4]*matrix.values[3+0*4],
+                    this.values[2 + 0 * 4] * matrix.values[0 + 0 * 4] + this.values[2 + 1 * 4] * matrix.values[1 + 0 * 4] + this.values[2 + 2 * 4] * matrix.values[2 + 0 * 4] + this.values[2 + 3 * 4] * matrix.values[3 + 0 * 4],
                     // fourth row this, first column matrix
-                    this.values[3+0*4]*matrix.values[0+0*4] + this.values[3+1*4]*matrix.values[1+0*4] + this.values[3+2*4]*matrix.values[2+0*4] + this.values[3+3*4]*matrix.values[3+0*4],
+                    this.values[3 + 0 * 4] * matrix.values[0 + 0 * 4] + this.values[3 + 1 * 4] * matrix.values[1 + 0 * 4] + this.values[3 + 2 * 4] * matrix.values[2 + 0 * 4] + this.values[3 + 3 * 4] * matrix.values[3 + 0 * 4],
                     //
                     // first row this, second column matrix
-                    this.values[0+0*4]*matrix.values[0+1*4] + this.values[0+1*4]*matrix.values[1+1*4] + this.values[0+2*4]*matrix.values[2+1*4] + this.values[0+3*4]*matrix.values[3+1*4],
+                    this.values[0 + 0 * 4] * matrix.values[0 + 1 * 4] + this.values[0 + 1 * 4] * matrix.values[1 + 1 * 4] + this.values[0 + 2 * 4] * matrix.values[2 + 1 * 4] + this.values[0 + 3 * 4] * matrix.values[3 + 1 * 4],
                     // second row this, second column matrix
-                    this.values[1+0*4]*matrix.values[0+1*4] + this.values[1+1*4]*matrix.values[1+1*4] + this.values[1+2*4]*matrix.values[2+1*4] + this.values[1+3*4]*matrix.values[3+1*4],
+                    this.values[1 + 0 * 4] * matrix.values[0 + 1 * 4] + this.values[1 + 1 * 4] * matrix.values[1 + 1 * 4] + this.values[1 + 2 * 4] * matrix.values[2 + 1 * 4] + this.values[1 + 3 * 4] * matrix.values[3 + 1 * 4],
                     // third row this, second column matrix
-                    this.values[2+0*4]*matrix.values[0+1*4] + this.values[2+1*4]*matrix.values[1+1*4] + this.values[2+2*4]*matrix.values[2+1*4] + this.values[2+3*4]*matrix.values[3+1*4],
+                    this.values[2 + 0 * 4] * matrix.values[0 + 1 * 4] + this.values[2 + 1 * 4] * matrix.values[1 + 1 * 4] + this.values[2 + 2 * 4] * matrix.values[2 + 1 * 4] + this.values[2 + 3 * 4] * matrix.values[3 + 1 * 4],
                     // fourth row this, second column matrix
-                    this.values[3+0*4]*matrix.values[0+1*4] + this.values[3+1*4]*matrix.values[1+1*4] + this.values[3+2*4]*matrix.values[2+1*4] + this.values[3+3*4]*matrix.values[3+1*4],
+                    this.values[3 + 0 * 4] * matrix.values[0 + 1 * 4] + this.values[3 + 1 * 4] * matrix.values[1 + 1 * 4] + this.values[3 + 2 * 4] * matrix.values[2 + 1 * 4] + this.values[3 + 3 * 4] * matrix.values[3 + 1 * 4],
                     //
                     // first row this, third column matrix
-                    this.values[0+0*4]*matrix.values[0+2*4] + this.values[0+1*4]*matrix.values[1+2*4] + this.values[0+2*4]*matrix.values[2+2*4] + this.values[0+3*4]*matrix.values[3+2*4],
+                    this.values[0 + 0 * 4] * matrix.values[0 + 2 * 4] + this.values[0 + 1 * 4] * matrix.values[1 + 2 * 4] + this.values[0 + 2 * 4] * matrix.values[2 + 2 * 4] + this.values[0 + 3 * 4] * matrix.values[3 + 2 * 4],
                     // second row this, third column matrix
-                    this.values[1+0*4]*matrix.values[0+2*4] + this.values[1+1*4]*matrix.values[1+2*4] + this.values[1+2*4]*matrix.values[2+2*4] + this.values[1+3*4]*matrix.values[3+2*4],
+                    this.values[1 + 0 * 4] * matrix.values[0 + 2 * 4] + this.values[1 + 1 * 4] * matrix.values[1 + 2 * 4] + this.values[1 + 2 * 4] * matrix.values[2 + 2 * 4] + this.values[1 + 3 * 4] * matrix.values[3 + 2 * 4],
                     // third row this, third column matrix
-                    this.values[2+0*4]*matrix.values[0+2*4] + this.values[2+1*4]*matrix.values[1+2*4] + this.values[2+2*4]*matrix.values[2+2*4] + this.values[2+3*4]*matrix.values[3+2*4],
+                    this.values[2 + 0 * 4] * matrix.values[0 + 2 * 4] + this.values[2 + 1 * 4] * matrix.values[1 + 2 * 4] + this.values[2 + 2 * 4] * matrix.values[2 + 2 * 4] + this.values[2 + 3 * 4] * matrix.values[3 + 2 * 4],
                     // fourth row this, third column matrix
-                    this.values[3+0*4]*matrix.values[0+2*4] + this.values[3+1*4]*matrix.values[1+2*4] + this.values[3+2*4]*matrix.values[2+2*4] + this.values[3+3*4]*matrix.values[3+2*4],
+                    this.values[3 + 0 * 4] * matrix.values[0 + 2 * 4] + this.values[3 + 1 * 4] * matrix.values[1 + 2 * 4] + this.values[3 + 2 * 4] * matrix.values[2 + 2 * 4] + this.values[3 + 3 * 4] * matrix.values[3 + 2 * 4],
                     //
                     // first row this, fourth column matrix
-                    this.values[0+0*4]*matrix.values[0+3*4] + this.values[0+1*4]*matrix.values[1+3*4] + this.values[0+2*4]*matrix.values[2+3*4] + this.values[0+3*4]*matrix.values[3+3*4],
+                    this.values[0 + 0 * 4] * matrix.values[0 + 3 * 4] + this.values[0 + 1 * 4] * matrix.values[1 + 3 * 4] + this.values[0 + 2 * 4] * matrix.values[2 + 3 * 4] + this.values[0 + 3 * 4] * matrix.values[3 + 3 * 4],
                     // second row this, fourth column matrix
-                    this.values[1+0*4]*matrix.values[0+3*4] + this.values[1+1*4]*matrix.values[1+3*4] + this.values[1+2*4]*matrix.values[2+3*4] + this.values[1+3*4]*matrix.values[3+3*4],
+                    this.values[1 + 0 * 4] * matrix.values[0 + 3 * 4] + this.values[1 + 1 * 4] * matrix.values[1 + 3 * 4] + this.values[1 + 2 * 4] * matrix.values[2 + 3 * 4] + this.values[1 + 3 * 4] * matrix.values[3 + 3 * 4],
                     // third row this, fourth column matrix
-                    this.values[2+0*4]*matrix.values[0+3*4] + this.values[2+1*4]*matrix.values[1+3*4] + this.values[2+2*4]*matrix.values[2+3*4] + this.values[2+3*4]*matrix.values[3+3*4],
+                    this.values[2 + 0 * 4] * matrix.values[0 + 3 * 4] + this.values[2 + 1 * 4] * matrix.values[1 + 3 * 4] + this.values[2 + 2 * 4] * matrix.values[2 + 3 * 4] + this.values[2 + 3 * 4] * matrix.values[3 + 3 * 4],
                     // fourth row this, fourth column matrix
-                    this.values[3+0*4]*matrix.values[0+3*4] + this.values[3+1*4]*matrix.values[1+3*4] + this.values[3+2*4]*matrix.values[2+3*4] + this.values[3+3*4]*matrix.values[3+3*4]
+                    this.values[3 + 0 * 4] * matrix.values[0 + 3 * 4] + this.values[3 + 1 * 4] * matrix.values[1 + 3 * 4] + this.values[3 + 2 * 4] * matrix.values[2 + 3 * 4] + this.values[3 + 3 * 4] * matrix.values[3 + 3 * 4]
             );
         }
 
@@ -300,7 +303,8 @@ public class Renderer implements Runnable {
     }
 
     static class BufferUtils {
-        private BufferUtils() {}
+        private BufferUtils() {
+        }
 
         public static ByteBuffer createByteBuffer(byte[] array) {
             ByteBuffer result = ByteBuffer.allocateDirect(array.length).order(ByteOrder.nativeOrder());
@@ -322,11 +326,13 @@ public class Renderer implements Runnable {
     }
 
     static class ShaderUtils {
-        private ShaderUtils(){}
+        private ShaderUtils() {
+        }
 
         static class DoubleString {
             String vert;
             String frag;
+
             DoubleString(String vert, String frag) {
                 this.vert = vert;
                 this.frag = frag;
