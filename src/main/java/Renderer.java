@@ -479,7 +479,6 @@ public class Renderer implements Runnable {
 
             this.program = ShaderUtils.load("resources/shaders/staticTexRect/shader.vert", "resources/shaders/staticTexRect/shader.frag");
             glUseProgram(this.program);
-            System.out.println("[RENDERER] Location of \"tc\" : ".concat(Integer.toString(glGetAttribLocation(program, "tc"))));
         }
 
         public void draw() {
