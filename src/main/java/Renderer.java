@@ -131,14 +131,16 @@ public class Renderer implements Runnable {
         // Set the clear color
         glClearColor(background_color_red, background_color_green, background_color_blue, 0.0f);
 
+        setupTriangle();
+
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while ( !glfwWindowShouldClose(window) ) {
             if (!textureLoadQueue.isEmpty()) {
-                    Collection<Texture.StringAndTexReturnQueue> texturesInQueue = new ArrayList<>();
-                    do {
-                        texturesInQueue.clear();
-                        textureLoadQueue.drainTo(texturesInQueue);
+                Collection<Texture.StringAndTexReturnQueue> texturesInQueue = new ArrayList<>();
+                do {
+                    texturesInQueue.clear();
+                    textureLoadQueue.drainTo(texturesInQueue);
                         for (Texture.StringAndTexReturnQueue sq : texturesInQueue) {
                             try {
                                 sq.returnQueue.put(new Texture(sq.path));
@@ -159,6 +161,12 @@ public class Renderer implements Runnable {
                 this.background_color_lock.unlock();
             }
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+
+            glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+            int error;
+            while ((error = glGetError()) != 0) {
+                System.err.println("[RENDERER] OpenGL Error: ".concat(Integer.toString(error)));
+            }
 
             glfwSwapBuffers(window); // swap the color buffers
 
@@ -379,5 +387,38 @@ public class Renderer implements Runnable {
             // TODO
             this.ID = ShaderUtils.load(vertexPath, fragmentPath);
         }
+    }
+
+    public void setupTriangle() {
+        int[] VAOs = new int[] {0};
+        glGenVertexArrays(VAOs);
+
+        float[] positions = {
+                -0.5f, -0.5f,
+                0.5f, -0.5f,
+                0.0f, 0.5f};
+
+        int[] indices = {
+                0, 1, 2};
+
+        int[] buffer = {0};
+        glGenBuffers(buffer);
+        glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
+        glBufferData(GL_ARRAY_BUFFER, positions, GL_STATIC_DRAW);
+
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 2, GL_FLOAT, false, 8, (long)0);
+
+        int[] ibo = {0};
+        glGenBuffers(ibo);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER ,ibo[0]);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
+
+        int program = ShaderUtils.load("resources/shaders/triangle/shader.vert", "resources/shaders/triangle/shader.frag");
+        glUseProgram(program);
+
+        float[] noRotation = {1, 0, 0, 1};
+        int rotLocation = glGetUniformLocation(program, "rotation");
+        glUniformMatrix2fv(rotLocation, false, noRotation);
     }
 }

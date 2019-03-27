@@ -13,7 +13,7 @@ public class Model {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
             String buffer = null;
             while ((buffer = reader.readLine()) != null) {
-                builder.append(buffer);
+                builder.append(buffer.concat("\n"));
             }
             reader.close();
         } catch (Exception e) {
