@@ -11,6 +11,10 @@ class Controller {
         v.startRenderer();
 
         System.out.println(v.loadTexture("resources/images/fireFlower.png"));
+        //TODO: create debugger
+        Thread cheater = new Thread(new Cheater(this));
+        cheater.start();
+
     }
 
     public class KeyboardHandler extends GLFWKeyCallback {
