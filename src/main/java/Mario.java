@@ -1,17 +1,13 @@
-import javax.swing.*;
-
-class Mario extends Entity{
-
-    Mario() {
+class Mario extends Entity {
+    Mario(Texture texture) {
         this.posX = 0; // TODO: find initial X and Y value for level
         this.vX = 0;
         this.vY = -10;
-
-        this.icon = new ImageIcon(this.getClass().getResource("Mario.png")); // TODO: add Mario sprite
+        this.texture = texture; // TODO: add Mario sprite
     }
 
-    public void doMove(){
-        this.posX+=this.vX;
-        this.posY+=this.vY;
+    public void doMove() {
+        this.posX += this.vX;
+        this.posY += this.vY;
     }
 }

@@ -9,6 +9,7 @@ class View {
 
     Renderer rend;
 
+    //creates a new thread and creates a new window and a thread for rendering
     void startRenderer() {
         rend = new Renderer(keyHandler);
         rend.start();

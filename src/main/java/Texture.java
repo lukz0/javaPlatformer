@@ -1,7 +1,4 @@
-import org.lwjgl.BufferUtils;
-
 import java.awt.image.BufferedImage;
-import java.lang.reflect.Array;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import static org.lwjgl.opengl.GL45.*;
@@ -62,6 +59,7 @@ public class Texture {
     static class StringAndTexReturnQueue {
         public String path;
         public ArrayBlockingQueue<Texture> returnQueue;
+
         StringAndTexReturnQueue(String path, ArrayBlockingQueue<Texture> returnQueue) {
             this.path = path;
             this.returnQueue = returnQueue;
