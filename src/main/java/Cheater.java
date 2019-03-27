@@ -26,10 +26,10 @@ public class Cheater implements Runnable {
 
     private void doCommand(String command) {
         System.out.println(command);
-        if (command.length()<9){return;}
-        switch (command.toLowerCase().substring(0, 9)) {
+        switch (command.toLowerCase()) {
             case ("stop"):
-                this.shouldRun = false;
+                System.exit(0);
+                //this.shouldRun = false;
                 break;
 
             case ("set level"):

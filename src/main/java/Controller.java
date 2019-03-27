@@ -14,7 +14,6 @@ class Controller {
         //TODO: create debugger
         Thread cheater = new Thread(new Cheater(this));
         cheater.start();
-
     }
 
     public class KeyboardHandler extends GLFWKeyCallback {
