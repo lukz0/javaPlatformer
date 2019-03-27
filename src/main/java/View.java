@@ -22,4 +22,8 @@ class View {
     Texture loadTexture(String path) {
         return rend.loadTexture(path);
     }
+
+    int createStaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Texture texture) {
+        return rend.createStaticTexturedRectangle(left, right, top, bottom, z_index, texture);
+    }
 }

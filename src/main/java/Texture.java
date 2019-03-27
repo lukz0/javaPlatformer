@@ -1,4 +1,5 @@
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import static org.lwjgl.opengl.GL45.*;
@@ -31,6 +32,9 @@ public class Texture {
                 data[i] = r | (g << 8) | (b << 16) | (a << 24);
             }
 
+            //System.out.println("DATA: ".concat(Arrays.toString(data)));
+
+            glActiveTexture(GL_TEXTURE0);
             int result = glGenTextures();
             glBindTexture(GL_TEXTURE_2D, result);
 
@@ -54,6 +58,10 @@ public class Texture {
 
     public void unbind() {
         glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
+    public int getTextureID() {
+        return this.textureID;
     }
 
     static class StringAndTexReturnQueue {

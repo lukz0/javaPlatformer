@@ -5,6 +5,7 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
+import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -39,6 +40,9 @@ public class Renderer implements Runnable {
     private Thread t;
 
     private GLFWKeyCallback keyHandler;
+
+    ArrayBlockingQueue<StaticTexturedRectangle.ParametersAndCallback> addStaticRectangleQueue = new ArrayBlockingQueue<>(10);
+    ArrayList<Drawable> drawnElements = new ArrayList<>();
 
     Renderer(GLFWKeyCallback keyHandler) {
         this.keyHandler = keyHandler;
@@ -131,16 +135,14 @@ public class Renderer implements Runnable {
         // Set the clear color
         glClearColor(background_color_red, background_color_green, background_color_blue, 0.0f);
 
-        setupTriangle();
-
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while (!glfwWindowShouldClose(window)) {
-            if (!textureLoadQueue.isEmpty()) {
+            if (!this.textureLoadQueue.isEmpty()) {
                 Collection<Texture.StringAndTexReturnQueue> texturesInQueue = new ArrayList<>();
                 do {
                     texturesInQueue.clear();
-                    textureLoadQueue.drainTo(texturesInQueue);
+                    this.textureLoadQueue.drainTo(texturesInQueue);
                     for (Texture.StringAndTexReturnQueue sq : texturesInQueue) {
                         try {
                             sq.returnQueue.put(new Texture(sq.path));
@@ -149,6 +151,22 @@ public class Renderer implements Runnable {
                         }
                     }
                 } while (!textureLoadQueue.isEmpty());
+            }
+
+            if (!this.addStaticRectangleQueue.isEmpty()) {
+                Collection<StaticTexturedRectangle.ParametersAndCallback> paramsInQueue = new ArrayList<>();
+                do {
+                    paramsInQueue.clear();
+                    this.addStaticRectangleQueue.drainTo(paramsInQueue);
+                    for (StaticTexturedRectangle.ParametersAndCallback params : paramsInQueue) {
+                        this.drawnElements.add(new StaticTexturedRectangle(params.left, params.right, params.top, params.bottom, params.z_index, params.texture));
+                        try {
+                            params.callback.put(this.drawnElements.size());
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } while (!this.addStaticRectangleQueue.isEmpty());
             }
 
             if (this.background_color_modified) {
@@ -162,7 +180,10 @@ public class Renderer implements Runnable {
             }
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-            glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+            for (Drawable elem : this.drawnElements) {
+                elem.draw();
+            }
+
             int error;
             while ((error = glGetError()) != 0) {
                 System.err.println("[RENDERER] OpenGL Error: ".concat(Integer.toString(error)));
@@ -395,36 +416,99 @@ public class Renderer implements Runnable {
         }
     }
 
-    public void setupTriangle() {
-        int[] VAOs = new int[] {0};
-        glGenVertexArrays(VAOs);
+    static interface Drawable {
+        void draw();
+    }
 
-        float[] positions = {
-                -0.5f, -0.5f,
-                0.5f, -0.5f,
-                0.0f, 0.5f};
+    static class StaticTexturedRectangle implements Drawable {
+        static class ParametersAndCallback {
+            float left;
+            float right;
+            float top;
+            float bottom;
+            float z_index;
+            Texture texture;
+            ArrayBlockingQueue<Integer> callback;
+            ParametersAndCallback(float left, float right, float top, float bottom, float z_index, Texture texture, ArrayBlockingQueue<Integer> callback) {
+                this.left = left;
+                this.right = right;
+                this.top = top;
+                this.bottom = bottom;
+                this.z_index = z_index;
+                this.texture = texture;
+                this.callback = callback;
+            }
+        }
 
-        int[] indices = {
-                0, 1, 2};
+        // 0 - array_buffer, 1 - index_buffer
+        private int[] buffers = new int[] {0, 0};
+        private int program;
+        private int VAO;
+        private Texture texture;
 
-        int[] buffer = {0};
-        glGenBuffers(buffer);
-        glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
-        glBufferData(GL_ARRAY_BUFFER, positions, GL_STATIC_DRAW);
+        StaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Texture texture) {
+            this.texture = texture;
+            int[] VAOs = new int[] {0};
+            glGenVertexArrays(VAOs);
+            this.VAO = VAOs[0];
+            glBindVertexArray(this.VAO);
 
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 2, GL_FLOAT, false, 8, (long)0);
+            float[] positions = {
+                    left, top, z_index, 0, 1,
+                    left, bottom, z_index, 0, 0,
+                    right, bottom, z_index, 1, 0,
+                    right, top, z_index, 1, 1};
 
-        int[] ibo = {0};
-        glGenBuffers(ibo);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER ,ibo[0]);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
+            int[] indices = {
+                    0, 1, 2,
+                    0, 2, 3};
 
-        int program = ShaderUtils.load("resources/shaders/triangle/shader.vert", "resources/shaders/triangle/shader.frag");
-        glUseProgram(program);
+            // 0 - array_buffer, 1 - index_buffer
+            glGenBuffers(this.buffers);
+            glBindBuffer(GL_ARRAY_BUFFER, this.buffers[0]);
+            glBufferData(GL_ARRAY_BUFFER, positions, GL_STATIC_DRAW);
 
-        float[] noRotation = {1, 0, 0, 1};
-        int rotLocation = glGetUniformLocation(program, "rotation");
-        glUniformMatrix2fv(rotLocation, false, noRotation);
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, false, 5*4/*5 floats*/, 0);
+
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, 2, GL_FLOAT, false, 5*4, 3*4);
+
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this.buffers[1]);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
+
+            this.program = ShaderUtils.load("resources/shaders/staticTexRect/shader.vert", "resources/shaders/staticTexRect/shader.frag");
+            glUseProgram(this.program);
+            System.out.println("[RENDERER] Location of \"tc\" : ".concat(Integer.toString(glGetAttribLocation(program, "tc"))));
+        }
+
+        public void draw() {
+            glBindVertexArray(this.VAO);
+            glBindBuffer(GL_ARRAY_BUFFER, this.buffers[0]);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this.buffers[1]);
+            glUseProgram(this.program);
+            glActiveTexture(GL_TEXTURE0);
+            int location = glGetUniformLocation(this.program, "textureSampler");
+            glUniform1i(location, 0);
+            //System.out.println(glGetUniformi(this.program, location));
+            this.texture.bind();
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
+
+        public int getTextureID() {
+            return this.texture.getTextureID();
+        }
+    }
+
+    int createStaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Texture texture) {
+        // TODO
+        ArrayBlockingQueue<Integer> callback = new ArrayBlockingQueue<>(1);
+        try {
+            this.addStaticRectangleQueue.put(new StaticTexturedRectangle.ParametersAndCallback(left, right, top, bottom, z_index, texture, callback));
+            return callback.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 }

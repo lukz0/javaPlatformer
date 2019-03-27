@@ -10,7 +10,9 @@ class Controller {
         // starts renderer on a separate thread
         v.startRenderer();
 
-        System.out.println(v.loadTexture("resources/images/fireFlower.png"));
+        //System.out.println(v.loadTexture("resources/images/fireFlower.png"));
+        Texture fireFlowerTexture = v.loadTexture("resources/images/fireFlower.png");
+        v.createStaticTexturedRectangle(-0.5f, 0.5f, -0.5f, 0.5f, 0, fireFlowerTexture);
         //TODO: create debugger
         Thread cheater = new Thread(new Cheater(this));
         cheater.start();
