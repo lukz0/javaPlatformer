@@ -9,6 +9,8 @@ class Controller {
         v = new View(new KeyboardHandler());
         // starts renderer on a separate thread
         v.startRenderer();
+
+        System.out.println(v.loadTexture("resources/images/fireFlower.png"));
     }
 
     public class KeyboardHandler extends GLFWKeyCallback {

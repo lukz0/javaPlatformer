@@ -5,14 +5,23 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+//import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL45.*;
+//import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+//import static org.lwjgl.opengl.GL20C.glCreateProgram;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -24,6 +33,8 @@ public class Renderer implements Runnable {
     private float background_color_green = 0;
     private float background_color_blue = 1;
     private boolean background_color_modified = false;
+
+    ArrayBlockingQueue<Texture.StringAndTexReturnQueue> textureLoadQueue = new ArrayBlockingQueue<>(10);
 
     private Thread t;
 
@@ -123,6 +134,21 @@ public class Renderer implements Runnable {
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while ( !glfwWindowShouldClose(window) ) {
+            if (!textureLoadQueue.isEmpty()) {
+                    Collection<Texture.StringAndTexReturnQueue> texturesInQueue = new ArrayList<>();
+                    do {
+                        texturesInQueue.clear();
+                        textureLoadQueue.drainTo(texturesInQueue);
+                        for (Texture.StringAndTexReturnQueue sq : texturesInQueue) {
+                            try {
+                                sq.returnQueue.put(new Texture(sq.path));
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } while (!textureLoadQueue.isEmpty());
+            }
+
             if (this.background_color_modified) {
                 this.background_color_lock.lock();
                 glClearColor(this.background_color_red,
@@ -149,6 +175,17 @@ public class Renderer implements Runnable {
         this.background_color_green = g;
         this.background_color_blue = b;
         this.background_color_lock.unlock();
+    }
+
+    Texture loadTexture(String path) {
+        try {
+            ArrayBlockingQueue<Texture> retQueue = new ArrayBlockingQueue<>(1);
+            textureLoadQueue.put(new Texture.StringAndTexReturnQueue(path, retQueue));
+            return retQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     static class Vector3f {
@@ -255,6 +292,92 @@ public class Renderer implements Runnable {
                     // fourth row this, fourth column matrix
                     this.values[3+0*4]*matrix.values[0+3*4] + this.values[3+1*4]*matrix.values[1+3*4] + this.values[3+2*4]*matrix.values[2+3*4] + this.values[3+3*4]*matrix.values[3+3*4]
             );
+        }
+
+        public FloatBuffer toFloatBuffer() {
+            return BufferUtils.createFloatBuffer(this.values);
+        }
+    }
+
+    static class BufferUtils {
+        private BufferUtils() {}
+
+        public static ByteBuffer createByteBuffer(byte[] array) {
+            ByteBuffer result = ByteBuffer.allocateDirect(array.length).order(ByteOrder.nativeOrder());
+            result.put(array).flip();
+            return result;
+        }
+
+        public static FloatBuffer createFloatBuffer(float[] array) {
+            FloatBuffer result = ByteBuffer.allocateDirect(array.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
+            result.put(array).flip();
+            return result;
+        }
+
+        public static IntBuffer createIntBuffer(int[] array) {
+            IntBuffer result = ByteBuffer.allocateDirect(array.length * 4).order(ByteOrder.nativeOrder()).asIntBuffer();
+            result.put(array).flip();
+            return result;
+        }
+    }
+
+    static class ShaderUtils {
+        private ShaderUtils(){}
+
+        static class DoubleString {
+            String vert;
+            String frag;
+            DoubleString(String vert, String frag) {
+                this.vert = vert;
+                this.frag = frag;
+            }
+        }
+
+        public static int load(String vertPath, String fragPath) {
+            DoubleString shaders = Model.loadShaderFiles(vertPath, fragPath);
+            return create(shaders);
+        }
+
+        public static int create(DoubleString shaders) {
+            int program = glCreateProgram();
+            int vertID = glCreateShader(GL_VERTEX_SHADER);
+            int fragID = glCreateShader(GL_FRAGMENT_SHADER);
+            glShaderSource(vertID, shaders.vert);
+            glShaderSource(fragID, shaders.frag);
+
+            glCompileShader(vertID);
+            if (glGetShaderi(vertID, GL_COMPILE_STATUS) == GL_FALSE) {
+                System.err.print("[RENDERER] Failed to compile vertex shader: ");
+                System.err.println(glGetShaderInfoLog(vertID));
+                return -1;
+            }
+
+            glCompileShader(fragID);
+            if (glGetShaderi(fragID, GL_COMPILE_STATUS) == GL_FALSE) {
+                System.err.print("[RENDERER] Failed to compile fragment shader: ");
+                System.err.println(glGetShaderInfoLog(fragID));
+                return -1;
+            }
+
+            glAttachShader(program, vertID);
+            glAttachShader(program, fragID);
+            glLinkProgram(program);
+            glValidateProgram(program);
+            if (glGetProgrami(program, GL_LINK_STATUS) == GL_FALSE) {
+                System.err.print("[RENDERER] Failed to link program: ");
+                System.err.println(glGetProgramInfoLog(program));
+                return -1;
+            }
+            return program;
+        }
+    }
+
+    static class Shader {
+        private final int ID;
+
+        public Shader(String vertexPath, String fragmentPath) {
+            // TODO
+            this.ID = ShaderUtils.load(vertexPath, fragmentPath);
         }
     }
 }

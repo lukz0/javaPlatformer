@@ -17,4 +17,8 @@ class View {
     void setRendererBackgroundColor(float r, float g, float b) {
         rend.setBackgroundColor(r, g, b);
     }
+
+    Texture loadTexture(String path) {
+        return rend.loadTexture(path);
+    }
 }
