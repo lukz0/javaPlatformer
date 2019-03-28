@@ -46,9 +46,7 @@ class Controller {
         }
 
         try {
-            System.out.println("[CONTROLLER] Deleting the drawables in 3 seconds");
             Thread.sleep(3000);
-            System.out.println("[CONTROLLER] Deleting the drawables...");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -71,7 +69,7 @@ class Controller {
         // Block until the renderer returns booleans saying if the deletion was a success
         for (int i = 1; i <= results.size(); i++) {
             try {
-                System.out.println("[CONTROLLER] Deletion of drawable #" + i + " returned: " + results.get(i-1).take());
+                System.out.println("Deletion of drawable #" + i + " returned: " + results.get(i-1).take());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

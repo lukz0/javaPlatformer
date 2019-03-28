@@ -45,7 +45,6 @@ public class Renderer implements Runnable {
 
     public ArrayList<Boolean> usedDrawnElementIDs = new ArrayList<>();
     interface Drawable {
-        // If it changes glActiveTexture, it should be reset to GL_TEXTURE_0 at the end
         void draw();
         void delete();
     }
@@ -329,6 +328,7 @@ public class Renderer implements Runnable {
         }
 
         public Matrix4f multiply(Matrix4f matrix) {
+            // TODO
             return new Matrix4f(
                     // first row this, first column matrix
                     this.values[0 + 0 * 4] * matrix.values[0 + 0 * 4] + this.values[0 + 1 * 4] * matrix.values[1 + 0 * 4] + this.values[0 + 2 * 4] * matrix.values[2 + 0 * 4] + this.values[0 + 3 * 4] * matrix.values[3 + 0 * 4],
@@ -459,8 +459,6 @@ public class Renderer implements Runnable {
         private int VAO;
         private Texture texture;
 
-        private int textureSamplerLocation;
-
         StaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Texture texture) {
             this.texture = texture;
             int[] VAOs = new int[] {0};
@@ -494,13 +492,16 @@ public class Renderer implements Runnable {
 
             this.program = ShaderUtils.load("resources/shaders/staticTexRect/shader.vert", "resources/shaders/staticTexRect/shader.frag");
             glUseProgram(this.program);
-            this.textureSamplerLocation = glGetUniformLocation(this.program, "textureSampler");
         }
 
         public void draw() {
             glBindVertexArray(this.VAO);
+            glBindBuffer(GL_ARRAY_BUFFER, this.buffers[0]);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this.buffers[1]);
             glUseProgram(this.program);
-            glUniform1i(this.textureSamplerLocation, 0);
+            glActiveTexture(GL_TEXTURE0);
+            int location = glGetUniformLocation(this.program, "textureSampler");
+            glUniform1i(location, 0);
             this.texture.bind();
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
