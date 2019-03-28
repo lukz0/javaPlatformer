@@ -28,8 +28,7 @@ public class Cheater implements Runnable {
         System.out.println(command);
         switch (command.toLowerCase()) {
             case ("stop"):
-                System.exit(0);
-                //this.shouldRun = false;
+                controller.stopGame(0);
                 break;
 
             case ("set level"):

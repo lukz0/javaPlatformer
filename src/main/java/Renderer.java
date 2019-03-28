@@ -2,6 +2,7 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.glfw.GLFWWindowCloseCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
@@ -12,6 +13,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -27,25 +29,36 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 //import static org.lwjgl.opengl.GL20C.glCreateProgram;
 
 public class Renderer implements Runnable {
+    public boolean shouldRun = true;
+
     private long window;
 
     private final Lock background_color_lock = new ReentrantLock(true);
-    private float background_color_red = 1;
-    private float background_color_green = 0;
-    private float background_color_blue = 1;
-    private boolean background_color_modified = false;
-
-    ArrayBlockingQueue<Texture.StringAndTexReturnQueue> textureLoadQueue = new ArrayBlockingQueue<>(10);
+    public float background_color_red = 1;
+    public float background_color_green = 0;
+    public float background_color_blue = 1;
 
     private Thread t;
 
     private GLFWKeyCallback keyHandler;
+    private GLFWWindowCloseCallback closeHandler;
 
-    ArrayBlockingQueue<StaticTexturedRectangle.ParametersAndCallback> addStaticRectangleQueue = new ArrayBlockingQueue<>(10);
-    ArrayList<Drawable> drawnElements = new ArrayList<>();
+    public ArrayList<Boolean> usedDrawnElementIDs = new ArrayList<>();
+    interface Drawable {
+        void draw();
+        void delete();
+    }
+    public HashMap<Integer, Drawable> drawnElements = new HashMap<>();
 
-    Renderer(GLFWKeyCallback keyHandler) {
+    static interface Task {
+        Object doTask(Renderer r);
+        void returnObjFromTask(Object obj);
+    }
+    ArrayBlockingQueue<Task> taskQueue = new ArrayBlockingQueue<>(1000);
+
+    Renderer(GLFWKeyCallback keyHandler, GLFWWindowCloseCallback closeHandler) {
         this.keyHandler = keyHandler;
+        this.closeHandler = closeHandler;
     }
 
     public void run() {
@@ -94,6 +107,9 @@ public class Renderer implements Runnable {
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         glfwSetKeyCallback(window, this.keyHandler);
 
+        // Setup callback for when user clicks X
+        glfwSetWindowCloseCallback(window, this.closeHandler);
+
         // Get the thread stack and push a new frame
         try (MemoryStack stack = stackPush()) {
             IntBuffer pWidth = stack.mallocInt(1); // int*
@@ -132,55 +148,28 @@ public class Renderer implements Runnable {
         String openGLv = glGetString(GL_VERSION);
         System.out.println("[RENDERER] Using openGL version: ".concat((openGLv == null) ? ("unknown") : (openGLv)));
 
+        // Enable depth testing
+        glEnable(GL_DEPTH_TEST);
+
         // Set the clear color
         glClearColor(background_color_red, background_color_green, background_color_blue, 0.0f);
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
-        while (!glfwWindowShouldClose(window)) {
-            if (!this.textureLoadQueue.isEmpty()) {
-                Collection<Texture.StringAndTexReturnQueue> texturesInQueue = new ArrayList<>();
+        while (this.shouldRun) {
+            if (!this.taskQueue.isEmpty()) {
+                Collection<Task> tasksInQueue = new ArrayList<>();
                 do {
-                    texturesInQueue.clear();
-                    this.textureLoadQueue.drainTo(texturesInQueue);
-                    for (Texture.StringAndTexReturnQueue sq : texturesInQueue) {
-                        try {
-                            sq.returnQueue.put(new Texture(sq.path));
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                    tasksInQueue.clear();
+                    this.taskQueue.drainTo(tasksInQueue);
+                    for (Task tsk : tasksInQueue) {
+                        tsk.returnObjFromTask(tsk.doTask(this));
                     }
-                } while (!textureLoadQueue.isEmpty());
-            }
-
-            if (!this.addStaticRectangleQueue.isEmpty()) {
-                Collection<StaticTexturedRectangle.ParametersAndCallback> paramsInQueue = new ArrayList<>();
-                do {
-                    paramsInQueue.clear();
-                    this.addStaticRectangleQueue.drainTo(paramsInQueue);
-                    for (StaticTexturedRectangle.ParametersAndCallback params : paramsInQueue) {
-                        this.drawnElements.add(new StaticTexturedRectangle(params.left, params.right, params.top, params.bottom, params.z_index, params.texture));
-                        try {
-                            params.callback.put(this.drawnElements.size());
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } while (!this.addStaticRectangleQueue.isEmpty());
-            }
-
-            if (this.background_color_modified) {
-                this.background_color_lock.lock();
-                glClearColor(this.background_color_red,
-                        this.background_color_green,
-                        this.background_color_blue,
-                        0.0f);
-                this.background_color_modified = false;
-                this.background_color_lock.unlock();
+                } while (!this.taskQueue.isEmpty());
             }
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-            for (Drawable elem : this.drawnElements) {
+            for (Drawable elem : this.drawnElements.values()) {
                 elem.draw();
             }
 
@@ -197,24 +186,77 @@ public class Renderer implements Runnable {
         }
     }
 
-    void setBackgroundColor(float r, float g, float b) {
-        this.background_color_lock.lock();
-        this.background_color_modified = true;
-        this.background_color_red = r;
-        this.background_color_green = g;
-        this.background_color_blue = b;
-        this.background_color_lock.unlock();
+    static class SetBackgroundColorTask implements Task {
+        private float red, green, blue;
+        SetBackgroundColorTask(float r, float g, float b) {
+            this.red = r;
+            this.green = g;
+            this.blue = b;
+        }
+        public Object doTask(Renderer r) {
+            r.background_color_red = this.red;
+            r.background_color_green = this.green;
+            r.background_color_blue = this.blue;
+            glClearColor(r.background_color_red, r.background_color_green, r.background_color_blue, 1.0f);
+            return null;
+        }
+        public void returnObjFromTask(Object obj) {}
     }
-
-    Texture loadTexture(String path) {
+    void setBackgroundColor(float r, float g, float b) {
         try {
-            ArrayBlockingQueue<Texture> retQueue = new ArrayBlockingQueue<>(1);
-            textureLoadQueue.put(new Texture.StringAndTexReturnQueue(path, retQueue));
-            return retQueue.take();
+            this.taskQueue.put(new SetBackgroundColorTask(r, g, b));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return null;
+    }
+
+    static class LoadTextureTask implements Task {
+        ArrayBlockingQueue<Texture> callbackQueue = new ArrayBlockingQueue<>(1);
+        private final String path;
+
+        LoadTextureTask(String path) {
+            this.path = path;
+        }
+
+        public Object doTask(Renderer r) {
+            return new Texture(this.path);
+        }
+        public void returnObjFromTask(Object obj) {
+            try {
+                this.callbackQueue.put((Texture)obj);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    ArrayBlockingQueue<Texture> loadTexture(String path) {
+        LoadTextureTask tsk = new LoadTextureTask(path);
+        try {
+            this.taskQueue.put(tsk);
+            return tsk.callbackQueue;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    static class UnloadTextureTask implements Task {
+        private Texture texture;
+        UnloadTextureTask(Texture texture) {
+            this.texture = texture;
+        }
+        public Object doTask(Renderer r) {
+            this.texture.unload();
+            return null;
+        }
+        public void returnObjFromTask(Object obj) {}
+    }
+    void unloadTexture(Texture texture) {
+        try {
+            this.taskQueue.put(new UnloadTextureTask(texture));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     static class Vector3f {
@@ -396,6 +438,9 @@ public class Renderer implements Runnable {
 
             glAttachShader(program, vertID);
             glAttachShader(program, fragID);
+            glDeleteShader(vertID);
+            glDeleteShader(fragID);
+
             glLinkProgram(program);
             glValidateProgram(program);
             if (glGetProgrami(program, GL_LINK_STATUS) == GL_FALSE) {
@@ -407,39 +452,7 @@ public class Renderer implements Runnable {
         }
     }
 
-    static class Shader {
-        private final int ID;
-
-        public Shader(String vertexPath, String fragmentPath) {
-            // TODO
-            this.ID = ShaderUtils.load(vertexPath, fragmentPath);
-        }
-    }
-
-    static interface Drawable {
-        void draw();
-    }
-
     static class StaticTexturedRectangle implements Drawable {
-        static class ParametersAndCallback {
-            float left;
-            float right;
-            float top;
-            float bottom;
-            float z_index;
-            Texture texture;
-            ArrayBlockingQueue<Integer> callback;
-            ParametersAndCallback(float left, float right, float top, float bottom, float z_index, Texture texture, ArrayBlockingQueue<Integer> callback) {
-                this.left = left;
-                this.right = right;
-                this.top = top;
-                this.bottom = bottom;
-                this.z_index = z_index;
-                this.texture = texture;
-                this.callback = callback;
-            }
-        }
-
         // 0 - array_buffer, 1 - index_buffer
         private int[] buffers = new int[] {0, 0};
         private int program;
@@ -454,10 +467,10 @@ public class Renderer implements Runnable {
             glBindVertexArray(this.VAO);
 
             float[] positions = {
-                    left, top, z_index, 0, 1,
-                    left, bottom, z_index, 0, 0,
-                    right, bottom, z_index, 1, 0,
-                    right, top, z_index, 1, 1};
+                    left, top, z_index, 0, 0,
+                    left, bottom, z_index, 0, 1,
+                    right, bottom, z_index, 1, 1,
+                    right, top, z_index, 1, 0};
 
             int[] indices = {
                     0, 1, 2,
@@ -489,7 +502,6 @@ public class Renderer implements Runnable {
             glActiveTexture(GL_TEXTURE0);
             int location = glGetUniformLocation(this.program, "textureSampler");
             glUniform1i(location, 0);
-            //System.out.println(glGetUniformi(this.program, location));
             this.texture.bind();
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
@@ -497,17 +509,86 @@ public class Renderer implements Runnable {
         public int getTextureID() {
             return this.texture.getTextureID();
         }
+
+        public void delete() {
+            glBindVertexArray(this.VAO);
+            glDeleteBuffers(this.buffers);
+            glDeleteProgram(this.program);
+            glDeleteVertexArrays(this.VAO);
+        }
     }
 
-    int createStaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Texture texture) {
-        // TODO
-        ArrayBlockingQueue<Integer> callback = new ArrayBlockingQueue<>(1);
+    static class CreateStaticTexturedRectangleTask implements Task {
+        ArrayBlockingQueue<Integer> callbackQueue = new ArrayBlockingQueue<>(1);
+        private float left, right, top, bottom, z_index;
+        private Texture texture;
+        CreateStaticTexturedRectangleTask(float left, float right, float top, float bottom, float z_index, Texture texture) {
+            this.left = left;
+            this.right = right;
+            this.top = top;
+            this.bottom = bottom;
+            this.z_index = z_index;
+            this.texture = texture;
+        }
+        public Object doTask(Renderer r) {
+            int unusedIndex = r.usedDrawnElementIDs.indexOf(false);
+            int id;
+            if (unusedIndex == -1) {
+                id = r.usedDrawnElementIDs.size();
+                r.usedDrawnElementIDs.add(true);
+            } else {
+                id = unusedIndex;
+                r.usedDrawnElementIDs.set(id, true);
+            }
+            r.drawnElements.put(id, new StaticTexturedRectangle(this.left, this.right, this.top, this.bottom, this.z_index, this.texture));
+            return id;
+        }
+        public void returnObjFromTask(Object obj) {
+            try {
+                callbackQueue.put((Integer)obj);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    ArrayBlockingQueue<Integer> createStaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Texture texture) {
+        CreateStaticTexturedRectangleTask tsk = new CreateStaticTexturedRectangleTask(left, right, top, bottom, z_index, texture);
         try {
-            this.addStaticRectangleQueue.put(new StaticTexturedRectangle.ParametersAndCallback(left, right, top, bottom, z_index, texture, callback));
-            return callback.take();
+            this.taskQueue.put(tsk);
+            return tsk.callbackQueue;
         } catch (InterruptedException e) {
             e.printStackTrace();
+            return null;
         }
-        return -1;
+    }
+
+    static class DeleteDrawableTask implements Task {
+        ArrayBlockingQueue<Boolean> callbackQueue = new ArrayBlockingQueue<>(1);
+        private int id;
+        DeleteDrawableTask(int id) {
+            this.id = id;
+        }
+        public Object doTask(Renderer r) {
+            r.usedDrawnElementIDs.set(this.id, false);
+            r.drawnElements.get(this.id).delete();
+            return r.drawnElements.remove(this.id) != null;
+        }
+        public void returnObjFromTask(Object obj) {
+            try {
+                callbackQueue.put((Boolean)obj);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    ArrayBlockingQueue<Boolean> deleteDrawable(int id) {
+        DeleteDrawableTask tsk = new DeleteDrawableTask(id);
+        try {
+            this.taskQueue.put(tsk);
+            return tsk.callbackQueue;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

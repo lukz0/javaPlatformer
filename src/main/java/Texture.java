@@ -64,13 +64,7 @@ public class Texture {
         return this.textureID;
     }
 
-    static class StringAndTexReturnQueue {
-        public String path;
-        public ArrayBlockingQueue<Texture> returnQueue;
-
-        StringAndTexReturnQueue(String path, ArrayBlockingQueue<Texture> returnQueue) {
-            this.path = path;
-            this.returnQueue = returnQueue;
-        }
+    public void unload() {
+        glDeleteTextures(textureID);
     }
 }
