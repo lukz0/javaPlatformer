@@ -14,6 +14,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Vector;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -45,8 +46,11 @@ public class Renderer implements Runnable {
     public ArrayList<Boolean> usedDrawnElementIDs = new ArrayList<>();
     interface Drawable {
         // If it changes glActiveTexture, it should be reset to GL_TEXTURE_0 at the end
-        void draw();
+        void draw(long currentTimeStamp);
         void delete();
+    }
+    interface PosUpdateable {
+        void updatePosition(Vector3f translation, Vector3f velocity, long currentTimeMillis);
     }
     public HashMap<Integer, Drawable> drawnElements = new HashMap<>();
 
@@ -169,8 +173,9 @@ public class Renderer implements Runnable {
             }
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
+            long currentTimeStamp = System.currentTimeMillis();
             for (Drawable elem : this.drawnElements.values()) {
-                elem.draw();
+                elem.draw(currentTimeStamp);
             }
 
             int error;
@@ -186,77 +191,11 @@ public class Renderer implements Runnable {
         }
     }
 
-    static class SetBackgroundColorTask implements Task {
-        private float red, green, blue;
-        SetBackgroundColorTask(float r, float g, float b) {
-            this.red = r;
-            this.green = g;
-            this.blue = b;
-        }
-        public void doTask(Renderer r) {
-            r.background_color_red = this.red;
-            r.background_color_green = this.green;
-            r.background_color_blue = this.blue;
-            glClearColor(r.background_color_red, r.background_color_green, r.background_color_blue, 1.0f);
-        }
-    }
-    void setBackgroundColor(float r, float g, float b) {
-        try {
-            this.taskQueue.put(new SetBackgroundColorTask(r, g, b));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    static class LoadTextureTask implements Task {
-        ArrayBlockingQueue<Texture> callbackQueue = new ArrayBlockingQueue<>(1);
-        private final String path;
-
-        LoadTextureTask(String path) {
-            this.path = path;
-        }
-
-        public void doTask(Renderer r) {
-            try {
-                this.callbackQueue.put(new Texture(this.path));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    ArrayBlockingQueue<Texture> loadTexture(String path) {
-        LoadTextureTask tsk = new LoadTextureTask(path);
-        try {
-            this.taskQueue.put(tsk);
-            return tsk.callbackQueue;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    static class UnloadTextureTask implements Task {
-        private Texture texture;
-        UnloadTextureTask(Texture texture) {
-            this.texture = texture;
-        }
-        public void doTask(Renderer r) {
-            this.texture.unload();
-        }
-    }
-    void unloadTexture(Texture texture) {
-        try {
-            this.taskQueue.put(new UnloadTextureTask(texture));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     static class Vector3f {
         float[] values;
 
-        Vector3f(float x1, float x2, float x3) {
-            this.values = new float[]{x1, x2, x3};
+        Vector3f(float x, float y, float z) {
+            this.values = new float[]{x, y, z};
         }
     }
 
@@ -489,7 +428,7 @@ public class Renderer implements Runnable {
             this.textureSamplerLocation = glGetUniformLocation(this.program, "textureSampler");
         }
 
-        public void draw() {
+        public void draw(long currentTimeStamp) {
             glBindVertexArray(this.VAO);
             glUseProgram(this.program);
             glUniform1i(this.textureSamplerLocation, 0);
@@ -497,15 +436,157 @@ public class Renderer implements Runnable {
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
 
-        public int getTextureID() {
-            return this.texture.getTextureID();
-        }
-
         public void delete() {
             glBindVertexArray(this.VAO);
             glDeleteBuffers(this.buffers);
             glDeleteProgram(this.program);
             glDeleteVertexArrays(this.VAO);
+        }
+    }
+
+    static class TexturedRectangle implements Drawable, PosUpdateable {
+        // 0 - array_buffer, 1 - index_buffer
+        private int[] buffers = new int[] {0, 0};
+        private int program;
+        private int VAO;
+        private Texture texture;
+
+        private int textureSamplerLocation;
+        private int translationLocation;
+
+        private long updatedTimestamp;
+        Vector3f translation;
+        Vector3f velocity;
+
+        TexturedRectangle(float left, float right, float top, float bottom, float z_index, Texture texture, Vector3f translation, Vector3f velocity, long updatedTimestamp) {
+            this.updatedTimestamp = updatedTimestamp;
+            this.translation = translation;
+            this.velocity = velocity;
+            this.texture = texture;
+            this.VAO = glGenVertexArrays();
+            glBindVertexArray(this.VAO);
+            float[] positions = {
+                    left, top, z_index, 0, 0,
+                    left, bottom, z_index, 0, 1,
+                    right, bottom, z_index, 1, 1,
+                    right, top, z_index, 1, 0};
+
+            int[] indices = {
+                    0, 1, 2,
+                    0, 2, 3};
+
+            // 0 - array_buffer, 1 - index_buffer
+            glGenBuffers(this.buffers);
+            glBindBuffer(GL_ARRAY_BUFFER, this.buffers[0]);
+            glBufferData(GL_ARRAY_BUFFER, positions, GL_STATIC_DRAW);
+
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, false, 5*4/*5 floats*/, 0);
+
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, 2, GL_FLOAT, false, 5*4, 3*4);
+
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this.buffers[1]);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
+
+            this.program = ShaderUtils.load("resources/shaders/texRect/shader.vert", "resources/shaders/texRect/shader.frag");
+            glUseProgram(this.program);
+            this.textureSamplerLocation = glGetUniformLocation(this.program, "textureSampler");
+            this.translationLocation = glGetUniformLocation(this.program, "translation");
+        }
+
+        public void draw(long currentTimeStamp) {
+            glBindVertexArray(this.VAO);
+            glUseProgram(this.program);
+
+            glUniform1i(this.textureSamplerLocation, 0);
+            this.texture.bind();
+
+            long timeStampDiff = currentTimeStamp - this.updatedTimestamp;
+            glUniform3f(this.translationLocation,
+                    this.translation.values[0]+this.velocity.values[0]*timeStampDiff,
+                    this.translation.values[1]+this.velocity.values[1]*timeStampDiff,
+                    this.translation.values[2]+this.velocity.values[2]*timeStampDiff);
+
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
+        public void delete() {
+            glBindVertexArray(this.VAO);
+            glDeleteBuffers(this.buffers);
+            glDeleteProgram(this.program);
+            glDeleteVertexArrays(this.VAO);
+        }
+
+        public void updatePosition(Vector3f translation, Vector3f velocity, long currentTimeMillis) {
+            this.translation = translation;
+            this.velocity = velocity;
+            this.updatedTimestamp = currentTimeMillis;
+        }
+    }
+
+    static class SetBackgroundColorTask implements Task {
+        private float red, green, blue;
+        SetBackgroundColorTask(float r, float g, float b) {
+            this.red = r;
+            this.green = g;
+            this.blue = b;
+        }
+        public void doTask(Renderer r) {
+            r.background_color_red = this.red;
+            r.background_color_green = this.green;
+            r.background_color_blue = this.blue;
+            glClearColor(r.background_color_red, r.background_color_green, r.background_color_blue, 1.0f);
+        }
+    }
+    void setBackgroundColor(float r, float g, float b) {
+        try {
+            this.taskQueue.put(new SetBackgroundColorTask(r, g, b));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static class LoadTextureTask implements Task {
+        ArrayBlockingQueue<Texture> callbackQueue = new ArrayBlockingQueue<>(1);
+        private final String path;
+
+        LoadTextureTask(String path) {
+            this.path = path;
+        }
+
+        public void doTask(Renderer r) {
+            try {
+                this.callbackQueue.put(new Texture(this.path));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    ArrayBlockingQueue<Texture> loadTexture(String path) {
+        LoadTextureTask tsk = new LoadTextureTask(path);
+        try {
+            this.taskQueue.put(tsk);
+            return tsk.callbackQueue;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    static class UnloadTextureTask implements Task {
+        private Texture texture;
+        UnloadTextureTask(Texture texture) {
+            this.texture = texture;
+        }
+        public void doTask(Renderer r) {
+            this.texture.unload();
+        }
+    }
+    void unloadTexture(Texture texture) {
+        try {
+            this.taskQueue.put(new UnloadTextureTask(texture));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -548,6 +629,77 @@ public class Renderer implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    static class CreateTexturedRectangleTask implements Task {
+        ArrayBlockingQueue<Integer> callbackQueue = new ArrayBlockingQueue<>(1);
+        private float left, right, top, bottom, z_index;
+        private Texture texture;
+        private Vector3f translation, velocity;
+        private long timestamp;
+        CreateTexturedRectangleTask(float left, float right, float top, float bottom, float z_index, Texture texture, Vector3f translation, Vector3f velocity, long currentTimeMillis) {
+            this.left = left;
+            this.right = right;
+            this.top = top;
+            this.bottom = bottom;
+            this.z_index = z_index;
+            this.texture = texture;
+            this.translation = translation;
+            this.velocity = velocity;
+            this.timestamp = currentTimeMillis;
+        }
+
+        public void doTask(Renderer r) {
+            int unusedIndex = r.usedDrawnElementIDs.indexOf(false);
+            int id;
+            if (unusedIndex == -1) {
+                id = r.usedDrawnElementIDs.size();
+                r.usedDrawnElementIDs.add(true);
+            } else {
+                id = unusedIndex;
+                r.usedDrawnElementIDs.set(id, true);
+            }
+            r.drawnElements.put(id, new TexturedRectangle(this.left, this.right, this.top, this.bottom, this.z_index, this.texture, this.translation, this.velocity, this.timestamp));
+
+            try {
+                this.callbackQueue.put(id);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    ArrayBlockingQueue<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Texture texture, Vector3f translation, Vector3f velocity, long currentTimeMillis) {
+        CreateTexturedRectangleTask tsk = new CreateTexturedRectangleTask(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeMillis);
+        try {
+            this.taskQueue.put(tsk);
+            return tsk.callbackQueue;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    static class UpdatePositionTask implements Task {
+        private final int id;
+        private final Vector3f translation, velocity;
+        private final long timestamp;
+        UpdatePositionTask(int id, Vector3f translation, Vector3f velocity, long timestamp) {
+            this.id = id;
+            this.translation = translation;
+            this.velocity = velocity;
+            this.timestamp = timestamp;
+        }
+        public void doTask(Renderer r) {
+            ((PosUpdateable)r.drawnElements.get(id)).updatePosition(this.translation, this.velocity, this.timestamp);
+        }
+    }
+    void updatePosition(int id, Vector3f translation, Vector3f velocity, long timestamp) {
+        UpdatePositionTask tsk = new UpdatePositionTask(id, translation, velocity, timestamp);
+        try {
+            this.taskQueue.put(tsk);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

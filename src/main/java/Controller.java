@@ -35,6 +35,9 @@ class Controller {
         ArrayBlockingQueue<Integer> drawableIDPromise4 = v.createStaticTexturedRectangle(0.0f, 1.0f, 0.0f, -1.0f, 0, fireFlowerTexture);
         int drawableID = 0, drawableID2 = 0, drawableID3 = 0, drawableID4 = 0;
 
+        ArrayBlockingQueue<Integer> marioIDPromise = v.createTexturedRectangle(-1.0f, 1.0f, 1.0f, -1.0f, 0.5f, marioForwardTexture,
+                new Renderer.Vector3f(-0.5f, 0, 0), new Renderer.Vector3f(0.0001f, 0, 0), System.currentTimeMillis());
+
         try {
             System.out.println("[CONTROLLER] Deleting the drawables in 3 seconds");
             Thread.sleep(3000);
@@ -64,9 +67,17 @@ class Controller {
         // Don't do this unless you already asked the renderer to delete all the drawables using it
         // Setting the objects to null can help not accidently using the object for new drawables
         v.unloadTexture(fireFlowerTexture);
-        v.unloadTexture(marioForwardTexture);
+        //v.unloadTexture(marioForwardTexture);
         fireFlowerTexture = null;
-        marioForwardTexture = null;
+        //marioForwardTexture = null;
+
+        int marioID;
+        try {
+            marioID = marioIDPromise.take();
+            v.updatePosition(marioID, new Renderer.Vector3f(0.5f, 0, 0), new Renderer.Vector3f(-0.0001f, 0, 0), System.currentTimeMillis());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         // Block until the renderer returns booleans saying if the deletion was a success
         for (int i = 1; i <= results.size(); i++) {
