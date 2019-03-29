@@ -33,7 +33,6 @@ public class Renderer implements Runnable {
 
     private long window;
 
-    private final Lock background_color_lock = new ReentrantLock(true);
     public float background_color_red = 1;
     public float background_color_green = 0;
     public float background_color_blue = 1;
@@ -52,8 +51,7 @@ public class Renderer implements Runnable {
     public HashMap<Integer, Drawable> drawnElements = new HashMap<>();
 
     static interface Task {
-        Object doTask(Renderer r);
-        void returnObjFromTask(Object obj);
+        void doTask(Renderer r);
     }
     ArrayBlockingQueue<Task> taskQueue = new ArrayBlockingQueue<>(1000);
 
@@ -63,6 +61,7 @@ public class Renderer implements Runnable {
     }
 
     public void run() {
+        System.currentTimeMillis();
         System.out.println("[RENDERER] Using LWJGL version: ".concat(Version.getVersion()));
         init();
         loop();
@@ -164,7 +163,7 @@ public class Renderer implements Runnable {
                     tasksInQueue.clear();
                     this.taskQueue.drainTo(tasksInQueue);
                     for (Task tsk : tasksInQueue) {
-                        tsk.returnObjFromTask(tsk.doTask(this));
+                        tsk.doTask(this);
                     }
                 } while (!this.taskQueue.isEmpty());
             }
@@ -194,14 +193,12 @@ public class Renderer implements Runnable {
             this.green = g;
             this.blue = b;
         }
-        public Object doTask(Renderer r) {
+        public void doTask(Renderer r) {
             r.background_color_red = this.red;
             r.background_color_green = this.green;
             r.background_color_blue = this.blue;
             glClearColor(r.background_color_red, r.background_color_green, r.background_color_blue, 1.0f);
-            return null;
         }
-        public void returnObjFromTask(Object obj) {}
     }
     void setBackgroundColor(float r, float g, float b) {
         try {
@@ -219,12 +216,9 @@ public class Renderer implements Runnable {
             this.path = path;
         }
 
-        public Object doTask(Renderer r) {
-            return new Texture(this.path);
-        }
-        public void returnObjFromTask(Object obj) {
+        public void doTask(Renderer r) {
             try {
-                this.callbackQueue.put((Texture)obj);
+                this.callbackQueue.put(new Texture(this.path));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -246,11 +240,9 @@ public class Renderer implements Runnable {
         UnloadTextureTask(Texture texture) {
             this.texture = texture;
         }
-        public Object doTask(Renderer r) {
+        public void doTask(Renderer r) {
             this.texture.unload();
-            return null;
         }
-        public void returnObjFromTask(Object obj) {}
     }
     void unloadTexture(Texture texture) {
         try {
@@ -529,7 +521,7 @@ public class Renderer implements Runnable {
             this.z_index = z_index;
             this.texture = texture;
         }
-        public Object doTask(Renderer r) {
+        public void doTask(Renderer r) {
             int unusedIndex = r.usedDrawnElementIDs.indexOf(false);
             int id;
             if (unusedIndex == -1) {
@@ -540,11 +532,9 @@ public class Renderer implements Runnable {
                 r.usedDrawnElementIDs.set(id, true);
             }
             r.drawnElements.put(id, new StaticTexturedRectangle(this.left, this.right, this.top, this.bottom, this.z_index, this.texture));
-            return id;
-        }
-        public void returnObjFromTask(Object obj) {
+
             try {
-                callbackQueue.put((Integer)obj);
+                this.callbackQueue.put(id);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -567,14 +557,11 @@ public class Renderer implements Runnable {
         DeleteDrawableTask(int id) {
             this.id = id;
         }
-        public Object doTask(Renderer r) {
+        public void doTask(Renderer r) {
             r.usedDrawnElementIDs.set(this.id, false);
             r.drawnElements.get(this.id).delete();
-            return r.drawnElements.remove(this.id) != null;
-        }
-        public void returnObjFromTask(Object obj) {
             try {
-                callbackQueue.put((Boolean)obj);
+                callbackQueue.put(r.drawnElements.remove(this.id) != null);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

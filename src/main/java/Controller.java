@@ -35,20 +35,20 @@ class Controller {
         ArrayBlockingQueue<Integer> drawableIDPromise4 = v.createStaticTexturedRectangle(0.0f, 1.0f, 0.0f, -1.0f, 0, fireFlowerTexture);
         int drawableID = 0, drawableID2 = 0, drawableID3 = 0, drawableID4 = 0;
 
+        try {
+            System.out.println("[CONTROLLER] Deleting the drawables in 3 seconds");
+            Thread.sleep(3000);
+            System.out.println("[CONTROLLER] Deleting the drawables...");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         // Block until the renderer returns IDs for the 4 textured rectangles
         try {
             drawableID = drawableIDPromise.take();
             drawableID2 = drawableIDPromise2.take();
             drawableID3 = drawableIDPromise3.take();
             drawableID4 = drawableIDPromise4.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            System.out.println("[CONTROLLER] Deleting the drawables in 3 seconds");
-            Thread.sleep(3000);
-            System.out.println("[CONTROLLER] Deleting the drawables...");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
