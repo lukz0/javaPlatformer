@@ -89,6 +89,11 @@ class Controller {
             }
         }
 
+
+        //TODO: make gameloop contain more logic
+        Gameloop gameloop = new Gameloop();
+        gameloop.start();
+
         //TODO: create debugger
         Thread cheater = new Thread(new Cheater(this));
         cheater.start();
