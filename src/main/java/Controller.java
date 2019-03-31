@@ -9,6 +9,7 @@ import static org.lwjgl.glfw.GLFW.*;
 class Controller {
     private View v;
 
+
     Controller() {
         v = new View();
 
@@ -31,7 +32,7 @@ class Controller {
         // Ask the renderer to create 4 StaticTexturedRectangles
         ArrayBlockingQueue<Integer> drawableIDPromise = v.createStaticTexturedRectangle(-1.0f, 0.0f, 1.0f, 0.0f, 0, fireFlowerTexture);
         ArrayBlockingQueue<Integer> drawableIDPromise2 = v.createStaticTexturedRectangle(0.0f, 1.0f, 1.0f, 0.0f, 0, marioForwardTexture);
-        ArrayBlockingQueue<Integer> drawableIDPromise3 = v.createStaticTexturedRectangle(-1.0f,0.0f, 0.0f, -1.0f, 0, marioForwardTexture);
+        ArrayBlockingQueue<Integer> drawableIDPromise3 = v.createStaticTexturedRectangle(-1.0f, 0.0f, 0.0f, -1.0f, 0, marioForwardTexture);
         ArrayBlockingQueue<Integer> drawableIDPromise4 = v.createStaticTexturedRectangle(0.0f, 1.0f, 0.0f, -1.0f, 0, fireFlowerTexture);
         int drawableID = 0, drawableID2 = 0, drawableID3 = 0, drawableID4 = 0;
 
@@ -82,7 +83,7 @@ class Controller {
         // Block until the renderer returns booleans saying if the deletion was a success
         for (int i = 1; i <= results.size(); i++) {
             try {
-                System.out.println("[CONTROLLER] Deletion of drawable #" + i + " returned: " + results.get(i-1).take());
+                System.out.println("[CONTROLLER] Deletion of drawable #" + i + " returned: " + results.get(i - 1).take());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
