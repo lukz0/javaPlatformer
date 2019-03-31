@@ -25,6 +25,7 @@ public class Gameloop implements Runnable {
         }, 0, 20);
     }
 
+    //command that runs 50 times a second, consider performance when writing code here
     void tick() {
         //TODO: write what the game loop will actually do
         return;
