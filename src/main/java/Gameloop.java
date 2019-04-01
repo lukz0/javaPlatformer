@@ -80,7 +80,9 @@ public class Gameloop implements Runnable {
 
             long tickEnd = System.nanoTime();
             try {
-                Thread.sleep(TICKDURATION-((tickEnd-tickStart)/1000000));
+                long sleepDur = TICKDURATION-((tickEnd-tickStart)/1000000);
+                sleepDur = (sleepDur < 0) ? 0 : sleepDur;
+                Thread.sleep(sleepDur);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
