@@ -26,19 +26,23 @@ public class Cheater implements Runnable {
 
     private void doCommand(String command) {
         System.out.println(command);
-        switch (command.toLowerCase()) {
+        //allows the command function to use strings shorter than 9 characters long
+        String substring = command.length()<10?command.toLowerCase():command.toLowerCase().substring(0,10);
+        switch (substring) {
             case ("stop"):
                 controller.stopGame(0);
                 break;
 
-            case ("set level"):
-                int level = Integer.parseInt(command.substring(9));
+            case ("set level "):
+                int level = Integer.parseInt(command.substring(10));
                 //TODO: create a setlevel function in controller
+                System.out.println("[CHEATER] started level "+level);
                 break;
 
-            case ("set mario"):
-                String state = command.substring(9);
+            case ("set mario "):
+                String state = command.substring(10);
                 //TODO: have ways to set mario invincible etc
+                System.out.println("[CHEATER] set mario state to "+state);
                 break;
         }
 
