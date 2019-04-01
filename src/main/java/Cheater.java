@@ -1,12 +1,14 @@
+import java.lang.reflect.Array;
 import java.util.Scanner;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class Cheater implements Runnable {
-    private Controller controller;
+    private Gameloop gameloop;
     private Scanner scanner;
     volatile boolean shouldRun;
 
-    Cheater(Controller controller) {
-        this.controller = controller;
+    Cheater(Gameloop gameloop) {
+        this.gameloop = gameloop;
         this.scanner = new Scanner(System.in);
         this.shouldRun = true;
     }
@@ -30,7 +32,9 @@ public class Cheater implements Runnable {
         String substring = command.length()<10?command.toLowerCase():command.toLowerCase().substring(0,10);
         switch (substring) {
             case ("stop"):
-                controller.stopGame(0);
+                gameloop.runCommand(new StopCommand(0));
+                //controller.stopGame(0);
+
                 break;
 
             case ("set level "):
@@ -46,5 +50,22 @@ public class Cheater implements Runnable {
                 break;
         }
 
+    }
+
+    static abstract class Command {
+        abstract void doCommand(Gameloop gameloop);
+        ArrayBlockingQueue<Object> callback = new ArrayBlockingQueue<>(1);
+    }
+
+    static class StopCommand extends Command {
+        private final int status;
+        StopCommand(int status) {
+            this.status = status;
+        }
+
+        @Override
+        void doCommand(Gameloop gameloop) {
+            gameloop.controller.stopGame(this.status);
+        }
     }
 }

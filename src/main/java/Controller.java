@@ -8,7 +8,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 class Controller {
     private View v;
-
+    private Gameloop gameloop;
 
     Controller() {
         v = new View();
@@ -16,13 +16,13 @@ class Controller {
         // Creates a window and starts a openGL renderer on a separate thread
         v.startRenderer(new KeyboardHandler(), new WindowCloseHandler());
 
-        //TODO: create debugger
-        Thread cheater = new Thread(new Cheater(this));
-        cheater.start();
-
         //TODO: make gameloop contain more logic
-        Gameloop gameloop = new Gameloop();
+        gameloop = new Gameloop(this, this.v);
         gameloop.start();
+
+        //TODO: create debugger
+        Thread cheater = new Thread(new Cheater(this.gameloop));
+        cheater.start();
 
         // Ask renderer to load fireFlower texture
         Async<Texture> fireFlowerTexture = v.loadTexture("resources/images/fireFlower.png");
@@ -57,6 +57,10 @@ class Controller {
     public class KeyboardHandler extends GLFWKeyCallback {
         @Override
         public void invoke(long window, int key, int scancode, int action, int modifier) {
+            if (gameloop != null) {
+                gameloop.keyEvent(new KeyEvent(key, action, modifier));
+            }
+            /*
             if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
                 stopGame(0);
             } else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
@@ -65,7 +69,7 @@ class Controller {
                 v.setRendererBackgroundColor(0.0f, 1.0f, 0.0f);
             } else if (key == GLFW_KEY_B && action == GLFW_PRESS) {
                 v.setRendererBackgroundColor(0.0f, 0.0f, 1.0f);
-            }
+            }*/
         }
     }
 
