@@ -13,23 +13,18 @@ public class Gameloop implements Runnable {
     }
 
     public void run() {
-        Timer timer = new Timer();
+        while (true) {
+            long tickStart = System.nanoTime();
 
-        //performs the tick every 20 millisecond, should be about 50 times per second.
-        //NOTE:the task will always perform 50 times a second, could possibly lead to uneven tick times
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                tick();
+            // TODO: game logic
+            // Use tickStart as timestamp argument to View methods
+
+            long tickEnd = System.nanoTime();
+            try {
+                Thread.sleep(Controller.tickDuration-((tickEnd-tickStart)/1000000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        }, 0, 20);
+        }
     }
-
-    //command that runs 50 times a second, consider performance when writing code here
-    void tick() {
-        //TODO: write what the game loop will actually do
-        return;
-    }
-
-
 }

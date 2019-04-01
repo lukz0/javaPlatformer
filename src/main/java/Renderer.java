@@ -10,6 +10,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -165,7 +166,7 @@ public class Renderer implements Runnable {
             }
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-            long currentTimeStamp = System.currentTimeMillis();
+            long currentTimeStamp = System.nanoTime();
             for (Drawable elem : this.drawnElements.values()) {
                 elem.draw(currentTimeStamp);
             }
@@ -494,11 +495,11 @@ public class Renderer implements Runnable {
             glUniform1i(this.textureSamplerLocation, 0);
             this.texture.bind();
 
-            long timeStampDiff = currentTimeStamp - this.updatedTimestamp;
+            long delta = ((currentTimeStamp - this.updatedTimestamp)/1000000)/Controller.tickDuration;
             glUniform3f(this.translationLocation,
-                    this.translation.values[0]+this.velocity.values[0]*timeStampDiff,
-                    this.translation.values[1]+this.velocity.values[1]*timeStampDiff,
-                    this.translation.values[2]+this.velocity.values[2]*timeStampDiff);
+                    this.translation.values[0]+this.velocity.values[0]*delta,
+                    this.translation.values[1]+this.velocity.values[1]*delta,
+                    this.translation.values[2]+this.velocity.values[2]*delta);
 
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
@@ -509,10 +510,10 @@ public class Renderer implements Runnable {
             glDeleteVertexArrays(this.VAO);
         }
 
-        public void updatePosition(Vector3f translation, Vector3f velocity, long currentTimeMillis) {
+        public void updatePosition(Vector3f translation, Vector3f velocity, long currentTimeNano) {
             this.translation = translation;
             this.velocity = velocity;
-            this.updatedTimestamp = currentTimeMillis;
+            this.updatedTimestamp = currentTimeNano;
         }
     }
 

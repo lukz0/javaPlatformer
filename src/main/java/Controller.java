@@ -7,6 +7,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import static org.lwjgl.glfw.GLFW.*;
 
 class Controller {
+    static final long tickDuration = 20;
     private View v;
 
 
@@ -36,18 +37,18 @@ class Controller {
 
         // Ask the renderer to create a mario drawable
         Async<Integer> marioID = v.createTexturedRectangle(-1.0f, 1.0f, 1.0f, -1.0f, 0, marioForwardTexture,
-                new Renderer.Vector3f(0, 0, 0), new Renderer.Vector3f(0, 0, 0), System.currentTimeMillis());
+                new Renderer.Vector3f(0, 0, 0), new Renderer.Vector3f(0, 0, 0), System.nanoTime());
         while (true) {
-            v.updatePosition(marioID, new Renderer.Vector3f(-0.5f, 0f, 0f), new Renderer.Vector3f(0.001f, 0f, 0f), System.currentTimeMillis());
+            v.updatePosition(marioID, new Renderer.Vector3f(-0.5f, 0f, 0f), new Renderer.Vector3f(0.02f, 0f, 0f), System.nanoTime());
             try {
-                Thread.sleep(1000);
+                Thread.sleep(50*Controller.tickDuration);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            v.updatePosition(marioID, new Renderer.Vector3f(0.5f, 0f, 0f), new Renderer.Vector3f(-0.001f, 0f, 0f), System.currentTimeMillis());
+            v.updatePosition(marioID, new Renderer.Vector3f(0.5f, 0f, 0f), new Renderer.Vector3f(-0.02f, 0f, 0f), System.nanoTime());
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(50*Controller.tickDuration);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
