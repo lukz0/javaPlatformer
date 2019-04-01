@@ -21,10 +21,6 @@ import static org.lwjgl.opengl.GL45.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-//import static org.lwjgl.opengl.GL11.*;
-//import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-//import static org.lwjgl.opengl.GL20C.glCreateProgram;
-
 public class Renderer implements Runnable {
     public boolean shouldRun = true;
 
@@ -558,11 +554,11 @@ public class Renderer implements Runnable {
             }
         }
     }
-    ArrayBlockingQueue<Texture> loadTexture(String path) {
+    Async<Texture> loadTexture(String path) {
         LoadTextureTask tsk = new LoadTextureTask(path);
         try {
             this.taskQueue.put(tsk);
-            return tsk.callbackQueue;
+            return new Async<>(tsk.callbackQueue);
         } catch (InterruptedException e) {
             e.printStackTrace();
             return null;
@@ -570,15 +566,15 @@ public class Renderer implements Runnable {
     }
 
     static class UnloadTextureTask implements Task {
-        private Texture texture;
-        UnloadTextureTask(Texture texture) {
+        private Async<Texture> texture;
+        UnloadTextureTask(Async<Texture> texture) {
             this.texture = texture;
         }
         public void doTask(Renderer r) {
-            this.texture.unload();
+            this.texture.get().unload();
         }
     }
-    void unloadTexture(Texture texture) {
+    void unloadTexture(Async<Texture> texture) {
         try {
             this.taskQueue.put(new UnloadTextureTask(texture));
         } catch (InterruptedException e) {
@@ -589,8 +585,8 @@ public class Renderer implements Runnable {
     static class CreateStaticTexturedRectangleTask implements Task {
         ArrayBlockingQueue<Integer> callbackQueue = new ArrayBlockingQueue<>(1);
         private float left, right, top, bottom, z_index;
-        private Texture texture;
-        CreateStaticTexturedRectangleTask(float left, float right, float top, float bottom, float z_index, Texture texture) {
+        private Async<Texture> texture;
+        CreateStaticTexturedRectangleTask(float left, float right, float top, float bottom, float z_index, Async<Texture> texture) {
             this.left = left;
             this.right = right;
             this.top = top;
@@ -608,7 +604,7 @@ public class Renderer implements Runnable {
                 id = unusedIndex;
                 r.usedDrawnElementIDs.set(id, true);
             }
-            r.drawnElements.put(id, new StaticTexturedRectangle(this.left, this.right, this.top, this.bottom, this.z_index, this.texture));
+            r.drawnElements.put(id, new StaticTexturedRectangle(this.left, this.right, this.top, this.bottom, this.z_index, this.texture.get()));
 
             try {
                 this.callbackQueue.put(id);
@@ -617,11 +613,11 @@ public class Renderer implements Runnable {
             }
         }
     }
-    ArrayBlockingQueue<Integer> createStaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Texture texture) {
+    Async<Integer> createStaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture) {
         CreateStaticTexturedRectangleTask tsk = new CreateStaticTexturedRectangleTask(left, right, top, bottom, z_index, texture);
         try {
             this.taskQueue.put(tsk);
-            return tsk.callbackQueue;
+            return new Async<>(tsk.callbackQueue);
         } catch (InterruptedException e) {
             e.printStackTrace();
             return null;
@@ -631,10 +627,10 @@ public class Renderer implements Runnable {
     static class CreateTexturedRectangleTask implements Task {
         ArrayBlockingQueue<Integer> callbackQueue = new ArrayBlockingQueue<>(1);
         private float left, right, top, bottom, z_index;
-        private Texture texture;
+        private Async<Texture> texture;
         private Vector3f translation, velocity;
         private long timestamp;
-        CreateTexturedRectangleTask(float left, float right, float top, float bottom, float z_index, Texture texture, Vector3f translation, Vector3f velocity, long currentTimeMillis) {
+        CreateTexturedRectangleTask(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long currentTimeMillis) {
             this.left = left;
             this.right = right;
             this.top = top;
@@ -656,7 +652,7 @@ public class Renderer implements Runnable {
                 id = unusedIndex;
                 r.usedDrawnElementIDs.set(id, true);
             }
-            r.drawnElements.put(id, new TexturedRectangle(this.left, this.right, this.top, this.bottom, this.z_index, this.texture, this.translation, this.velocity, this.timestamp));
+            r.drawnElements.put(id, new TexturedRectangle(this.left, this.right, this.top, this.bottom, this.z_index, this.texture.get(), this.translation, this.velocity, this.timestamp));
 
             try {
                 this.callbackQueue.put(id);
@@ -665,11 +661,11 @@ public class Renderer implements Runnable {
             }
         }
     }
-    ArrayBlockingQueue<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Texture texture, Vector3f translation, Vector3f velocity, long currentTimeMillis) {
+    Async<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long currentTimeMillis) {
         CreateTexturedRectangleTask tsk = new CreateTexturedRectangleTask(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeMillis);
         try {
             this.taskQueue.put(tsk);
-            return tsk.callbackQueue;
+            return new Async<>(tsk.callbackQueue);
         } catch (InterruptedException e) {
             e.printStackTrace();
             return null;
@@ -677,20 +673,20 @@ public class Renderer implements Runnable {
     }
 
     static class UpdatePositionTask implements Task {
-        private final int id;
+        private final Async<Integer> id;
         private final Vector3f translation, velocity;
         private final long timestamp;
-        UpdatePositionTask(int id, Vector3f translation, Vector3f velocity, long timestamp) {
+        UpdatePositionTask(Async<Integer> id, Vector3f translation, Vector3f velocity, long timestamp) {
             this.id = id;
             this.translation = translation;
             this.velocity = velocity;
             this.timestamp = timestamp;
         }
         public void doTask(Renderer r) {
-            ((PosUpdateable)r.drawnElements.get(id)).updatePosition(this.translation, this.velocity, this.timestamp);
+            ((PosUpdateable)r.drawnElements.get(id.get())).updatePosition(this.translation, this.velocity, this.timestamp);
         }
     }
-    void updatePosition(int id, Vector3f translation, Vector3f velocity, long timestamp) {
+    void updatePosition(Async<Integer> id, Vector3f translation, Vector3f velocity, long timestamp) {
         UpdatePositionTask tsk = new UpdatePositionTask(id, translation, velocity, timestamp);
         try {
             this.taskQueue.put(tsk);
@@ -701,25 +697,25 @@ public class Renderer implements Runnable {
 
     static class DeleteDrawableTask implements Task {
         ArrayBlockingQueue<Boolean> callbackQueue = new ArrayBlockingQueue<>(1);
-        private int id;
-        DeleteDrawableTask(int id) {
+        private Async<Integer> id;
+        DeleteDrawableTask(Async<Integer> id) {
             this.id = id;
         }
         public void doTask(Renderer r) {
-            r.usedDrawnElementIDs.set(this.id, false);
-            r.drawnElements.get(this.id).delete();
+            r.usedDrawnElementIDs.set(this.id.get(), false);
+            r.drawnElements.get(this.id.get()).delete();
             try {
-                callbackQueue.put(r.drawnElements.remove(this.id) != null);
+                callbackQueue.put(r.drawnElements.remove(this.id.get()) != null);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
-    ArrayBlockingQueue<Boolean> deleteDrawable(int id) {
+    Async<Boolean> deleteDrawable(Async<Integer> id) {
         DeleteDrawableTask tsk = new DeleteDrawableTask(id);
         try {
             this.taskQueue.put(tsk);
-            return tsk.callbackQueue;
+            return new Async<>(tsk.callbackQueue);
         } catch (InterruptedException e) {
             e.printStackTrace();
             return null;

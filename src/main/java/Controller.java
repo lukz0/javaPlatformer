@@ -16,87 +16,42 @@ class Controller {
         // Creates a window and starts a openGL renderer on a separate thread
         v.startRenderer(new KeyboardHandler(), new WindowCloseHandler());
 
-        // Ask renderer to load fireFlower texture
-        ArrayBlockingQueue<Texture> fireFlowerTexturePromise = v.loadTexture("resources/images/fireFlower.png");
-        ArrayBlockingQueue<Texture> marioForwardTexturePromise = v.loadTexture("resources/images/marioForward.png");
-
-        // Block until the renderer returns the fireFlower texture
-        Texture fireFlowerTexture = null, marioForwardTexture = null;
-        try {
-            fireFlowerTexture = fireFlowerTexturePromise.take();
-            marioForwardTexture = marioForwardTexturePromise.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // Ask the renderer to create 4 StaticTexturedRectangles
-        ArrayBlockingQueue<Integer> drawableIDPromise = v.createStaticTexturedRectangle(-1.0f, 0.0f, 1.0f, 0.0f, 0, fireFlowerTexture);
-        ArrayBlockingQueue<Integer> drawableIDPromise2 = v.createStaticTexturedRectangle(0.0f, 1.0f, 1.0f, 0.0f, 0, marioForwardTexture);
-        ArrayBlockingQueue<Integer> drawableIDPromise3 = v.createStaticTexturedRectangle(-1.0f, 0.0f, 0.0f, -1.0f, 0, marioForwardTexture);
-        ArrayBlockingQueue<Integer> drawableIDPromise4 = v.createStaticTexturedRectangle(0.0f, 1.0f, 0.0f, -1.0f, 0, fireFlowerTexture);
-        int drawableID = 0, drawableID2 = 0, drawableID3 = 0, drawableID4 = 0;
-
-        ArrayBlockingQueue<Integer> marioIDPromise = v.createTexturedRectangle(-1.0f, 1.0f, 1.0f, -1.0f, 0.5f, marioForwardTexture,
-                new Renderer.Vector3f(-0.5f, 0, 0), new Renderer.Vector3f(0.0001f, 0, 0), System.currentTimeMillis());
-
-        try {
-            System.out.println("[CONTROLLER] Deleting the drawables in 3 seconds");
-            Thread.sleep(3000);
-            System.out.println("[CONTROLLER] Deleting the drawables...");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // Block until the renderer returns IDs for the 4 textured rectangles
-        try {
-            drawableID = drawableIDPromise.take();
-            drawableID2 = drawableIDPromise2.take();
-            drawableID3 = drawableIDPromise3.take();
-            drawableID4 = drawableIDPromise4.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // Ask the renderer to delete the rectangles
-        ArrayList<ArrayBlockingQueue<Boolean>> results = new ArrayList<>();
-        results.add(v.deleteDrawable(drawableID));
-        results.add(v.deleteDrawable(drawableID2));
-        results.add(v.deleteDrawable(drawableID3));
-        results.add(v.deleteDrawable(drawableID4));
-
-        // Ask the renderer to remove the fireFlower texture from GPUs memory
-        // Don't do this unless you already asked the renderer to delete all the drawables using it
-        // Setting the objects to null can help not accidently using the object for new drawables
-        v.unloadTexture(fireFlowerTexture);
-        //v.unloadTexture(marioForwardTexture);
-        fireFlowerTexture = null;
-        //marioForwardTexture = null;
-
-        int marioID;
-        try {
-            marioID = marioIDPromise.take();
-            v.updatePosition(marioID, new Renderer.Vector3f(0.5f, 0, 0), new Renderer.Vector3f(-0.0001f, 0, 0), System.currentTimeMillis());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // Block until the renderer returns booleans saying if the deletion was a success
-        for (int i = 1; i <= results.size(); i++) {
-            try {
-                System.out.println("[CONTROLLER] Deletion of drawable #" + i + " returned: " + results.get(i - 1).take());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
+        //TODO: create debugger
+        Thread cheater = new Thread(new Cheater(this));
+        cheater.start();
 
         //TODO: make gameloop contain more logic
         Gameloop gameloop = new Gameloop();
         gameloop.start();
 
-        //TODO: create debugger
-        Thread cheater = new Thread(new Cheater(this));
-        cheater.start();
+        // Ask renderer to load fireFlower texture
+        Async<Texture> fireFlowerTexture = v.loadTexture("resources/images/fireFlower.png");
+
+        // Ask the renderer to create 2 fireFlowers drawables
+        Async<Integer> fireFlowerID = v.createStaticTexturedRectangle(-1.0f, 0.0f, 0.0f, -1.0f, 0.1f, fireFlowerTexture);
+        Async<Integer> fireFlowerID2 = v.createStaticTexturedRectangle(0.0f, 1.0f, 0.0f, -1.0f, 0.1f, fireFlowerTexture);
+
+        // Ask the renderer to load marios texture
+        Async<Texture> marioForwardTexture = v.loadTexture("resources/images/marioForward.png");
+
+        // Ask the renderer to create a mario drawable
+        Async<Integer> marioID = v.createTexturedRectangle(-1.0f, 1.0f, 1.0f, -1.0f, 0, marioForwardTexture,
+                new Renderer.Vector3f(0, 0, 0), new Renderer.Vector3f(0, 0, 0), System.currentTimeMillis());
+        while (true) {
+            v.updatePosition(marioID, new Renderer.Vector3f(-0.5f, 0f, 0f), new Renderer.Vector3f(0.001f, 0f, 0f), System.currentTimeMillis());
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            v.updatePosition(marioID, new Renderer.Vector3f(0.5f, 0f, 0f), new Renderer.Vector3f(-0.001f, 0f, 0f), System.currentTimeMillis());
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public class KeyboardHandler extends GLFWKeyCallback {

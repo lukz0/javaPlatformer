@@ -28,18 +28,14 @@ class View {
         this.rend.setBackgroundColor(r, g, b);
     }
 
-    /**
-     * Creates a texture object and loads the texture itself into GPUs memory
-     * Use unloadTexture on the returned Texture to remove it from GPUs memory
-     */
-    ArrayBlockingQueue<Texture> loadTexture(String path) {
+    /** Creates a texture object and loads the texture itself into GPUs memory
+     * Use unloadTexture on the returned Texture to remove it from GPUs memory */
+    Async<Texture> loadTexture(String path) {
         return this.rend.loadTexture(path);
     }
 
-    /**
-     * Removes a texture from GPUs memory, call this if the texture is no longer in use
-     */
-    void unloadTexture(Texture texture) {
+    /** Removes a texture from GPUs memory, call this if the texture is no longer in use */
+    void unloadTexture(Async<Texture> texture) {
         this.rend.unloadTexture(texture);
     }
 
@@ -49,22 +45,20 @@ class View {
      * The z_index has to be between 1.0f and -1.0f to be visible, smaller z_index means in front of
      * Can be deleted by calling deleteDrawable on the drawableID
      */
-    ArrayBlockingQueue<Integer> createStaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Texture texture) {
+    Async<Integer> createStaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture) {
         return this.rend.createStaticTexturedRectangle(left, right, top, bottom, z_index, texture);
     }
 
-    ArrayBlockingQueue<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Texture texture, Renderer.Vector3f translation, Renderer.Vector3f velocity, long currentTimeMillis) {
+    Async<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Renderer.Vector3f translation, Renderer.Vector3f velocity, long currentTimeMillis) {
         return this.rend.createTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeMillis);
     }
 
-    void updatePosition(int id, Renderer.Vector3f translation, Renderer.Vector3f velocity, long timestamp) {
+    void updatePosition(Async<Integer> id, Renderer.Vector3f translation, Renderer.Vector3f velocity, long timestamp) {
         this.rend.updatePosition(id, translation, velocity, timestamp);
     }
 
-    /**
-     * Deletes an drawn object
-     */
-    ArrayBlockingQueue<Boolean> deleteDrawable(int id) {
+    /** Deletes an drawn object */
+    Async<Boolean> deleteDrawable(Async<Integer> id) {
         return this.rend.deleteDrawable(id);
     }
 }
