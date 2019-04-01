@@ -1,5 +1,5 @@
 class Mario extends Entity {
-    Mario(Texture texture) {
+    Mario(Async<Texture> texture) {
         this.posX = 0; // TODO: find initial X and Y value for level
         this.vX = 0;
         this.vY = -10;

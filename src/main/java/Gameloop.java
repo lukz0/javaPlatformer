@@ -21,6 +21,10 @@ public class Gameloop implements Runnable {
     private ArrayBlockingQueue<KeyEvent> keyEventQueue = new ArrayBlockingQueue<>(10000);
     private ArrayBlockingQueue<Cheater.Command> commandQueue = new ArrayBlockingQueue<>(1000);
 
+    public boolean holdingLeft = false;
+    public boolean holdingRight = false;
+    public float xTranslation = 0;
+
     public void start() {
         if (thread == null) {
             thread = new Thread(this, "gameloop thread");
@@ -29,6 +33,14 @@ public class Gameloop implements Runnable {
     }
 
     public void run() {
+        Async<Texture> marioForwardTexture = view.loadTexture("resources/images/marioForward.png");
+        Async<Integer> marioID = view.createTexturedRectangle(-1.0f, 1.0f, 1.0f, -1.0f, 0, marioForwardTexture,
+                new Renderer.Vector3f(0, 0, 0), new Renderer.Vector3f(0, 0, 0), System.nanoTime());
+
+        Async<Texture> fireFlowerTexture = view.loadTexture("resources/images/fireFlower.png");
+        Async<Integer> fireFlower1ID = view.createStaticTexturedRectangle(-1.0f, 0.0f, 0.0f, -1.0f, 0.1f, fireFlowerTexture);
+        Async<Integer> fireFlower2ID = view.createStaticTexturedRectangle(0.0f, 1.0f, 0.0f, -1.0f, 0.1f, fireFlowerTexture);
+
         while (true) {
             long tickStart = System.nanoTime();
 
@@ -55,6 +67,16 @@ public class Gameloop implements Runnable {
                     }
                 } while (!this.commandQueue.isEmpty());
             }
+
+            Renderer.Vector3f velocity = new Renderer.Vector3f(0, 0, 0);
+            if (this.holdingRight && !this.holdingLeft) {
+                xTranslation += 1/(float)Gameloop.TICKDURATION;
+                velocity.values[0] = 1/(float)Gameloop.TICKDURATION;
+            } else if (!this.holdingRight && this.holdingLeft) {
+                xTranslation -= 1/(float)Gameloop.TICKDURATION;
+                velocity.values[0] = -1/(float)Gameloop.TICKDURATION;
+            }
+            view.updatePosition(marioID, new Renderer.Vector3f(xTranslation, 0, 0), velocity, tickStart);
 
             long tickEnd = System.nanoTime();
             try {
@@ -92,6 +114,14 @@ public class Gameloop implements Runnable {
             view.setRendererBackgroundColor(0, 1, 0);
         } else if (key == GLFW_KEY_B && action == GLFW_PRESS) {
             view.setRendererBackgroundColor(0, 0, 1);
+        } else if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
+            this.holdingLeft = true;
+        } else if (key == GLFW_KEY_LEFT && action == GLFW_RELEASE) {
+            this.holdingLeft = false;
+        } else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
+            this.holdingRight = true;
+        } else if (key == GLFW_KEY_RIGHT && action == GLFW_RELEASE) {
+            this.holdingRight = false;
         }
     }
 }
