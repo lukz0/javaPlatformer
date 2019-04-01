@@ -2,6 +2,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Gameloop implements Runnable {
+    static final long TICKDURATION = 20;
+
     private Thread thread;
 
 
@@ -21,7 +23,7 @@ public class Gameloop implements Runnable {
 
             long tickEnd = System.nanoTime();
             try {
-                Thread.sleep(Controller.tickDuration-((tickEnd-tickStart)/1000000));
+                Thread.sleep(TICKDURATION-((tickEnd-tickStart)/1000000));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

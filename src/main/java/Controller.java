@@ -7,7 +7,6 @@ import java.util.concurrent.ArrayBlockingQueue;
 import static org.lwjgl.glfw.GLFW.*;
 
 class Controller {
-    static final long tickDuration = 20;
     private View v;
 
 
@@ -41,14 +40,14 @@ class Controller {
         while (true) {
             v.updatePosition(marioID, new Renderer.Vector3f(-0.5f, 0f, 0f), new Renderer.Vector3f(0.02f, 0f, 0f), System.nanoTime());
             try {
-                Thread.sleep(50*Controller.tickDuration);
+                Thread.sleep(50*Gameloop.TICKDURATION);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             v.updatePosition(marioID, new Renderer.Vector3f(0.5f, 0f, 0f), new Renderer.Vector3f(-0.02f, 0f, 0f), System.nanoTime());
 
             try {
-                Thread.sleep(50*Controller.tickDuration);
+                Thread.sleep(50*Gameloop.TICKDURATION);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

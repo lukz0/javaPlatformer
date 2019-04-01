@@ -495,7 +495,7 @@ public class Renderer implements Runnable {
             glUniform1i(this.textureSamplerLocation, 0);
             this.texture.bind();
 
-            long delta = ((currentTimeStamp - this.updatedTimestamp)/1000000)/Controller.tickDuration;
+            long delta = ((currentTimeStamp - this.updatedTimestamp)/1000000)/Gameloop.TICKDURATION;
             glUniform3f(this.translationLocation,
                     this.translation.values[0]+this.velocity.values[0]*delta,
                     this.translation.values[1]+this.velocity.values[1]*delta,
