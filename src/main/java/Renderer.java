@@ -184,14 +184,6 @@ public class Renderer implements Runnable {
         }
     }
 
-    static class Vector3f {
-        float[] values;
-
-        Vector3f(float x, float y, float z) {
-            this.values = new float[]{x, y, z};
-        }
-    }
-
     static class Matrix4f {
         float[] values;
 
@@ -496,10 +488,7 @@ public class Renderer implements Runnable {
             this.texture.bind();
 
             long delta = ((currentTimeStamp - this.updatedTimestamp)/1000000)/Gameloop.TICKDURATION;
-            glUniform3f(this.translationLocation,
-                    this.translation.values[0]+this.velocity.values[0]*delta,
-                    this.translation.values[1]+this.velocity.values[1]*delta,
-                    this.translation.values[2]+this.velocity.values[2]*delta);
+            glUniform3fv(this.translationLocation, this.translation.add(this.velocity.multiply(delta)).values);
 
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }

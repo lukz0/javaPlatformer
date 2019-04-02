@@ -49,11 +49,11 @@ class View {
         return this.rend.createStaticTexturedRectangle(left, right, top, bottom, z_index, texture);
     }
 
-    Async<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Renderer.Vector3f translation, Renderer.Vector3f velocity, long currentTimeMillis) {
+    Async<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long currentTimeMillis) {
         return this.rend.createTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeMillis);
     }
 
-    void updatePosition(Async<Integer> id, Renderer.Vector3f translation, Renderer.Vector3f velocity, long timestamp) {
+    void updatePosition(Async<Integer> id, Vector3f translation, Vector3f velocity, long timestamp) {
         this.rend.updatePosition(id, translation, velocity, timestamp);
     }
 

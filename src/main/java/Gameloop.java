@@ -35,7 +35,7 @@ public class Gameloop implements Runnable {
     public void run() {
         Async<Texture> marioForwardTexture = view.loadTexture("resources/images/marioForward.png");
         Async<Integer> marioID = view.createTexturedRectangle(-1.0f, 1.0f, 1.0f, -1.0f, 0, marioForwardTexture,
-                new Renderer.Vector3f(0, 0, 0), new Renderer.Vector3f(0, 0, 0), System.nanoTime());
+                new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), System.nanoTime());
 
         Async<Texture> fireFlowerTexture = view.loadTexture("resources/images/fireFlower.png");
         Async<Integer> fireFlower1ID = view.createStaticTexturedRectangle(-1.0f, 0.0f, 0.0f, -1.0f, 0.1f, fireFlowerTexture);
@@ -68,7 +68,7 @@ public class Gameloop implements Runnable {
                 } while (!this.commandQueue.isEmpty());
             }
 
-            Renderer.Vector3f velocity = new Renderer.Vector3f(0, 0, 0);
+            Vector3f velocity = new Vector3f(0, 0, 0);
             if (this.holdingRight && !this.holdingLeft) {
                 xTranslation += 1/(float)Gameloop.TICKDURATION;
                 velocity.values[0] = 1/(float)Gameloop.TICKDURATION;
@@ -76,7 +76,7 @@ public class Gameloop implements Runnable {
                 xTranslation -= 1/(float)Gameloop.TICKDURATION;
                 velocity.values[0] = -1/(float)Gameloop.TICKDURATION;
             }
-            view.updatePosition(marioID, new Renderer.Vector3f(xTranslation, 0, 0), velocity, tickStart);
+            view.updatePosition(marioID, new Vector3f(xTranslation, 0, 0), velocity, tickStart);
 
             long tickEnd = System.nanoTime();
             try {
