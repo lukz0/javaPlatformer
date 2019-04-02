@@ -23,6 +23,10 @@ class Controller {
         //TODO: create debugger
         Thread cheater = new Thread(new Cheater(this.gameloop));
         cheater.start();
+
+        Async<Texture> background1 = v.loadTexture("resources/images/backgrounds/plains.jpg");
+        v.createStaticTexturedRectangle(0f, 16f, 9f, 0f, 0.5f, background1);
+        System.out.println(background1.get());
     }
 
     public class KeyboardHandler extends GLFWKeyCallback {

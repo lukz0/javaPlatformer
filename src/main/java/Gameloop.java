@@ -34,7 +34,7 @@ public class Gameloop implements Runnable {
 
     public void run() {
         Async<Texture> marioForwardTexture = view.loadTexture("resources/images/marioForward.png");
-        Async<Integer> marioID = view.createTexturedRectangle(0f, 1.0f, 1.0f, 0f, 0, marioForwardTexture,
+        Async<Integer> marioID = view.createTexturedRectangle(0f, 1.0f, 2.0f, 0f, 0, marioForwardTexture,
                 new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), System.nanoTime());
 
         Async<Texture> fireFlowerTexture = view.loadTexture("resources/images/fireFlower.png");
