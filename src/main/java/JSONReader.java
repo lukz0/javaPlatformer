@@ -21,6 +21,7 @@ public class JSONReader {
 
             JSONArray parsed = (JSONArray) parser.parse(reader);
             //parsed.forEach(obj -> result.add(obj));
+            //parsed.forEach(result::add);
 
             //i think this does the same as the commented out version, if it doesn't work inverse it, else just use the forEach over.
             Collections.addAll(result,parsed);

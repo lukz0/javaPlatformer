@@ -27,14 +27,19 @@ public class Cheater implements Runnable {
 
     private void doCommand(String command) {
         command = command.toLowerCase();
+
         if (command.startsWith("stop")) {
             gameloop.runCommand(new StopCommand(0));
             //controller.stopGame(0);
-        } else if (command.startsWith("set level")) {
+        }
+
+        else if (command.startsWith("set level")) {
             int level = Integer.parseInt(command.substring(10));
             //TODO: create a setlevel function in controller
             System.out.println("[CHEATER] started level " + level);
-        } else if (command.startsWith("set mario")) {
+        }
+
+        else if (command.startsWith("set mario")) {
             String state = command.substring(10);
             //TODO: have ways to set mario invincible etc
             System.out.println("[CHEATER] set mario state to " + state);
