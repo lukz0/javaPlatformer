@@ -129,7 +129,7 @@ public class Renderer implements Runnable {
         // Make the OpenGL context current
         glfwMakeContextCurrent(window);
         // Enable v-sync
-        glfwSwapInterval(1);
+        glfwSwapInterval(Main.VSYNC);
 
         // Make the window visible
         glfwShowWindow(window);
@@ -515,7 +515,7 @@ public class Renderer implements Runnable {
         private Async<Texture> texture;
         private Vector3f translation, velocity;
         private long timestamp;
-        CreateTexturedRectangleTask(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long currentTimeMillis) {
+        CreateTexturedRectangleTask(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long timestamp) {
             this.left = left;
             this.right = right;
             this.top = top;
@@ -524,7 +524,7 @@ public class Renderer implements Runnable {
             this.texture = texture;
             this.translation = translation;
             this.velocity = velocity;
-            this.timestamp = currentTimeMillis;
+            this.timestamp = timestamp;
         }
 
         public void doTask(Renderer r) {
@@ -546,8 +546,8 @@ public class Renderer implements Runnable {
             }
         }
     }
-    Async<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long currentTimeMillis) {
-        CreateTexturedRectangleTask tsk = new CreateTexturedRectangleTask(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeMillis);
+    Async<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long timestamp) {
+        CreateTexturedRectangleTask tsk = new CreateTexturedRectangleTask(left, right, top, bottom, z_index, texture, translation, velocity, timestamp);
         try {
             this.taskQueue.put(tsk);
             return new Async<>(tsk.callbackQueue);
