@@ -49,10 +49,21 @@ class View {
         return this.rend.createStaticTexturedRectangle(left, right, top, bottom, z_index, texture);
     }
 
-    Async<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long currentTimeMillis) {
-        return this.rend.createTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeMillis);
+    /**
+     * Creates a moving drawable, position can be changed by calling updatePosition
+     * @param translation The position relative to the one specified by left, right, top, bottom and z_index parameters
+     * @param velocity The speed the object moves at /tick
+     * @param currentTimeNanos The time the current tick began at in nanoseconds
+     * @return A drawableID
+     */
+    Async<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long currentTimeNanos) {
+        return this.rend.createTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeNanos);
     }
 
+    /**
+     * Used for updating position of moving drawables
+     * @param timestamp System.nanoTime() at the start of the tick
+     */
     void updatePosition(Async<Integer> id, Vector3f translation, Vector3f velocity, long timestamp) {
         this.rend.updatePosition(id, translation, velocity, timestamp);
     }
