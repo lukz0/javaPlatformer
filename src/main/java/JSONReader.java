@@ -26,11 +26,7 @@ public class JSONReader {
             //i think this does the same as the commented out version, if it doesn't work inverse it, else just use the forEach over.
             Collections.addAll(result,parsed);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
         return result;
