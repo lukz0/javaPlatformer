@@ -34,12 +34,12 @@ public class Gameloop implements Runnable {
 
     public void run() {
         Async<Texture> marioForwardTexture = view.loadTexture("resources/images/marioForward.png");
-        Async<Integer> marioID = view.createTexturedRectangle(-1.0f, 1.0f, 1.0f, -1.0f, 0, marioForwardTexture,
+        Async<Integer> marioID = view.createTexturedRectangle(0f, 1.0f, 1.0f, 0f, 0, marioForwardTexture,
                 new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), System.nanoTime());
 
         Async<Texture> fireFlowerTexture = view.loadTexture("resources/images/fireFlower.png");
-        Async<Integer> fireFlower1ID = view.createStaticTexturedRectangle(-1.0f, 0.0f, 0.0f, -1.0f, 0.1f, fireFlowerTexture);
-        Async<Integer> fireFlower2ID = view.createStaticTexturedRectangle(0.0f, 1.0f, 0.0f, -1.0f, 0.1f, fireFlowerTexture);
+        Async<Integer> fireFlower1ID = view.createStaticTexturedRectangle(0f, 1.0f, 1.0f, 0f, 0.1f, fireFlowerTexture);
+        Async<Integer> fireFlower2ID = view.createStaticTexturedRectangle(15.0f, 16.0f, 1.0f, 0f, 0.1f, fireFlowerTexture);
 
         while (true) {
             long tickStart = System.nanoTime();

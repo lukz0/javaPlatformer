@@ -12,4 +12,8 @@ class Vector3f {
     Vector3f multiply(float val) {
         return new Vector3f(this.values[0]*val, this.values[1]*val, this.values[2]*val);
     }
+
+    float[] getOpenGLvector() {
+        return new float[]{(this.values[0]*2)/19, (this.values[1]*2)/9, this.values[2]};
+    }
 }

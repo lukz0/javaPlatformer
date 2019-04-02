@@ -97,7 +97,7 @@ public class Renderer implements Runnable {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
         // Create the window
-        window = glfwCreateWindow(800, 800, "Project Mario!", NULL, NULL);
+        window = glfwCreateWindow(1280, 720, "Project Mario!", NULL, NULL);
         if (window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
@@ -383,7 +383,7 @@ public class Renderer implements Runnable {
             this.texture.bind();
 
             long delta = ((currentTimeStamp - this.updatedTimestamp)/1000000)/Gameloop.TICKDURATION;
-            glUniform3fv(this.translationLocation, this.translation.add(this.velocity.multiply(delta)).values);
+            glUniform3fv(this.translationLocation, this.translation.add(this.velocity.multiply(delta)).getOpenGLvector());
 
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
@@ -499,7 +499,13 @@ public class Renderer implements Runnable {
         }
     }
     Async<Integer> createStaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture) {
-        CreateStaticTexturedRectangleTask tsk = new CreateStaticTexturedRectangleTask(left, right, top, bottom, z_index, texture);
+        CreateStaticTexturedRectangleTask tsk = new CreateStaticTexturedRectangleTask(
+                convertToOpenGLX(left),
+                convertToOpenGLX(right),
+                convertToOpenGLY(top),
+                convertToOpenGLY(bottom),
+                z_index, texture
+        );
         try {
             this.taskQueue.put(tsk);
             return new Async<>(tsk.callbackQueue);
@@ -547,7 +553,11 @@ public class Renderer implements Runnable {
         }
     }
     Async<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long timestamp) {
-        CreateTexturedRectangleTask tsk = new CreateTexturedRectangleTask(left, right, top, bottom, z_index, texture, translation, velocity, timestamp);
+        CreateTexturedRectangleTask tsk = new CreateTexturedRectangleTask(
+                convertToOpenGLX(left),
+                convertToOpenGLX(right),
+                convertToOpenGLY(top),
+                convertToOpenGLY(bottom), z_index, texture, translation, velocity, timestamp);
         try {
             this.taskQueue.put(tsk);
             return new Async<>(tsk.callbackQueue);
@@ -605,5 +615,12 @@ public class Renderer implements Runnable {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private float convertToOpenGLX(float x) {
+        return ((x*2f)/16f)-1f;
+    }
+    private float convertToOpenGLY(float y) {
+        return ((y*2f)/9f)-1f;
     }
 }
