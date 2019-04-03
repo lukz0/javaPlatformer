@@ -145,6 +145,8 @@ public class Renderer implements Runnable {
         String openGLv = glGetString(GL_VERSION);
         System.out.println("[RENDERER] Using openGL version: ".concat((openGLv == null) ? ("unknown") : (openGLv)));
 
+        this.shaders = new Shaders();
+
         // Enable depth testing
         glEnable(GL_DEPTH_TEST);
 
@@ -263,14 +265,56 @@ public class Renderer implements Runnable {
         }
     }
 
-    static class StaticTexturedRectangle implements Drawable {
+    static class Shaders {
+        int active = -1;
+
+        int staticTexturedRectangle;
+        int staticTexturedRectangleTexSamplerLoc;
+        int staticTexturedRectangleTexSamplerVal = 0;
+
+        int texturedRectangle;
+        int texturedRectangleTexSamplerLoc;
+        int texturedRectangleTexSamplerVal = 0;
+        int texturedRectangleTranslationLoc;
+        Shaders() {
+            this.staticTexturedRectangle = ShaderUtils.load("resources/shaders/staticTexRect/shader.vert", "resources/shaders/staticTexRect/shader.frag");
+            this.staticTexturedRectangleTexSamplerLoc = glGetUniformLocation(this.staticTexturedRectangle, "textureSampler");
+
+            this.texturedRectangle = ShaderUtils.load("resources/shaders/TexRect/shader.vert", "resources/shaders/TexRect/shader.frag");
+            this.texturedRectangleTexSamplerLoc = glGetUniformLocation(this.texturedRectangle, "textureSampler");
+            this.texturedRectangleTranslationLoc = glGetUniformLocation(this.texturedRectangle, "translation");
+        }
+
+        void activateStaticTexturedRectangle(int texSamplerVal) {
+            if (this.active != this.staticTexturedRectangle) {
+                glUseProgram(this.staticTexturedRectangle);
+                this.active = this.staticTexturedRectangle;
+            }
+            if (texSamplerVal != this.staticTexturedRectangleTexSamplerVal) {
+                glUniform1i(this.staticTexturedRectangleTexSamplerLoc, texSamplerVal);
+                this.staticTexturedRectangleTexSamplerVal = texSamplerVal;
+            }
+        }
+
+        void activateTexturedRectangle(int texSamplerVal, float[] translationVal) {
+            if (this.active != this.texturedRectangle) {
+                glUseProgram(this.texturedRectangle);
+                this.active = this.texturedRectangle;
+            }
+            if (texSamplerVal != this.texturedRectangleTexSamplerVal) {
+                glUniform1i(this.texturedRectangleTexSamplerLoc, texSamplerVal);
+                this.texturedRectangleTexSamplerVal = texSamplerVal;
+            }
+            glUniform3fv(this.texturedRectangleTranslationLoc, translationVal);
+        }
+    }
+    Shaders shaders;
+
+    class StaticTexturedRectangle implements Drawable {
         // 0 - array_buffer, 1 - index_buffer
         private int[] buffers = new int[] {0, 0};
-        private int program;
         private int VAO;
         private Texture texture;
-
-        private int textureSamplerLocation;
 
         StaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Texture texture) {
             this.texture = texture;
@@ -302,16 +346,11 @@ public class Renderer implements Runnable {
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this.buffers[1]);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
-
-            this.program = ShaderUtils.load("resources/shaders/staticTexRect/shader.vert", "resources/shaders/staticTexRect/shader.frag");
-            glUseProgram(this.program);
-            this.textureSamplerLocation = glGetUniformLocation(this.program, "textureSampler");
         }
 
         public void draw(long currentTimeStamp) {
             glBindVertexArray(this.VAO);
-            glUseProgram(this.program);
-            glUniform1i(this.textureSamplerLocation, 0);
+            shaders.activateStaticTexturedRectangle(0);
             this.texture.bind();
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
@@ -319,20 +358,15 @@ public class Renderer implements Runnable {
         public void delete() {
             glBindVertexArray(this.VAO);
             glDeleteBuffers(this.buffers);
-            glDeleteProgram(this.program);
             glDeleteVertexArrays(this.VAO);
         }
     }
 
-    static class TexturedRectangle implements Drawable, PosUpdateable {
+    class TexturedRectangle implements Drawable, PosUpdateable {
         // 0 - array_buffer, 1 - index_buffer
         private int[] buffers = new int[] {0, 0};
-        private int program;
         private int VAO;
         private Texture texture;
-
-        private int textureSamplerLocation;
-        private int translationLocation;
 
         private long updatedTimestamp;
         Vector3f translation;
@@ -368,29 +402,20 @@ public class Renderer implements Runnable {
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this.buffers[1]);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
-
-            this.program = ShaderUtils.load("resources/shaders/texRect/shader.vert", "resources/shaders/texRect/shader.frag");
-            glUseProgram(this.program);
-            this.textureSamplerLocation = glGetUniformLocation(this.program, "textureSampler");
-            this.translationLocation = glGetUniformLocation(this.program, "translation");
         }
 
         public void draw(long currentTimeStamp) {
             glBindVertexArray(this.VAO);
-            glUseProgram(this.program);
-
-            glUniform1i(this.textureSamplerLocation, 0);
-            this.texture.bind();
 
             long delta = ((currentTimeStamp - this.updatedTimestamp)/1000000)/Gameloop.TICKDURATION;
-            glUniform3fv(this.translationLocation, this.translation.add(this.velocity.multiply(delta)).getOpenGLvector());
+            shaders.activateTexturedRectangle(0, this.translation.add(this.velocity.multiply(delta)).getOpenGLvector());
+            this.texture.bind();
 
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
         public void delete() {
             glBindVertexArray(this.VAO);
             glDeleteBuffers(this.buffers);
-            glDeleteProgram(this.program);
             glDeleteVertexArrays(this.VAO);
         }
 
@@ -467,7 +492,7 @@ public class Renderer implements Runnable {
         }
     }
 
-    static class CreateStaticTexturedRectangleTask implements Task {
+    class CreateStaticTexturedRectangleTask implements Task {
         ArrayBlockingQueue<Integer> callbackQueue = new ArrayBlockingQueue<>(1);
         private float left, right, top, bottom, z_index;
         private Async<Texture> texture;
@@ -515,7 +540,7 @@ public class Renderer implements Runnable {
         }
     }
 
-    static class CreateTexturedRectangleTask implements Task {
+    class CreateTexturedRectangleTask implements Task {
         ArrayBlockingQueue<Integer> callbackQueue = new ArrayBlockingQueue<>(1);
         private float left, right, top, bottom, z_index;
         private Async<Texture> texture;
