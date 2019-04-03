@@ -42,7 +42,7 @@ public class Renderer implements Runnable {
         void draw(long currentTimeStamp);
         void delete();
     }
-    interface PosUpdateable {
+    interface PosUpdateable extends Drawable {
         void updatePosition(Vector3f translation, Vector3f velocity, long currentTimeMillis);
     }
     public HashMap<Integer, Drawable> drawnElements = new HashMap<>();
@@ -97,7 +97,7 @@ public class Renderer implements Runnable {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
         // Create the window
-        window = glfwCreateWindow(1280, 720, "Project Mario!", NULL, NULL);
+        window = glfwCreateWindow(1280, 720, "Project Mario!", (Main.FULLSCREEN) ? glfwGetPrimaryMonitor() : NULL, NULL);
         if (window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
@@ -362,7 +362,7 @@ public class Renderer implements Runnable {
         }
     }
 
-    class TexturedRectangle implements Drawable, PosUpdateable {
+    class TexturedRectangle implements PosUpdateable {
         // 0 - array_buffer, 1 - index_buffer
         private int[] buffers = new int[] {0, 0};
         private int VAO;
@@ -407,7 +407,7 @@ public class Renderer implements Runnable {
         public void draw(long currentTimeStamp) {
             glBindVertexArray(this.VAO);
 
-            long delta = ((currentTimeStamp - this.updatedTimestamp)/1000000)/Gameloop.TICKDURATION;
+            long delta = (currentTimeStamp - this.updatedTimestamp)/(1000000*Gameloop.TICKDURATION);
             shaders.activateTexturedRectangle(0, this.translation.add(this.velocity.multiply(delta)).getOpenGLvector());
             this.texture.bind();
 
