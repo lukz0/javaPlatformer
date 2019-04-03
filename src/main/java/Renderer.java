@@ -492,11 +492,11 @@ public class Renderer implements Runnable {
         }
     }
 
-    class CreateStaticTexturedRectangleTask implements Task {
-        ArrayBlockingQueue<Integer> callbackQueue = new ArrayBlockingQueue<>(1);
+    private class GetNewStaticTexturedRectangleTask implements Task {
+        ArrayBlockingQueue<Drawable> callbackQueue = new ArrayBlockingQueue<>(1);
         private float left, right, top, bottom, z_index;
         private Async<Texture> texture;
-        CreateStaticTexturedRectangleTask(float left, float right, float top, float bottom, float z_index, Async<Texture> texture) {
+        GetNewStaticTexturedRectangleTask(float left, float right, float top, float bottom, float z_index, Async<Texture> texture) {
             this.left = left;
             this.right = right;
             this.top = top;
@@ -505,32 +505,19 @@ public class Renderer implements Runnable {
             this.texture = texture;
         }
         public void doTask(Renderer r) {
-            int unusedIndex = r.usedDrawnElementIDs.indexOf(false);
-            int id;
-            if (unusedIndex == -1) {
-                id = r.usedDrawnElementIDs.size();
-                r.usedDrawnElementIDs.add(true);
-            } else {
-                id = unusedIndex;
-                r.usedDrawnElementIDs.set(id, true);
-            }
-            r.drawnElements.put(id, new StaticTexturedRectangle(this.left, this.right, this.top, this.bottom, this.z_index, this.texture.get()));
-
             try {
-                this.callbackQueue.put(id);
+                this.callbackQueue.put(new StaticTexturedRectangle(this.left, this.right, this.top, this.bottom, this.z_index, this.texture.get()));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
-    Async<Integer> createStaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture) {
-        CreateStaticTexturedRectangleTask tsk = new CreateStaticTexturedRectangleTask(
+    Async<Drawable> getNewStaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture) {
+        GetNewStaticTexturedRectangleTask tsk = new GetNewStaticTexturedRectangleTask(
                 convertToOpenGLX(left),
                 convertToOpenGLX(right),
                 convertToOpenGLY(top),
-                convertToOpenGLY(bottom),
-                z_index, texture
-        );
+                convertToOpenGLY(bottom), z_index, texture);
         try {
             this.taskQueue.put(tsk);
             return new Async<>(tsk.callbackQueue);
@@ -540,13 +527,13 @@ public class Renderer implements Runnable {
         }
     }
 
-    class CreateTexturedRectangleTask implements Task {
-        ArrayBlockingQueue<Integer> callbackQueue = new ArrayBlockingQueue<>(1);
-        private float left, right, top, bottom, z_index;
-        private Async<Texture> texture;
-        private Vector3f translation, velocity;
-        private long timestamp;
-        CreateTexturedRectangleTask(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long timestamp) {
+    private class GetNewTexturedRectangleTask implements Task {
+        ArrayBlockingQueue<Drawable> callbackQueue = new ArrayBlockingQueue<>(1);
+        private final float left, right, top, bottom, z_index;
+        private final Async<Texture> texture;
+        private final Vector3f translation, velocity;
+        private final long updatedTimestamp;
+        GetNewTexturedRectangleTask(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp) {
             this.left = left;
             this.right = right;
             this.top = top;
@@ -555,9 +542,38 @@ public class Renderer implements Runnable {
             this.texture = texture;
             this.translation = translation;
             this.velocity = velocity;
-            this.timestamp = timestamp;
+            this.updatedTimestamp = updatedTimestamp;
         }
+        public void doTask(Renderer r) {
+            try {
+                this.callbackQueue.put(new TexturedRectangle(this.left, this.right, this.top, this.bottom, this.z_index, this.texture.get(), this.translation, this.velocity, this.updatedTimestamp));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    Async<Drawable> getNewTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp) {
+        GetNewTexturedRectangleTask tsk = new GetNewTexturedRectangleTask(
+                convertToOpenGLX(left),
+                convertToOpenGLX(right),
+                convertToOpenGLY(top),
+                convertToOpenGLY(bottom),
+                z_index, texture, translation, velocity, updatedTimestamp);
+        try {
+            this.taskQueue.put(tsk);
+            return new Async<>(tsk.callbackQueue);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
+    private class AddToStageTask implements Task {
+        ArrayBlockingQueue<Integer> callbackQueue = new ArrayBlockingQueue<>(1);
+        private final Async<Drawable> drawable;
+        AddToStageTask(Async<Drawable> drawable) {
+            this.drawable = drawable;
+        }
         public void doTask(Renderer r) {
             int unusedIndex = r.usedDrawnElementIDs.indexOf(false);
             int id;
@@ -568,8 +584,7 @@ public class Renderer implements Runnable {
                 id = unusedIndex;
                 r.usedDrawnElementIDs.set(id, true);
             }
-            r.drawnElements.put(id, new TexturedRectangle(this.left, this.right, this.top, this.bottom, this.z_index, this.texture.get(), this.translation, this.velocity, this.timestamp));
-
+            r.drawnElements.put(id, this.drawable.get());
             try {
                 this.callbackQueue.put(id);
             } catch (InterruptedException e) {
@@ -577,12 +592,8 @@ public class Renderer implements Runnable {
             }
         }
     }
-    Async<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long timestamp) {
-        CreateTexturedRectangleTask tsk = new CreateTexturedRectangleTask(
-                convertToOpenGLX(left),
-                convertToOpenGLX(right),
-                convertToOpenGLY(top),
-                convertToOpenGLY(bottom), z_index, texture, translation, velocity, timestamp);
+    Async<Integer> addToStage(Async<Drawable> drawable) {
+        AddToStageTask tsk = new AddToStageTask(drawable);
         try {
             this.taskQueue.put(tsk);
             return new Async<>(tsk.callbackQueue);
@@ -592,7 +603,7 @@ public class Renderer implements Runnable {
         }
     }
 
-    static class UpdatePositionTask implements Task {
+    private static class UpdatePositionTask implements Task {
         private final Async<Integer> id;
         private final Vector3f translation, velocity;
         private final long timestamp;
@@ -615,7 +626,7 @@ public class Renderer implements Runnable {
         }
     }
 
-    static class DeleteDrawableTask implements Task {
+    private static class DeleteDrawableTask implements Task {
         ArrayBlockingQueue<Boolean> callbackQueue = new ArrayBlockingQueue<>(1);
         private Async<Integer> id;
         DeleteDrawableTask(Async<Integer> id) {

@@ -46,7 +46,7 @@ class View {
      * Can be deleted by calling deleteDrawable on the drawableID
      */
     Async<Integer> createStaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture) {
-        return this.rend.createStaticTexturedRectangle(left, right, top, bottom, z_index, texture);
+        return addToStage(getNewStaticTexturedRectangle(left, right, top, bottom, z_index, texture));
     }
 
     /**
@@ -57,7 +57,7 @@ class View {
      * @return A drawableID
      */
     Async<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long currentTimeNanos) {
-        return this.rend.createTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeNanos);
+        return addToStage(getNewTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeNanos));
     }
 
     /**
@@ -71,5 +71,17 @@ class View {
     /** Deletes an drawn object */
     Async<Boolean> deleteDrawable(Async<Integer> id) {
         return this.rend.deleteDrawable(id);
+    }
+
+    Async<Renderer.Drawable> getNewStaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture) {
+        return this.rend.getNewStaticTexturedRectangle(left, right, top, bottom, z_index, texture);
+    }
+
+    Async<Renderer.Drawable> getNewTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long currentTimeNanos) {
+        return this.rend.getNewTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeNanos);
+    }
+
+    Async<Integer> addToStage(Async<Renderer.Drawable> drawable) {
+        return this.rend.addToStage(drawable);
     }
 }
