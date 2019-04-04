@@ -25,7 +25,8 @@ class Controller {
         cheater.start();
 
         Async<Texture> background1 = v.loadTexture("resources/images/backgrounds/plains.jpg");
-        v.createStaticTexturedRectangle(0f, 16f, 9f, 0f, 0.5f, background1);
+        //v.createStaticTexturedRectangle(0f, 16f, 9f, 0f, 0.5f, background1);
+        v.createBackground(0.5f, background1, new Vector3f(0, 0, 0), new Vector3f(0.001f, 0, 0), System.nanoTime());
         System.out.println(background1.get());
     }
 
