@@ -456,7 +456,7 @@ public class Renderer implements Runnable {
         private long updatedTimestamp;
         Vector3f translation;
         Vector3f velocity;
-        Background(float z_index, Texture texture, Vector3f translation, Vector3f velocity, long updatedTimestamp) {
+        Background(float z_index, Texture texture, Vector3f translation, Vector3f velocity, long updatedTimestamp, float aspectRatio) {
             this.texture = texture;
             this.translation = translation;
             this.velocity = velocity;
@@ -464,11 +464,23 @@ public class Renderer implements Runnable {
 
             this.VAO = glGenVertexArrays();
             glBindVertexArray(this.VAO);
+            // aspectRatio = width/height = 16/9
+            // textureRight = 1
+            // textureRight = 1/aspectRatio*9/16
+
+            // aspectRatio = width/height = 8/9
+            // textureRight = 2
+            // textureRight = 1/aspectRatio*9/16
+
+            // aspectRatio = width/height = 32/9
+            // textureRight = 0.5
+            // textureRight = 1/aspectRatio*9/16
+            float textureRight = 1/((aspectRatio*9)/16);
             float[] positions = {
                     -1, 1, z_index, 0, 0,
                     -1, -1, z_index, 0, 1,
-                    1, -1, z_index, 1, 1,
-                    1, 1, z_index, 1, 0};
+                    1, -1, z_index, textureRight, 1,
+                    1, 1, z_index, textureRight, 0};
             int[] indices = {
                     0, 1, 2,
                     0, 2, 3};
@@ -650,27 +662,28 @@ public class Renderer implements Runnable {
 
     private class GetNewBackgroundTask implements Task {
         ArrayBlockingQueue<Drawable> callbackQueue = new ArrayBlockingQueue<>(1);
-        private final float z_index;
+        private final float z_index, aspectRatio;
         private final Async<Texture> texture;
         private final Vector3f translation, velocity;
         private final long updatedTimestamp;
-        GetNewBackgroundTask(float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp) {
+        GetNewBackgroundTask(float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp, float aspectRatio) {
             this.z_index = z_index;
             this.texture = texture;
             this.translation = translation;
             this.velocity = velocity;
             this.updatedTimestamp = updatedTimestamp;
+            this.aspectRatio = aspectRatio;
         }
         public void doTask(Renderer r) {
             try {
-                this.callbackQueue.put(new Background(this.z_index, this.texture.get(), this.translation, this.velocity, this.updatedTimestamp));
+                this.callbackQueue.put(new Background(this.z_index, this.texture.get(), this.translation, this.velocity, this.updatedTimestamp, this.aspectRatio));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
-    Async<Drawable> getNewBackground(float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp) {
-        GetNewBackgroundTask tsk = new GetNewBackgroundTask(z_index, texture, translation, velocity, updatedTimestamp);
+    Async<Drawable> getNewBackground(float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp, float aspectRatio) {
+        GetNewBackgroundTask tsk = new GetNewBackgroundTask(z_index, texture, translation, velocity, updatedTimestamp, aspectRatio);
         try {
             this.taskQueue.put(tsk);
             return new Async<>(tsk.callbackQueue);

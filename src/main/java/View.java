@@ -60,8 +60,8 @@ class View {
         return addToStage(getNewTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeNanos));
     }
 
-    Async<Integer> createBackground(float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp) {
-        return this.addToStage(this.getNewBackground(z_index, texture, translation, velocity, updatedTimestamp));
+    Async<Integer> createBackground(float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp, float aspectRatio) {
+        return this.addToStage(this.getNewBackground(z_index, texture, translation, velocity, updatedTimestamp, aspectRatio));
     }
 
     /**
@@ -85,8 +85,8 @@ class View {
         return this.rend.getNewTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeNanos);
     }
 
-    Async<Renderer.Drawable> getNewBackground(float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp) {
-        return this.rend.getNewBackground(z_index, texture, translation, velocity, updatedTimestamp);
+    Async<Renderer.Drawable> getNewBackground(float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp, float aspectRatio) {
+        return this.rend.getNewBackground(z_index, texture, translation, velocity, updatedTimestamp, aspectRatio);
     }
 
     Async<Integer> addToStage(Async<Renderer.Drawable> drawable) {
