@@ -8,8 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4ffff2d8-bcbe-445a-a08c-57a692acbfc0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Gameloop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Gameloop.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -24,61 +22,98 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Renderer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="53">
-              <caret line="99" column="75" lean-forward="true" selection-start-line="99" selection-start-column="75" selection-end-line="99" selection-end-column="75" />
+            <state relative-caret-position="28">
+              <caret line="482" column="47" selection-start-line="482" selection-start-column="47" selection-end-line="482" selection-end-column="47" />
               <folding>
-                <element signature="class#Drawable#0;class#Renderer#0" />
-                <element signature="class#PosUpdateable#0;class#Renderer#0" />
-                <element signature="class#Task#0;class#Renderer#0" />
-                <element signature="method#Renderer#0;class#Renderer#0" />
-                <element signature="method#run#0;class#Renderer#0" />
-                <element signature="method#start#0;class#Renderer#0" />
-                <element signature="e#2421#2508#1" />
-                <element signature="e#2550#2604#0" />
-                <element signature="method#loop#0;class#Renderer#0" />
-                <element signature="class#BufferUtils#0;class#Renderer#0" />
-                <element signature="method#BufferUtils#0;class#BufferUtils#0;class#Renderer#0" />
-                <element signature="method#createByteBuffer#0;class#BufferUtils#0;class#Renderer#0" />
-                <element signature="method#createFloatBuffer#0;class#BufferUtils#0;class#Renderer#0" />
-                <element signature="method#createIntBuffer#0;class#BufferUtils#0;class#Renderer#0" />
-                <element signature="class#ShaderUtils#0;class#Renderer#0" />
-                <element signature="method#ShaderUtils#0;class#ShaderUtils#0;class#Renderer#0" />
-                <element signature="class#DoubleString#0;class#ShaderUtils#0;class#Renderer#0" />
-                <element signature="method#DoubleString#0;class#DoubleString#0;class#ShaderUtils#0;class#Renderer#0" />
-                <element signature="method#load#0;class#ShaderUtils#0;class#Renderer#0" />
-                <element signature="method#create#0;class#ShaderUtils#0;class#Renderer#0" />
-                <element signature="class#StaticTexturedRectangle#0;class#Renderer#0" />
-                <element signature="method#StaticTexturedRectangle#0;class#StaticTexturedRectangle#0;class#Renderer#0" />
-                <element signature="method#draw#0;class#StaticTexturedRectangle#0;class#Renderer#0" />
-                <element signature="method#delete#0;class#StaticTexturedRectangle#0;class#Renderer#0" />
-                <element signature="method#TexturedRectangle#0;class#TexturedRectangle#0;class#Renderer#0" />
-                <element signature="method#delete#0;class#TexturedRectangle#0;class#Renderer#0" />
-                <element signature="method#updatePosition#0;class#TexturedRectangle#0;class#Renderer#0" />
-                <element signature="class#SetBackgroundColorTask#0;class#Renderer#0" />
-                <element signature="method#SetBackgroundColorTask#0;class#SetBackgroundColorTask#0;class#Renderer#0" />
-                <element signature="method#doTask#0;class#SetBackgroundColorTask#0;class#Renderer#0" />
-                <element signature="method#setBackgroundColor#0;class#Renderer#0" />
-                <element signature="class#LoadTextureTask#0;class#Renderer#0" />
-                <element signature="method#doTask#0;class#LoadTextureTask#0;class#Renderer#0" />
-                <element signature="method#loadTexture#0;class#Renderer#0" />
-                <element signature="class#UnloadTextureTask#0;class#Renderer#0" />
-                <element signature="method#unloadTexture#0;class#Renderer#0" />
-                <element signature="class#CreateStaticTexturedRectangleTask#0;class#Renderer#0" />
-                <element signature="method#CreateStaticTexturedRectangleTask#0;class#CreateStaticTexturedRectangleTask#0;class#Renderer#0" />
-                <element signature="method#doTask#0;class#CreateStaticTexturedRectangleTask#0;class#Renderer#0" />
-                <element signature="class#CreateTexturedRectangleTask#0;class#Renderer#0" />
-                <element signature="method#doTask#0;class#CreateTexturedRectangleTask#0;class#Renderer#0" />
-                <element signature="class#UpdatePositionTask#0;class#Renderer#0" />
-                <element signature="method#UpdatePositionTask#0;class#UpdatePositionTask#0;class#Renderer#0" />
-                <element signature="method#doTask#0;class#UpdatePositionTask#0;class#Renderer#0" />
-                <element signature="method#updatePosition#0;class#Renderer#0" />
-                <element signature="class#DeleteDrawableTask#0;class#Renderer#0" />
-                <element signature="method#doTask#0;class#DeleteDrawableTask#0;class#Renderer#0" />
-                <element signature="method#deleteDrawable#0;class#Renderer#0" />
+                <element signature="e#1191#1370#0" />
+                <element signature="e#1594#1656#0" />
+                <element signature="e#1735#1897#0" />
+                <element signature="e#1903#2394#0" />
+                <element signature="e#2400#2531#0" />
+                <element signature="e#2537#4770#0" />
+                <element signature="e#4776#6811#0" />
+                <element signature="e#6817#7667#0" />
+                <element signature="e#6852#6885#0" />
+                <element signature="e#6895#7131#0" />
+                <element signature="e#7141#7401#0" />
+                <element signature="e#7411#7661#0" />
+                <element signature="e#7673#9617#0" />
+                <element signature="e#7708#7741#0" />
+                <element signature="e#7751#7974#0" />
+                <element signature="e#7842#7964#0" />
+                <element signature="e#7984#8166#0" />
+                <element signature="e#8176#9611#0" />
+                <element signature="e#10827#11345#0" />
+                <element signature="e#11976#13842#0" />
+                <element signature="e#12191#13410#0" />
+                <element signature="e#13420#13666#0" />
+                <element signature="e#13676#13836#0" />
+                <element signature="e#14159#15494#0" />
+                <element signature="e#15504#15918#0" />
+                <element signature="e#15927#16087#0" />
+                <element signature="e#18075#18630#0" />
+                <element signature="e#18177#18319#0" />
+                <element signature="e#18328#18624#0" />
+                <element signature="e#18635#18862#0" />
+                <element signature="e#18868#19348#0" />
+                <element signature="e#19120#19342#0" />
+                <element signature="e#19353#19670#0" />
+                <element signature="e#19676#19960#0" />
+                <element signature="e#19965#20179#0" />
+                <element signature="e#20185#21090#0" />
+                <element signature="e#21095#21718#0" />
+                <element signature="e#21724#22978#0" />
+                <element signature="e#23715#24611#0" />
+                <element signature="e#27544#27545#0" expanded="true" />
+                <element signature="e#24616#24947#0" />
+                <element signature="e#24953#25587#0" />
+                <element signature="e#25152#25406#0" />
+                <element signature="e#25415#25581#0" />
+                <element signature="e#25592#25927#0" />
+                <element signature="e#25933#26563#0" />
+                <element signature="e#26199#26557#0" />
+                <element signature="e#26568#26898#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/View.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="443">
+              <caret line="63" column="123" selection-start-line="63" selection-start-column="123" selection-end-line="63" selection-end-column="123" />
+              <folding>
+                <element signature="e#522#523#0" expanded="true" />
+                <element signature="e#565#566#0" expanded="true" />
+                <element signature="e#678#679#0" expanded="true" />
+                <element signature="e#731#732#0" expanded="true" />
+                <element signature="e#939#940#0" expanded="true" />
+                <element signature="e#989#990#0" expanded="true" />
+                <element signature="e#1131#1132#0" expanded="true" />
+                <element signature="e#1179#1180#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Texture.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-144">
+              <caret line="41" column="66" lean-forward="true" selection-start-line="41" selection-start-column="66" selection-end-line="41" selection-end-column="76" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="152">
+              <caret line="10" column="1" lean-forward="true" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -97,61 +132,31 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
+        <entry file="file://$PROJECT_DIR$/resources/shaders/background/shader.vert">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="2" column="30" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
+            <state relative-caret-position="209">
+              <caret line="11" column="37" selection-start-line="11" selection-start-column="37" selection-end-line="11" selection-end-column="37" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/View.java">
+        <entry file="file://$PROJECT_DIR$/resources/shaders/TexRect/shader.vert">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1064">
-              <caret line="59" column="53" selection-start-line="59" selection-start-column="53" selection-end-line="59" selection-end-column="53" />
-              <folding>
-                <element signature="e#522#523#0" expanded="true" />
-                <element signature="e#565#566#0" expanded="true" />
-                <element signature="e#678#679#0" expanded="true" />
-                <element signature="e#731#732#0" expanded="true" />
-                <element signature="e#939#940#0" expanded="true" />
-                <element signature="e#989#990#0" expanded="true" />
-                <element signature="e#1131#1132#0" expanded="true" />
-                <element signature="e#1179#1180#0" expanded="true" />
-              </folding>
+            <state>
+              <caret selection-end-line="12" selection-end-column="1" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Entity.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/JSONReader.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="7" column="1" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Cheater.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="438">
-              <caret line="68" selection-start-line="68" selection-end-line="68" />
+            <state relative-caret-position="259">
+              <caret line="25" column="9" lean-forward="true" selection-start-line="25" selection-start-column="9" selection-end-line="25" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1754#1755#0" expanded="true" />
-                <element signature="e#1819#1820#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Gameloop.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="36" column="73" selection-start-line="36" selection-start-column="73" selection-end-line="36" selection-end-column="73" />
             </state>
           </provider>
         </entry>
@@ -166,27 +171,13 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/JSONReader.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="25" column="38" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="456">
-              <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+            <state relative-caret-position="304">
+              <caret line="28" column="86" selection-start-line="28" selection-start-column="86" selection-end-line="28" selection-end-column="86" />
               <folding>
                 <element signature="class#KeyboardHandler#0;class#Controller#0" />
                 <element signature="method#invoke#0;class#KeyboardHandler#0;class#Controller#0" />
-                <element signature="e#924#1011#1" />
-                <element signature="e#1024#1533#0" />
                 <element signature="class#WindowCloseHandler#0;class#Controller#0" />
                 <element signature="method#stopGame#0;class#Controller#0" />
               </folding>
@@ -275,6 +266,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -282,29 +274,6 @@
             <path>
               <item name="projectMario" type="b2602c69:ProjectViewProjectNode" />
               <item name="projectMario" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="projectMario" type="b2602c69:ProjectViewProjectNode" />
-              <item name="projectMario" type="462c0819:PsiDirectoryNode" />
-              <item name=".idea" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="projectMario" type="b2602c69:ProjectViewProjectNode" />
-              <item name="projectMario" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="projectMario" type="b2602c69:ProjectViewProjectNode" />
-              <item name="projectMario" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="projectMario" type="b2602c69:ProjectViewProjectNode" />
-              <item name="projectMario" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
-              <item name="projectMario_jar" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="projectMario" type="b2602c69:ProjectViewProjectNode" />
@@ -323,19 +292,6 @@
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="images" type="462c0819:PsiDirectoryNode" />
               <item name="backgrounds" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="projectMario" type="b2602c69:ProjectViewProjectNode" />
-              <item name="projectMario" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="shaders" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="projectMario" type="b2602c69:ProjectViewProjectNode" />
-              <item name="projectMario" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="shaders" type="462c0819:PsiDirectoryNode" />
-              <item name="staticTexRect" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="projectMario" type="b2602c69:ProjectViewProjectNode" />
@@ -359,7 +315,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -443,7 +398,7 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2739872" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2771855" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -452,7 +407,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.34994584" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.46587217" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -494,8 +449,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/shaders/TexRect/shader.vert">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="11" column="43" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
+        <state>
+          <caret selection-end-line="12" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -550,8 +505,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Texture.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        <state relative-caret-position="-144">
+          <caret line="41" column="66" lean-forward="true" selection-start-line="41" selection-start-column="66" selection-end-line="41" selection-end-column="76" />
         </state>
       </provider>
     </entry>
@@ -617,8 +572,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/View.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1064">
-          <caret line="59" column="53" selection-start-line="59" selection-start-column="53" selection-end-line="59" selection-end-column="53" />
+        <state relative-caret-position="443">
+          <caret line="63" column="123" selection-start-line="63" selection-start-column="123" selection-end-line="63" selection-end-column="123" />
           <folding>
             <element signature="e#522#523#0" expanded="true" />
             <element signature="e#565#566#0" expanded="true" />
@@ -646,16 +601,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/JSONReader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="25" column="38" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Cheater.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="438">
@@ -670,20 +615,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="30" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
+        <state relative-caret-position="152">
+          <caret line="10" column="1" lean-forward="true" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+        <state relative-caret-position="304">
+          <caret line="28" column="86" selection-start-line="28" selection-start-column="86" selection-end-line="28" selection-end-column="86" />
           <folding>
             <element signature="class#KeyboardHandler#0;class#Controller#0" />
             <element signature="method#invoke#0;class#KeyboardHandler#0;class#Controller#0" />
-            <element signature="e#924#1011#1" />
-            <element signature="e#1024#1533#0" />
             <element signature="class#WindowCloseHandler#0;class#Controller#0" />
             <element signature="method#stopGame#0;class#Controller#0" />
           </folding>
@@ -699,57 +642,74 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Renderer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="53">
-          <caret line="99" column="75" lean-forward="true" selection-start-line="99" selection-start-column="75" selection-end-line="99" selection-end-column="75" />
+        <state relative-caret-position="28">
+          <caret line="482" column="47" selection-start-line="482" selection-start-column="47" selection-end-line="482" selection-end-column="47" />
           <folding>
-            <element signature="class#Drawable#0;class#Renderer#0" />
-            <element signature="class#PosUpdateable#0;class#Renderer#0" />
-            <element signature="class#Task#0;class#Renderer#0" />
-            <element signature="method#Renderer#0;class#Renderer#0" />
-            <element signature="method#run#0;class#Renderer#0" />
-            <element signature="method#start#0;class#Renderer#0" />
-            <element signature="e#2421#2508#1" />
-            <element signature="e#2550#2604#0" />
-            <element signature="method#loop#0;class#Renderer#0" />
-            <element signature="class#BufferUtils#0;class#Renderer#0" />
-            <element signature="method#BufferUtils#0;class#BufferUtils#0;class#Renderer#0" />
-            <element signature="method#createByteBuffer#0;class#BufferUtils#0;class#Renderer#0" />
-            <element signature="method#createFloatBuffer#0;class#BufferUtils#0;class#Renderer#0" />
-            <element signature="method#createIntBuffer#0;class#BufferUtils#0;class#Renderer#0" />
-            <element signature="class#ShaderUtils#0;class#Renderer#0" />
-            <element signature="method#ShaderUtils#0;class#ShaderUtils#0;class#Renderer#0" />
-            <element signature="class#DoubleString#0;class#ShaderUtils#0;class#Renderer#0" />
-            <element signature="method#DoubleString#0;class#DoubleString#0;class#ShaderUtils#0;class#Renderer#0" />
-            <element signature="method#load#0;class#ShaderUtils#0;class#Renderer#0" />
-            <element signature="method#create#0;class#ShaderUtils#0;class#Renderer#0" />
-            <element signature="class#StaticTexturedRectangle#0;class#Renderer#0" />
-            <element signature="method#StaticTexturedRectangle#0;class#StaticTexturedRectangle#0;class#Renderer#0" />
-            <element signature="method#draw#0;class#StaticTexturedRectangle#0;class#Renderer#0" />
-            <element signature="method#delete#0;class#StaticTexturedRectangle#0;class#Renderer#0" />
-            <element signature="method#TexturedRectangle#0;class#TexturedRectangle#0;class#Renderer#0" />
-            <element signature="method#delete#0;class#TexturedRectangle#0;class#Renderer#0" />
-            <element signature="method#updatePosition#0;class#TexturedRectangle#0;class#Renderer#0" />
-            <element signature="class#SetBackgroundColorTask#0;class#Renderer#0" />
-            <element signature="method#SetBackgroundColorTask#0;class#SetBackgroundColorTask#0;class#Renderer#0" />
-            <element signature="method#doTask#0;class#SetBackgroundColorTask#0;class#Renderer#0" />
-            <element signature="method#setBackgroundColor#0;class#Renderer#0" />
-            <element signature="class#LoadTextureTask#0;class#Renderer#0" />
-            <element signature="method#doTask#0;class#LoadTextureTask#0;class#Renderer#0" />
-            <element signature="method#loadTexture#0;class#Renderer#0" />
-            <element signature="class#UnloadTextureTask#0;class#Renderer#0" />
-            <element signature="method#unloadTexture#0;class#Renderer#0" />
-            <element signature="class#CreateStaticTexturedRectangleTask#0;class#Renderer#0" />
-            <element signature="method#CreateStaticTexturedRectangleTask#0;class#CreateStaticTexturedRectangleTask#0;class#Renderer#0" />
-            <element signature="method#doTask#0;class#CreateStaticTexturedRectangleTask#0;class#Renderer#0" />
-            <element signature="class#CreateTexturedRectangleTask#0;class#Renderer#0" />
-            <element signature="method#doTask#0;class#CreateTexturedRectangleTask#0;class#Renderer#0" />
-            <element signature="class#UpdatePositionTask#0;class#Renderer#0" />
-            <element signature="method#UpdatePositionTask#0;class#UpdatePositionTask#0;class#Renderer#0" />
-            <element signature="method#doTask#0;class#UpdatePositionTask#0;class#Renderer#0" />
-            <element signature="method#updatePosition#0;class#Renderer#0" />
-            <element signature="class#DeleteDrawableTask#0;class#Renderer#0" />
-            <element signature="method#doTask#0;class#DeleteDrawableTask#0;class#Renderer#0" />
-            <element signature="method#deleteDrawable#0;class#Renderer#0" />
+            <element signature="e#1191#1370#0" />
+            <element signature="e#1594#1656#0" />
+            <element signature="e#1735#1897#0" />
+            <element signature="e#1903#2394#0" />
+            <element signature="e#2400#2531#0" />
+            <element signature="e#2537#4770#0" />
+            <element signature="e#4776#6811#0" />
+            <element signature="e#6817#7667#0" />
+            <element signature="e#6852#6885#0" />
+            <element signature="e#6895#7131#0" />
+            <element signature="e#7141#7401#0" />
+            <element signature="e#7411#7661#0" />
+            <element signature="e#7673#9617#0" />
+            <element signature="e#7708#7741#0" />
+            <element signature="e#7751#7974#0" />
+            <element signature="e#7842#7964#0" />
+            <element signature="e#7984#8166#0" />
+            <element signature="e#8176#9611#0" />
+            <element signature="e#10827#11345#0" />
+            <element signature="e#11976#13842#0" />
+            <element signature="e#12191#13410#0" />
+            <element signature="e#13420#13666#0" />
+            <element signature="e#13676#13836#0" />
+            <element signature="e#14159#15494#0" />
+            <element signature="e#15504#15918#0" />
+            <element signature="e#15927#16087#0" />
+            <element signature="e#18075#18630#0" />
+            <element signature="e#18177#18319#0" />
+            <element signature="e#18328#18624#0" />
+            <element signature="e#18635#18862#0" />
+            <element signature="e#18868#19348#0" />
+            <element signature="e#19120#19342#0" />
+            <element signature="e#19353#19670#0" />
+            <element signature="e#19676#19960#0" />
+            <element signature="e#19965#20179#0" />
+            <element signature="e#20185#21090#0" />
+            <element signature="e#21095#21718#0" />
+            <element signature="e#21724#22978#0" />
+            <element signature="e#23715#24611#0" />
+            <element signature="e#27544#27545#0" expanded="true" />
+            <element signature="e#24616#24947#0" />
+            <element signature="e#24953#25587#0" />
+            <element signature="e#25152#25406#0" />
+            <element signature="e#25415#25581#0" />
+            <element signature="e#25592#25927#0" />
+            <element signature="e#25933#26563#0" />
+            <element signature="e#26199#26557#0" />
+            <element signature="e#26568#26898#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/shaders/background/shader.frag">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="15" column="1" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/JSONReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="25" column="9" lean-forward="true" selection-start-line="25" selection-start-column="9" selection-end-line="25" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
