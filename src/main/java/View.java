@@ -35,8 +35,7 @@ class View {
     }
 
     Async<Texture> loadTexture(Texture.BitmapAndSize params) {
-        // TODO
-        return null;
+        return this.rend.loadTexture(params);
     }
 
     /** Removes a texture from GPUs memory, call this if the texture is no longer in use */

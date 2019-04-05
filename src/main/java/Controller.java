@@ -29,7 +29,8 @@ class Controller {
 
         TextCreator txtC = new TextCreator("resources/fonts/Roboto-Black.ttf");
         Texture.BitmapAndSize bitMS = txtC.createBitmap();
-        System.out.println(bitMS.bitmap);
+        Async<Texture> font = v.loadTexture(bitMS);
+        v.createStaticTexturedRectangle(0, 9, 9, 0, -0.5f, font);
 
     }
 

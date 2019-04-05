@@ -567,6 +567,33 @@ public class Renderer implements Runnable {
         }
     }
 
+    static class LoadTextureFromBitmapTask implements Task {
+        ArrayBlockingQueue<Texture> callbackQueue = new ArrayBlockingQueue<>(1);
+        private final Texture.BitmapAndSize params;
+
+        LoadTextureFromBitmapTask(Texture.BitmapAndSize params) {
+            this.params = params;
+        }
+
+        public void doTask(Renderer r) {
+            try {
+                this.callbackQueue.put(new Texture(this.params));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    Async<Texture> loadTexture(Texture.BitmapAndSize params) {
+        LoadTextureFromBitmapTask tsk = new LoadTextureFromBitmapTask(params);
+        try {
+            this.taskQueue.put(tsk);
+            return new Async<>(tsk.callbackQueue);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     static class UnloadTextureTask implements Task {
         private Async<Texture> texture;
         UnloadTextureTask(Async<Texture> texture) {
