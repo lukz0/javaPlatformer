@@ -27,6 +27,9 @@ class Controller {
         Async<Texture> background1 = v.loadTexture("resources/images/backgrounds/plainsSky.png");
         v.createBackground(0.5f, background1, new Vector3f(0, 0, 0), new Vector3f(0.01f, 0, 0), System.nanoTime(), 64f/288f);
 
+        /*v.createAnimatedTexturedRectangle(0, 16, 9, 0, -0.5f, v.loadTexture("resources/images/marioForwardAnimated.png"),
+                new Vector3f(0, 0, 0), new Vector3f(0.01f, 0, 0), 500, System.nanoTime());*/
+
         /*TextCreator txtC = new TextCreator("resources/fonts/Roboto-Black.ttf");
         Texture.BitmapAndSize bitMS = txtC.createBitmap();
         Async<Texture> font = v.loadTexture(bitMS);

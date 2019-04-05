@@ -281,6 +281,13 @@ public class Renderer implements Runnable {
         int backgroundTexSamplerLoc;
         int backgroundTexSamplerVal = 0;
         int backgroundTranslationLoc;
+
+        int animatedTexturedRect;
+        int animatedTexturedRectTexSamplerLoc;
+        int animatedTexturedRectTexSamplerVal = 0;
+        int animatedTexturedRectTranslationLoc;
+        int animatedTexturedRectFirstFrameLoc;
+        boolean animatedTexturedRectFirstFrameVal = false;
         Shaders() {
             this.staticTexturedRectangle = ShaderUtils.load("resources/shaders/staticTexRect/shader.vert", "resources/shaders/staticTexRect/shader.frag");
             this.staticTexturedRectangleTexSamplerLoc = glGetUniformLocation(this.staticTexturedRectangle, "textureSampler");
@@ -292,6 +299,11 @@ public class Renderer implements Runnable {
             this.background = ShaderUtils.load("resources/shaders/background/shader.vert", "resources/shaders/background/shader.frag");
             this.backgroundTexSamplerLoc = glGetUniformLocation(this.background, "textureSampler");
             this.backgroundTranslationLoc = glGetUniformLocation(this.background, "translation");
+
+            this.animatedTexturedRect = ShaderUtils.load("resources/shaders/animatedTexRect/shader.vert", "resources/shaders/animatedTexRect/shader.frag");
+            this.animatedTexturedRectTexSamplerLoc = glGetUniformLocation(this.animatedTexturedRect, "textureSampler");
+            this.animatedTexturedRectTranslationLoc = glGetUniformLocation(this.animatedTexturedRect, "translation");
+            this.animatedTexturedRectFirstFrameLoc = glGetUniformLocation(this.animatedTexturedRect, "firstFrame");
         }
 
         void activateStaticTexturedRectangle(int texSamplerVal) {
@@ -327,6 +339,22 @@ public class Renderer implements Runnable {
                 this.backgroundTexSamplerVal = texSamplerVal;
             }
             glUniform3fv(this.backgroundTranslationLoc, translationVal);
+        }
+
+        void activateAnimatedTexturedRect(int texSamplerVal, float[] translationVal, boolean firstFrame) {
+            if (this.active != this.animatedTexturedRect) {
+                glUseProgram(this.animatedTexturedRect);
+                this.active = this.animatedTexturedRect;
+            }
+            if (texSamplerVal != this.animatedTexturedRectTexSamplerVal) {
+                glUniform1i(this.animatedTexturedRectTexSamplerLoc, texSamplerVal);
+                this.animatedTexturedRectTexSamplerVal = texSamplerVal;
+            }
+            glUniform3fv(this.animatedTexturedRectTranslationLoc, translationVal);
+            if (firstFrame != this.animatedTexturedRectFirstFrameVal) {
+                glUniform1i(this.animatedTexturedRectFirstFrameLoc, (firstFrame) ? 1 : 0);
+                this.animatedTexturedRectFirstFrameVal = firstFrame;
+            }
         }
     }
     private Shaders shaders;
@@ -511,6 +539,75 @@ public class Renderer implements Runnable {
             glDeleteBuffers(this.buffers);
             glDeleteVertexArrays(this.VAO);
         }
+        public void updatePosition(Vector3f translation, Vector3f velocity, long currentTimeNano) {
+            this.translation = translation;
+            this.velocity = velocity;
+            this.updatedTimestamp = currentTimeNano;
+        }
+    }
+
+    class AnimatedTexturedRectangle implements PosUpdateable {
+        // 0 - array_buffer, 1 - index_buffer
+        private int[] buffers = new int[] {0, 0};
+        private int VAO;
+        private Texture texture;
+
+        private long updatedTimestamp;
+        Vector3f translation;
+        Vector3f velocity;
+
+        private long frameDurationMilis;
+
+        AnimatedTexturedRectangle(float left, float right, float top, float bottom, float z_index, Texture texture, Vector3f translation, Vector3f velocity, long frameDurationMilis, long updatedTimestamp) {
+            this.updatedTimestamp = updatedTimestamp;
+            this.frameDurationMilis = frameDurationMilis;
+            this.translation = translation;
+            this.velocity = velocity;
+            this.texture = texture;
+            this.VAO = glGenVertexArrays();
+            glBindVertexArray(this.VAO);
+            float[] positions = { // x, y, z, frame1s, frame1t, frame2s, frame2t
+                    left, top, z_index, 0, 1, 0.5f, 1,
+                    left, bottom, z_index, 0, 0, 0.5f, 0,
+                    right, bottom, z_index, 0.5f, 0, 1, 0,
+                    right, top, z_index, 0.5f, 1, 1, 1};
+
+            int[] indices = {
+                    0, 1, 2,
+                    0, 2, 3};
+
+            // 0 - array_buffer, 1 - index_buffer
+            glGenBuffers(this.buffers);
+            glBindBuffer(GL_ARRAY_BUFFER, this.buffers[0]);
+            glBufferData(GL_ARRAY_BUFFER, positions, GL_STATIC_DRAW);
+
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, false, 7*4, 0);
+
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, 2, GL_FLOAT, false, 7*4, 3*4);
+
+            glEnableVertexAttribArray(2);
+            glVertexAttribPointer(2, 2, GL_FLOAT, false, 7*4, 5*4);
+
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this.buffers[1]);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
+        }
+
+        public void draw(long currentTimestamp) {
+            glBindVertexArray(this.VAO);
+            long delta = (currentTimestamp - this.updatedTimestamp)/(1000000*Gameloop.TICKDURATION);
+            shaders.activateAnimatedTexturedRect(0, this.translation.add(this.velocity.multiply(delta)).getOpenGLvector(), ((currentTimestamp/1000000)/frameDurationMilis)%2==1);
+            this.texture.bind();
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
+
+        public void delete() {
+            glBindVertexArray(this.VAO);
+            glDeleteBuffers(this.buffers);
+            glDeleteVertexArrays(this.VAO);
+        }
+
         public void updatePosition(Vector3f translation, Vector3f velocity, long currentTimeNano) {
             this.translation = translation;
             this.velocity = velocity;
@@ -711,6 +808,45 @@ public class Renderer implements Runnable {
     }
     Async<Drawable> getNewBackground(float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp, float aspectRatio) {
         GetNewBackgroundTask tsk = new GetNewBackgroundTask(z_index, texture, translation, velocity, updatedTimestamp, aspectRatio);
+        try {
+            this.taskQueue.put(tsk);
+            return new Async<>(tsk.callbackQueue);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private class GetNewAnimatedTexturedRectangleTask implements Task {
+        ArrayBlockingQueue<Drawable> callbackQueue = new ArrayBlockingQueue<>(1);
+        private final float left, right, top, bottom, z_index;
+        private final Async<Texture> texture;
+        private final Vector3f translation, velocity;
+        private final long frameDurationMilis, updatedTimestamp;
+        GetNewAnimatedTexturedRectangleTask(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long frameDurationMilis, long updatedTimestamp) {
+            this.left = left;
+            this.right = right;
+            this.top = top;
+            this.bottom = bottom;
+            this.z_index = z_index;
+            this.texture = texture;
+            this.translation = translation;
+            this.velocity = velocity;
+            this.frameDurationMilis = frameDurationMilis;
+            this.updatedTimestamp = updatedTimestamp;
+        }
+
+        public void doTask(Renderer r) {
+            try {
+                this.callbackQueue.put(new AnimatedTexturedRectangle(this.left, this.right, this.bottom, this.top, this.z_index, this.texture.get(), this.translation, this.velocity, this.frameDurationMilis, this.updatedTimestamp));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    Async<Drawable> getNewAnimatedTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long frameDurationMilis, long updatedTimestamp) {
+        GetNewAnimatedTexturedRectangleTask tsk = new GetNewAnimatedTexturedRectangleTask(convertToOpenGLX(left), convertToOpenGLX(right),
+                convertToOpenGLY(top), convertToOpenGLY(bottom), z_index, texture, translation, velocity, frameDurationMilis, updatedTimestamp);
         try {
             this.taskQueue.put(tsk);
             return new Async<>(tsk.callbackQueue);

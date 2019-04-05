@@ -68,6 +68,10 @@ class View {
         return this.addToStage(this.getNewBackground(z_index, texture, translation, velocity, updatedTimestamp, aspectRatio));
     }
 
+    Async<Integer> createAnimatedTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long frameDurationMilis, long updatedTimestamp) {
+        return addToStage(getNewAnimatedTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, frameDurationMilis, updatedTimestamp));
+    }
+
     /**
      * Used for updating position of moving drawables
      * @param timestamp System.nanoTime() at the start of the tick
@@ -91,6 +95,10 @@ class View {
 
     Async<Renderer.Drawable> getNewBackground(float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp, float aspectRatio) {
         return this.rend.getNewBackground(z_index, texture, translation, velocity, updatedTimestamp, aspectRatio);
+    }
+
+    Async<Renderer.Drawable> getNewAnimatedTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long frameDurationMilis, long updatedTimestamp) {
+        return this.rend.getNewAnimatedTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, frameDurationMilis, updatedTimestamp);
     }
 
     Async<Integer> addToStage(Async<Renderer.Drawable> drawable) {
