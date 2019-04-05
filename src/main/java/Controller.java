@@ -27,10 +27,10 @@ class Controller {
         Async<Texture> background1 = v.loadTexture("resources/images/backgrounds/plainsSky.png");
         v.createBackground(0.5f, background1, new Vector3f(0, 0, 0), new Vector3f(0.01f, 0, 0), System.nanoTime(), 64f/288f);
 
-        TextCreator txtC = new TextCreator("resources/fonts/Roboto-Black.ttf");
+        /*TextCreator txtC = new TextCreator("resources/fonts/Roboto-Black.ttf");
         Texture.BitmapAndSize bitMS = txtC.createBitmap();
         Async<Texture> font = v.loadTexture(bitMS);
-        v.createStaticTexturedRectangle(0, 9, 9, 0, -0.5f, font);
+        v.createStaticTexturedRectangle(0, 9, 9, 0, -0.5f, font);*/
 
     }
 

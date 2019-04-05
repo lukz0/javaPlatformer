@@ -49,7 +49,7 @@ public class TextCreator {
         final int BITMAP_W = 1000, BITMAP_H = 1000;
         ByteBuffer bitmap = BufferUtils.createByteBuffer(BITMAP_W*BITMAP_H);
         STBTTBakedChar.Buffer cdata = STBTTBakedChar.malloc(96);
-        stbtt_BakeFontBitmap(this.ttf, 24, bitmap, BITMAP_W, BITMAP_H, 32, cdata);
+        stbtt_BakeFontBitmap(this.ttf, 100, bitmap, BITMAP_W, BITMAP_H, 32, cdata);
         return new Texture.BitmapAndSize(bitmap, BITMAP_W, BITMAP_H);
     }
 
