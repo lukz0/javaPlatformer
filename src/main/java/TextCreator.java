@@ -3,10 +3,8 @@ import org.lwjgl.stb.STBTTBakedChar;
 import org.lwjgl.stb.STBTTFontinfo;
 import org.lwjgl.system.MemoryStack;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.channels.FileChannel;
@@ -17,14 +15,18 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 public class TextCreator {
     private final String filepath;
 
-    private final ByteBuffer ttf;
-    private final STBTTFontinfo info;
+    private ByteBuffer ttf;
+    private STBTTFontinfo info;
 
     private final int ascent, descent, lineGap;
 
     TextCreator(String filepath) {
         this.filepath = filepath;
-        this.ttf = this.ioResourceToByteBuffer();
+        try {
+            this.ttf = ioResourceToByteBuffer(this.filepath, 512*1024);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.info = STBTTFontinfo.create();
         if (!stbtt_InitFont(info, ttf)) {
             System.err.println("[TEXT_CREATOR] Failed to initialize font!");
@@ -43,15 +45,26 @@ public class TextCreator {
         }
     }
 
-    ByteBuffer createBitmap() {
+    Texture.BitmapAndSize createBitmap() {
         final int BITMAP_W = 1000, BITMAP_H = 1000;
         ByteBuffer bitmap = BufferUtils.createByteBuffer(BITMAP_W*BITMAP_H);
         STBTTBakedChar.Buffer cdata = STBTTBakedChar.malloc(96);
         stbtt_BakeFontBitmap(this.ttf, 24, bitmap, BITMAP_W, BITMAP_H, 32, cdata);
-        return bitmap;
+        return new Texture.BitmapAndSize(bitmap, BITMAP_W, BITMAP_H);
     }
 
-    private ByteBuffer ioResourceToByteBuffer() {
+    public static ByteBuffer ioResourceToByteBuffer(String resource, int bufferSize) throws IOException {
+        ByteBuffer buffer;
+        File file = new File(resource);
+            FileInputStream fis = new FileInputStream(file);
+            FileChannel fc = fis.getChannel();
+            buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+            fc.close();
+            fis.close();
+        return buffer;
+    }
+
+    /*private ByteBuffer ioResourceToByteBuffer() {
         try {
             FileInputStream fi = new FileInputStream(this.filepath);
             FileChannel fChan = fi.getChannel();
@@ -76,5 +89,5 @@ public class TextCreator {
             e.printStackTrace();
             return null;
         }
-    }
+    }*/
 }

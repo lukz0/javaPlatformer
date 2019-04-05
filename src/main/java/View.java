@@ -34,6 +34,11 @@ class View {
         return this.rend.loadTexture(path);
     }
 
+    Async<Texture> loadTexture(Texture.BitmapAndSize params) {
+        // TODO
+        return null;
+    }
+
     /** Removes a texture from GPUs memory, call this if the texture is no longer in use */
     void unloadTexture(Async<Texture> texture) {
         this.rend.unloadTexture(texture);
