@@ -633,6 +633,42 @@ public class Renderer implements Runnable {
         }
     }
 
+    class PosUpdateableGroup implements PosUpdateable {
+        private Vector3f translation;
+        private Vector3f velocity;
+        private long updatedTimestamp;
+
+        private HashMap<Integer, PosUpdateable> states;
+        private int activeState;
+
+        PosUpdateableGroup(Vector3f translation, Vector3f velocity, long updatedTimestamp, HashMap<Integer, PosUpdateable> states) {
+            this.translation = translation;
+            this.velocity = velocity;
+            this.updatedTimestamp = updatedTimestamp;
+            this.states = states;
+            this.activeState = (int)this.states.entrySet().toArray()[0];
+        }
+
+        public void draw(long currentTimestamp) {
+            long delta = (currentTimestamp - this.updatedTimestamp)/(1000000*Gameloop.TICKDURATION);
+            this.states.get(this.activeState).draw(this.translation.add(this.velocity.multiply(delta)).getOpenGLvector(), currentTimestamp);
+        }
+        public void draw(float[] translationSum, long currentTimestamp) {
+            this.states.get(this.activeState).draw(translationSum, currentTimestamp);
+        }
+        public void delete() {
+            for (HashMap.Entry<Integer, PosUpdateable> entry : states.entrySet()) {
+                entry.getValue().delete();
+            }
+        }
+
+        public void updatePosition(Vector3f translation, Vector3f velocity, long currentTimeNano) {
+            this.translation = translation;
+            this.velocity = velocity;
+            this.updatedTimestamp = currentTimeNano;
+        }
+    }
+
     static class SetBackgroundColorTask implements Task {
         private float red, green, blue;
         SetBackgroundColorTask(float r, float g, float b) {
