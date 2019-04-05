@@ -44,6 +44,7 @@ public class Renderer implements Runnable {
     }
     interface PosUpdateable extends Drawable {
         void updatePosition(Vector3f translation, Vector3f velocity, long currentTimeNano);
+        void draw(float[] translationSum, long currentTimeStamp);
     }
     public HashMap<Integer, Drawable> drawnElements = new HashMap<>();
 
@@ -462,6 +463,12 @@ public class Renderer implements Runnable {
 
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
+        public void draw(float[] translationSum, long currentTimestamp) {
+            glBindVertexArray(this.VAO);
+            shaders.activateTexturedRectangle(0, translationSum);
+            this.texture.bind();
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
         public void delete() {
             glBindVertexArray(this.VAO);
             glDeleteBuffers(this.buffers);
@@ -534,6 +541,12 @@ public class Renderer implements Runnable {
 
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
+        public void draw(float[] translationSum, long currentTimestamp) {
+            glBindVertexArray(this.VAO);
+            shaders.activateBackground(0, translationSum);
+            this.texture.bind();
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
         public void delete() {
             glBindVertexArray(this.VAO);
             glDeleteBuffers(this.buffers);
@@ -597,11 +610,16 @@ public class Renderer implements Runnable {
         public void draw(long currentTimestamp) {
             glBindVertexArray(this.VAO);
             long delta = (currentTimestamp - this.updatedTimestamp)/(1000000*Gameloop.TICKDURATION);
-            shaders.activateAnimatedTexturedRect(0, this.translation.add(this.velocity.multiply(delta)).getOpenGLvector(), ((currentTimestamp/1000000)/frameDurationMilis)%2==1);
+            shaders.activateAnimatedTexturedRect(0, this.translation.add(this.velocity.multiply(delta)).getOpenGLvector(), ((currentTimestamp/1000000)/frameDurationMilis)%2==0);
             this.texture.bind();
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
-
+        public void draw(float[] translationSum, long currentTimestamp) {
+            glBindVertexArray(this.VAO);
+            shaders.activateAnimatedTexturedRect(0, translationSum, ((currentTimestamp/1000000)/frameDurationMilis)%2==0);
+            this.texture.bind();
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
         public void delete() {
             glBindVertexArray(this.VAO);
             glDeleteBuffers(this.buffers);
