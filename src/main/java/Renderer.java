@@ -14,6 +14,7 @@ import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
@@ -639,14 +640,14 @@ public class Renderer implements Runnable {
         private long updatedTimestamp;
 
         private HashMap<Integer, PosUpdateable> states;
-        private int activeState;
+        int activeState;
 
         PosUpdateableGroup(Vector3f translation, Vector3f velocity, long updatedTimestamp, HashMap<Integer, PosUpdateable> states) {
             this.translation = translation;
             this.velocity = velocity;
             this.updatedTimestamp = updatedTimestamp;
             this.states = states;
-            this.activeState = (int)this.states.entrySet().toArray()[0];
+            this.activeState = (int)(this.states.keySet().toArray()[0]);
         }
 
         public void draw(long currentTimestamp) {
@@ -907,6 +908,66 @@ public class Renderer implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    private class GetNewPosUpdateableGroupTask implements Task {
+        ArrayBlockingQueue<Drawable> callbackQueue = new ArrayBlockingQueue<>(1);
+        private final Vector3f translation, velocity;
+        private final HashMap<Integer, Async<Drawable>> states;
+        private final long updatedTimestamp;
+
+        GetNewPosUpdateableGroupTask(Vector3f translation, Vector3f velocity, long updatedTimestamp, HashMap<Integer, Async<Drawable>> states) {
+            this.states = states;
+            this.translation = translation;
+            this.velocity = velocity;
+            this.updatedTimestamp = updatedTimestamp;
+        }
+
+        public void doTask(Renderer r) {
+            HashMap<Integer, PosUpdateable> nonasyncStates = new HashMap<>();
+            for (Map.Entry<Integer, Async<Drawable>> ent : states.entrySet()) {
+                try {
+                    nonasyncStates.put(ent.getKey(), (PosUpdateable) ent.getValue().get());
+                } catch (Exception e) {
+                    System.err.println("Drawable with ID ".concat(Integer.toString(ent.getKey()).concat(" doesn't implement PosUpdateable")));
+                }
+            }
+            try {
+                this.callbackQueue.put(new PosUpdateableGroup(this.translation, this.velocity, this.updatedTimestamp, nonasyncStates));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    Async<Drawable> getNewPosUpdateableGroup(Vector3f translation, Vector3f velocity, HashMap<Integer, Async<Drawable>> states, long updatedTimestamp) {
+        GetNewPosUpdateableGroupTask tsk = new GetNewPosUpdateableGroupTask(translation, velocity, updatedTimestamp, states);
+        try {
+            this.taskQueue.put(tsk);
+            return new Async<>(tsk.callbackQueue);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private class SetActiveStateTask implements Task {
+        private final Async<Integer> id;
+        private final int state;
+        SetActiveStateTask(Async<Integer> id, int state) {
+            this.id = id;
+            this.state = state;
+        }
+        public void doTask(Renderer r) {
+            ((PosUpdateableGroup)r.drawnElements.get(id.get())).activeState = this.state;
+        }
+    }
+    void setActiveState(Async<Integer> id, int state) {
+        SetActiveStateTask tsk = new SetActiveStateTask(id, state);
+        try {
+            this.taskQueue.put(tsk);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
