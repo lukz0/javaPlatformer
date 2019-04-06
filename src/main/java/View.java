@@ -1,6 +1,7 @@
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWWindowCloseCallback;
 
+import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
 
 class View {
@@ -61,7 +62,7 @@ class View {
      * @return A drawableID
      */
     Async<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long currentTimeNanos) {
-        return addToStage(getNewTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeNanos));
+        return this.addToStage(this.getNewTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeNanos));
     }
 
     Async<Integer> createBackground(float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp, float aspectRatio) {
@@ -69,7 +70,11 @@ class View {
     }
 
     Async<Integer> createAnimatedTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long frameDurationMilis, long updatedTimestamp) {
-        return addToStage(getNewAnimatedTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, frameDurationMilis, updatedTimestamp));
+        return this.addToStage(this.getNewAnimatedTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, frameDurationMilis, updatedTimestamp));
+    }
+
+    Async<Integer> createPosUpdateableGroup(Vector3f translation, Vector3f velocity, HashMap<Integer, Async<Renderer.Drawable>> states, long updatedTimestamp) {
+        return this.addToStage(this.getNewPosUpdateableGroup(translation, velocity, states, updatedTimestamp));
     }
 
     /**
@@ -99,6 +104,14 @@ class View {
 
     Async<Renderer.Drawable> getNewAnimatedTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long frameDurationMilis, long updatedTimestamp) {
         return this.rend.getNewAnimatedTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, frameDurationMilis, updatedTimestamp);
+    }
+
+    Async<Renderer.Drawable> getNewPosUpdateableGroup(Vector3f translation, Vector3f velocity, HashMap<Integer, Async<Renderer.Drawable>> states, long updatedTimestamp) {
+        return this.rend.getNewPosUpdateableGroup(translation, velocity, states, updatedTimestamp);
+    }
+
+    void setActiveState(Async<Integer> id, int state) {
+        this.rend.setActiveState(id, state);
     }
 
     Async<Integer> addToStage(Async<Renderer.Drawable> drawable) {

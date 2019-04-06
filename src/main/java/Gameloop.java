@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -33,11 +34,18 @@ public class Gameloop implements Runnable {
     }
 
     public void run() {
-        Async<Texture> marioForwardTexture = view.loadTexture("resources/images/marioForwardAnimated.png");
-        /*Async<Integer> marioID = view.createTexturedRectangle(0f, 1.0f, 2.0f, 0f, 0, marioForwardTexture,
-                new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), System.nanoTime());*/
-        Async<Integer> marioID = view.createAnimatedTexturedRectangle(0f, 1f, 2f, 0f, 0, marioForwardTexture,
-                new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), 500, System.nanoTime());
+        Async<Texture> marioForwardTextureAnimated = view.loadTexture("resources/images/marioForwardAnimated.png");
+        Async<Texture> marioForwardTexture = view.loadTexture("resources/images/marioForward.png");
+        Async<Renderer.Drawable> mario1 = view.getNewAnimatedTexturedRectangle(0f, 1f, 2f, 0f, 0, marioForwardTextureAnimated,
+                Vector3f.EMPTY, Vector3f.EMPTY, 500, System.nanoTime());
+        Async<Renderer.Drawable> mario2 = view.getNewTexturedRectangle(0f, 1f, 2f, 0f, 0, marioForwardTexture,
+                Vector3f.EMPTY, Vector3f.EMPTY, System.nanoTime());
+
+        HashMap<Integer, Async<Renderer.Drawable>> marioStates = new HashMap<>();
+        marioStates.put(1, mario1);
+        marioStates.put(2, mario2);
+        Async<Integer> marioID = view.createPosUpdateableGroup(Vector3f.EMPTY, Vector3f.EMPTY, marioStates, System.nanoTime());
+        view.setActiveState(marioID, 2);
 
         Async<Texture> fireFlowerTexture = view.loadTexture("resources/images/fireFlower.png");
         Async<Integer> fireFlower1ID = view.createStaticTexturedRectangle(0f, 1.0f, 1.0f, 0f, 0.1f, fireFlowerTexture);
