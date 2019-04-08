@@ -45,7 +45,8 @@ public class Gameloop implements Runnable {
         marioStates.put(1, mario1);
         marioStates.put(2, mario2);
         Async<Integer> marioID = view.createPosUpdateableGroup(Vector3f.EMPTY, Vector3f.EMPTY, marioStates, System.nanoTime());
-        view.setActiveState(marioID, 2);
+        int curMarioState = 2;
+        view.setActiveState(marioID, curMarioState);
 
         Async<Texture> fireFlowerTexture = view.loadTexture("resources/images/fireFlower.png");
         Async<Integer> fireFlower1ID = view.createStaticTexturedRectangle(0f, 1.0f, 1.0f, 0f, 0.1f, fireFlowerTexture);
@@ -82,9 +83,22 @@ public class Gameloop implements Runnable {
             if (this.holdingRight && !this.holdingLeft) {
                 xTranslation += 1/(float)Gameloop.TICKDURATION;
                 velocity.values[0] = 1/(float)Gameloop.TICKDURATION;
+                if (curMarioState != 1) {
+                    curMarioState = 1;
+                    view.setActiveState(marioID, curMarioState);
+                }
             } else if (!this.holdingRight && this.holdingLeft) {
                 xTranslation -= 1/(float)Gameloop.TICKDURATION;
                 velocity.values[0] = -1/(float)Gameloop.TICKDURATION;
+                if (curMarioState != 1) {
+                    curMarioState = 1;
+                    view.setActiveState(marioID, curMarioState);
+                }
+            } else {
+                if (curMarioState != 2) {
+                    curMarioState = 2;
+                    view.setActiveState(marioID, curMarioState);
+                }
             }
             view.updatePosition(marioID, new Vector3f(xTranslation, 0, 0), velocity, tickStart);
 
