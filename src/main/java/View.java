@@ -1,6 +1,7 @@
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWWindowCloseCallback;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -83,6 +84,12 @@ class View {
      */
     void updatePosition(Async<Integer> id, Vector3f translation, Vector3f velocity, long timestamp) {
         this.rend.updatePosition(id, translation, velocity, timestamp);
+    }
+
+    void updatePositions(ArrayList<Async<Integer>> ids, Vector3f translation, Vector3f velocity, long timestamp) {
+        for (Async<Integer> id : ids) {
+            this.updatePosition(id, translation, velocity, timestamp);
+        }
     }
 
     /** Deletes an drawn object */
