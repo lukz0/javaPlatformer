@@ -1,5 +1,5 @@
 public class EliteAI extends GoonAI{
-    private Mario target;
+    /*private Mario target;
 
     EliteAI(Mario target, Enemy parent) {
         this.target = target;
@@ -23,5 +23,5 @@ public class EliteAI extends GoonAI{
                 parent.vX = parent.spd;
             }
         }
-    }
+    }*/
 }

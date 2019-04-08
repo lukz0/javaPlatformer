@@ -48,59 +48,21 @@ public class Gameloop implements Runnable {
         int curMarioState = 2;
         view.setActiveState(marioID, curMarioState);
 
+        Mario mario = new Mario(marioID);
+
         Async<Texture> fireFlowerTexture = view.loadTexture("resources/images/fireFlower.png");
         Async<Integer> fireFlower1ID = view.createStaticTexturedRectangle(0f, 1.0f, 1.0f, 0f, 0.1f, fireFlowerTexture);
         Async<Integer> fireFlower2ID = view.createStaticTexturedRectangle(15.0f, 16.0f, 1.0f, 0f, 0.1f, fireFlowerTexture);
 
         while (true) {
             long tickStart = System.nanoTime();
+            runKeyEventQueue();
+            runCommandQueue();
 
             // TODO: game logic
             // Use tickStart as timestamp argument to View methods
-            if (!this.keyEventQueue.isEmpty()) {
-                ArrayList<KeyEvent> keyEvents = new ArrayList<KeyEvent>();
-                do {
-                    keyEvents.clear();
-                    this.keyEventQueue.drainTo(keyEvents);
-                    for (KeyEvent evt : keyEvents) {
-                        handleKey(evt.key, evt.action, evt.modifier);
-                    }
-                } while (!this.keyEventQueue.isEmpty());
-            }
 
-            if (!this.commandQueue.isEmpty()) {
-                ArrayList<Cheater.Command> commands = new ArrayList<>();
-                do {
-                    commands.clear();
-                    this.commandQueue.drainTo(commands);
-                    for (Cheater.Command cmd : commands) {
-                        cmd.doCommand(this);
-                    }
-                } while (!this.commandQueue.isEmpty());
-            }
-
-            Vector3f velocity = new Vector3f(0, 0, 0);
-            if (this.holdingRight && !this.holdingLeft) {
-                xTranslation += 1/(float)Gameloop.TICKDURATION;
-                velocity.values[0] = 1/(float)Gameloop.TICKDURATION;
-                if (curMarioState != 1) {
-                    curMarioState = 1;
-                    view.setActiveState(marioID, curMarioState);
-                }
-            } else if (!this.holdingRight && this.holdingLeft) {
-                xTranslation -= 1/(float)Gameloop.TICKDURATION;
-                velocity.values[0] = -1/(float)Gameloop.TICKDURATION;
-                if (curMarioState != 1) {
-                    curMarioState = 1;
-                    view.setActiveState(marioID, curMarioState);
-                }
-            } else {
-                if (curMarioState != 2) {
-                    curMarioState = 2;
-                    view.setActiveState(marioID, curMarioState);
-                }
-            }
-            view.updatePosition(marioID, new Vector3f(xTranslation, 0, 0), velocity, tickStart);
+            mario.doMove(this, tickStart);
 
             long tickEnd = System.nanoTime();
             try {
@@ -110,6 +72,31 @@ public class Gameloop implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    void runKeyEventQueue() {
+        if (!this.keyEventQueue.isEmpty()) {
+            ArrayList<KeyEvent> keyEvents = new ArrayList<KeyEvent>();
+            do {
+                keyEvents.clear();
+                this.keyEventQueue.drainTo(keyEvents);
+                for (KeyEvent evt : keyEvents) {
+                    handleKey(evt.key, evt.action, evt.modifier);
+                }
+            } while (!this.keyEventQueue.isEmpty());
+        }
+    }
+    void runCommandQueue() {
+        if (!this.commandQueue.isEmpty()) {
+            ArrayList<Cheater.Command> commands = new ArrayList<>();
+            do {
+                commands.clear();
+                this.commandQueue.drainTo(commands);
+                for (Cheater.Command cmd : commands) {
+                    cmd.doCommand(this);
+                }
+            } while (!this.commandQueue.isEmpty());
         }
     }
 
