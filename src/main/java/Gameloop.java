@@ -10,6 +10,8 @@ public class Gameloop implements Runnable {
     final Controller controller;
     final View view;
 
+    HashMap<String, Async<Texture>> textures = new HashMap<>();
+
     Gameloop(Controller controller, View view) {
         this.controller = controller;
         this.view = view;
@@ -34,21 +36,7 @@ public class Gameloop implements Runnable {
     }
 
     public void run() {
-        Async<Texture> marioForwardTextureAnimated = view.loadTexture("resources/images/marioForwardAnimated.png");
-        Async<Texture> marioForwardTexture = view.loadTexture("resources/images/marioForward.png");
-        Async<Renderer.Drawable> mario1 = view.getNewAnimatedTexturedRectangle(0f, 1f, 2f, 0f, 0, marioForwardTextureAnimated,
-                Vector3f.EMPTY, Vector3f.EMPTY, 500, System.nanoTime());
-        Async<Renderer.Drawable> mario2 = view.getNewTexturedRectangle(0f, 1f, 2f, 0f, 0, marioForwardTexture,
-                Vector3f.EMPTY, Vector3f.EMPTY, System.nanoTime());
-
-        HashMap<Integer, Async<Renderer.Drawable>> marioStates = new HashMap<>();
-        marioStates.put(1, mario1);
-        marioStates.put(2, mario2);
-        Async<Integer> marioID = view.createPosUpdateableGroup(Vector3f.EMPTY, Vector3f.EMPTY, marioStates, System.nanoTime());
-        int curMarioState = 2;
-        view.setActiveState(marioID, curMarioState);
-
-        Mario mario = new Mario(marioID);
+        Mario mario = new Mario(this.view, this.textures, System.nanoTime());
 
         Async<Texture> fireFlowerTexture = view.loadTexture("resources/images/fireFlower.png");
         Async<Integer> fireFlower1ID = view.createStaticTexturedRectangle(0f, 1.0f, 1.0f, 0f, 0.1f, fireFlowerTexture);
