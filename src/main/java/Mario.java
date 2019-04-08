@@ -13,9 +13,9 @@ class Mario {
     public void doMove(Gameloop gameloop, long tickStart) {
         if (gameloop.holdingLeft != gameloop.holdingRight) {
             if (gameloop.holdingLeft) {
-                this.velocity = new Vector3f(-1 / (float) gameloop.TICKDURATION, 0, 0);
+                this.velocity = new Vector3f(-1 * (gameloop.TICKDURATION/(float)1000), 0, 0);
             } else {
-                this.velocity = new Vector3f(1 / (float) gameloop.TICKDURATION, 0, 0);
+                this.velocity = new Vector3f(1 * (gameloop.TICKDURATION/(float)1000), 0, 0);
             }
             if (this.currentState != this.STATE_MOVING) {
                 this.currentState = this.STATE_MOVING;
