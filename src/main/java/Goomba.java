@@ -4,7 +4,7 @@ public class Goomba implements Movable {
     private static final int STATE_MOVING_RIGHT = 1;
     private static final int STATE_MOVING_LEFT = 2;
     Async<Integer> drawableID;
-    Vector3f translation = new Vector3f(16, 0, 0), velocity = Vector3f.EMPTY;
+    Vector3f translation = new Vector3f(16, 0, 0), velocity = new Vector3f(1 * (Gameloop.TICKDURATION/(float)1000), 0, 0);;
     int currentState;
 
     Goomba(View view, HashMap<String, Async<Texture>> textures, long timestamp) {
@@ -30,8 +30,14 @@ public class Goomba implements Movable {
     public void doMove(Gameloop gameloop, long tickStart) {
 
         //TODO: add logic regarding choice of direction
-        if(this.currentState == Goomba.STATE_MOVING_RIGHT) {
-            this.velocity = new Vector3f(-1 * (gameloop.TICKDURATION/(float)1000), 0, 0);
+        Vector3f nextPos = this.translation.add(this.velocity);
+        System.out.println("nextpos:" + nextPos.values[0]);
+        if(nextPos.values[0] < 0) {
+            this.velocity = new Vector3f(3 * (gameloop.TICKDURATION/(float)1000), 0, 0);
+            this.currentState = Goomba.STATE_MOVING_RIGHT;
+        }
+        else if(nextPos.values[0] > 15) {
+            this.velocity = new Vector3f(-3 * (gameloop.TICKDURATION/(float)1000), 0, 0);
             this.currentState = Goomba.STATE_MOVING_LEFT;
         }
 

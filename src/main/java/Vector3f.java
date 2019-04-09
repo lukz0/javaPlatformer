@@ -14,7 +14,7 @@ class Vector3f {
     }
 
     float[] getOpenGLvector() {
-        return new float[]{(this.values[0]*2)/19, (this.values[1]*2)/9, this.values[2]};
+        return new float[]{(this.values[0]*2)/16, (this.values[1]*2)/9, this.values[2]};
     }
 
     static Vector3f EMPTY = new Vector3f(0, 0, 0);
