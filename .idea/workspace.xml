@@ -8,6 +8,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4ffff2d8-bcbe-445a-a08c-57a692acbfc0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -25,7 +26,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Gameloop.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="76">
+            <state relative-caret-position="589">
               <caret line="37" column="23" selection-start-line="37" selection-start-column="23" selection-end-line="37" selection-end-column="23" />
             </state>
           </provider>
@@ -36,19 +37,29 @@
           <provider selected="true" editor-type-id="images" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/View.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="83" column="7" lean-forward="true" selection-start-line="83" selection-start-column="7" selection-end-line="83" selection-end-column="7" />
+            <state relative-caret-position="420">
+              <caret line="179" column="77" selection-start-line="179" selection-start-column="77" selection-end-line="179" selection-end-column="77" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#4322#4323#0" expanded="true" />
-                <element signature="e#4373#4374#0" expanded="true" />
-                <element signature="e#6018#6019#0" expanded="true" />
-                <element signature="e#6069#6070#0" expanded="true" />
-                <element signature="e#6137#6138#0" expanded="true" />
-                <element signature="e#6190#6191#0" expanded="true" />
+                <element signature="e#589#590#0" expanded="true" />
+                <element signature="e#632#633#0" expanded="true" />
+                <element signature="e#745#746#0" expanded="true" />
+                <element signature="e#798#799#0" expanded="true" />
+                <element signature="e#1006#1007#0" expanded="true" />
+                <element signature="e#1056#1057#0" expanded="true" />
+                <element signature="e#1120#1121#0" expanded="true" />
+                <element signature="e#1172#1173#0" expanded="true" />
+                <element signature="e#1314#1315#0" expanded="true" />
+                <element signature="e#1362#1363#0" expanded="true" />
+                <element signature="e#5415#5416#0" expanded="true" />
+                <element signature="e#5466#5467#0" expanded="true" />
+                <element signature="e#8771#8772#0" expanded="true" />
+                <element signature="e#8822#8823#0" expanded="true" />
+                <element signature="e#8895#8896#0" expanded="true" />
+                <element signature="e#8948#8949#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -93,11 +104,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Mario.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="722">
-              <caret line="38" column="85" lean-forward="true" selection-start-line="38" selection-start-column="85" selection-end-line="38" selection-end-column="85" />
+            <state relative-caret-position="1121">
+              <caret line="59" column="1" lean-forward="true" selection-start-line="59" selection-start-column="1" selection-end-line="59" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -149,10 +160,10 @@
         <option value="$PROJECT_DIR$/src/main/java/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/Vector3f.java" />
         <option value="$PROJECT_DIR$/src/main/java/Renderer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/View.java" />
         <option value="$PROJECT_DIR$/src/main/java/EliteAI.java" />
         <option value="$PROJECT_DIR$/src/main/java/Gameloop.java" />
         <option value="$PROJECT_DIR$/src/main/java/Mario.java" />
+        <option value="$PROJECT_DIR$/src/main/java/View.java" />
       </list>
     </option>
   </component>
@@ -321,6 +332,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.29957357" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -331,7 +343,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.27952328" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.27952328" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -547,6 +559,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/images/mario_fwd.png" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/Gameloop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="589">
+          <caret line="37" column="23" selection-start-line="37" selection-start-column="23" selection-end-line="37" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/images/marioForward.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Vector3f.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="247">
@@ -585,39 +608,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/images/mario_fwd.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/images/marioForward.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Gameloop.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Mario.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="37" column="23" selection-start-line="37" selection-start-column="23" selection-end-line="37" selection-end-column="23" />
+        <state relative-caret-position="1121">
+          <caret line="59" column="1" lean-forward="true" selection-start-line="59" selection-start-column="1" selection-end-line="59" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/View.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="83" column="7" lean-forward="true" selection-start-line="83" selection-start-column="7" selection-end-line="83" selection-end-column="7" />
+        <state relative-caret-position="420">
+          <caret line="179" column="77" selection-start-line="179" selection-start-column="77" selection-end-line="179" selection-end-column="77" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4322#4323#0" expanded="true" />
-            <element signature="e#4373#4374#0" expanded="true" />
-            <element signature="e#6018#6019#0" expanded="true" />
-            <element signature="e#6069#6070#0" expanded="true" />
-            <element signature="e#6137#6138#0" expanded="true" />
-            <element signature="e#6190#6191#0" expanded="true" />
+            <element signature="e#589#590#0" expanded="true" />
+            <element signature="e#632#633#0" expanded="true" />
+            <element signature="e#745#746#0" expanded="true" />
+            <element signature="e#798#799#0" expanded="true" />
+            <element signature="e#1006#1007#0" expanded="true" />
+            <element signature="e#1056#1057#0" expanded="true" />
+            <element signature="e#1120#1121#0" expanded="true" />
+            <element signature="e#1172#1173#0" expanded="true" />
+            <element signature="e#1314#1315#0" expanded="true" />
+            <element signature="e#1362#1363#0" expanded="true" />
+            <element signature="e#5415#5416#0" expanded="true" />
+            <element signature="e#5466#5467#0" expanded="true" />
+            <element signature="e#8771#8772#0" expanded="true" />
+            <element signature="e#8822#8823#0" expanded="true" />
+            <element signature="e#8895#8896#0" expanded="true" />
+            <element signature="e#8948#8949#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Mario.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="722">
-          <caret line="38" column="85" lean-forward="true" selection-start-line="38" selection-start-column="85" selection-end-line="38" selection-end-column="85" />
         </state>
       </provider>
     </entry>
