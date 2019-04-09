@@ -36,6 +36,7 @@ public class Gameloop implements Runnable {
 
     public void run() {
         Mario mario = new Mario(this.view, this.textures, System.nanoTime());
+        Goomba goomba = new Goomba(this.view, this.textures, System.nanoTime());
 
         Async<Texture> fireFlowerTexture = view.loadTexture("resources/images/fireFlower.png");
         Async<Integer> fireFlower1ID = view.createStaticTexturedRectangle(0f, 1.0f, 1.0f, 0f, 0.1f, fireFlowerTexture);
