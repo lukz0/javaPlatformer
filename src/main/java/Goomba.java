@@ -18,11 +18,11 @@ public class Goomba implements Movable {
                 this.translation, this.velocity, 500, timestamp);
 
         HashMap<Integer, Async<Renderer.Drawable>> states = new HashMap<>();
-        states.put(this.STATE_MOVING_RIGHT, movingRightSprite);
-        states.put(this.STATE_MOVING_LEFT, movingLeftSprite);
+        states.put(Goomba.STATE_MOVING_RIGHT, movingRightSprite);
+        states.put(Goomba.STATE_MOVING_LEFT, movingLeftSprite);
 
         this.drawableID = view.createPosUpdateableGroup(this.translation, this.velocity, states, timestamp);
-        this.currentState = this.STATE_MOVING_RIGHT;
+        this.currentState = Goomba.STATE_MOVING_RIGHT;
         view.setActiveState(this.drawableID, this.currentState);
     }
 
@@ -30,9 +30,9 @@ public class Goomba implements Movable {
     public void doMove(Gameloop gameloop, long tickStart) {
 
         //TODO: add logic regarding choice of direction
-        if(this.currentState == this.STATE_MOVING_RIGHT) {
+        if(this.currentState == Goomba.STATE_MOVING_RIGHT) {
             this.velocity = new Vector3f(-1 * (gameloop.TICKDURATION/(float)1000), 0, 0);
-            this.currentState = this.STATE_MOVING_LEFT;
+            this.currentState = Goomba.STATE_MOVING_LEFT;
         }
 
 

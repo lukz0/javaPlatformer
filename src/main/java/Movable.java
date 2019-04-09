@@ -1,3 +1,3 @@
 public interface Movable {
-    void doMove();
+    void doMove(Gameloop gameloop, long tickStart);
 }
