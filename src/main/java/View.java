@@ -43,7 +43,7 @@ class View {
     Async<Texture> loadTexture(String path) {
         return this.rend.loadTexture(path);
     }
-    Async<Texture> loadTexture(Texture.BitmapAndSize params) {
+    Async<Texture> loadTexture(Texture.ArrayAndSize params) {
         return this.rend.loadTexture(params);
     }
 

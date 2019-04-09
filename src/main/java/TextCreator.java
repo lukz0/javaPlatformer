@@ -1,93 +1,43 @@
-import org.lwjgl.BufferUtils;
-import org.lwjgl.stb.STBTTBakedChar;
-import org.lwjgl.stb.STBTTFontinfo;
-import org.lwjgl.system.MemoryStack;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
-import java.io.*;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-import java.nio.channels.FileChannel;
-
-import static org.lwjgl.stb.STBTruetype.*;
-import static org.lwjgl.system.MemoryStack.stackPush;
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 public class TextCreator {
-    private final String filepath;
+    BufferedImage bufImg;
+    Graphics g;
+    int width, height;
+    Color color;
+    Font font;
 
-    private ByteBuffer ttf;
-    private STBTTFontinfo info;
-
-    private final int ascent, descent, lineGap;
-
-    TextCreator(String filepath) {
-        this.filepath = filepath;
-        try {
-            this.ttf = ioResourceToByteBuffer(this.filepath, 512*1024);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.info = STBTTFontinfo.create();
-        if (!stbtt_InitFont(info, ttf)) {
-            System.err.println("[TEXT_CREATOR] Failed to initialize font!");
-        }
-
-        try(MemoryStack stack = stackPush()) {
-            IntBuffer pAscent = stack.mallocInt(1);
-            IntBuffer pDescent = stack.mallocInt(1);
-            IntBuffer pLineGap = stack.mallocInt(1);
-
-            stbtt_GetFontVMetrics(this.info, pAscent, pDescent, pLineGap);
-
-            this.ascent = pAscent.get(0);
-            this.descent = pDescent.get(0);
-            this.lineGap = pLineGap.get(0);
-        }
+    TextCreator(int width, int height, Color color) {
+        this.color = color;
+        this.font = new Font("Consolas", Font.PLAIN, (int)(height/1.5f));
+        this.width = width;
+        this.height = height;
+    }
+    TextCreator(int width, int height, Color color, String fontname) {
+        this.color = color;
+        this.font = new Font(fontname, Font.PLAIN, (int)(height/1.5f));
+        this.width = width;
+        this.height = height;
     }
 
-    Texture.BitmapAndSize createBitmap() {
-        final int BITMAP_W = 1000, BITMAP_H = 1000;
-        ByteBuffer bitmap = BufferUtils.createByteBuffer(BITMAP_W*BITMAP_H);
-        STBTTBakedChar.Buffer cdata = STBTTBakedChar.malloc(96);
-        stbtt_BakeFontBitmap(this.ttf, 100, bitmap, BITMAP_W, BITMAP_H, 32, cdata);
-        return new Texture.BitmapAndSize(bitmap, BITMAP_W, BITMAP_H);
+    Async<Texture> renderString(View v, String s) {
+        this.bufImg = new BufferedImage(width, height, TYPE_INT_ARGB);
+        this.g = bufImg.getGraphics();
+        this.g.setColor(this.color);
+        this.g.setFont(this.font);
+        this.g.drawString(s, 0, (int)(this.height*(3/(float)4)));
+        int[] pixelValues = new int[this.width*this.height];
+        this.bufImg.getRGB(0, 0, this.width, this.height, pixelValues, 0, this.width);
+        /*
+        JFrame frame = new JFrame();
+        frame.setSize(500, 500);
+        frame.setVisible(true);
+        frame.getGraphics().drawImage(this.bufImg, 10, 10, frame);
+        */
+        return v.loadTexture(new Texture.ArrayAndSize(pixelValues, this.width, this.height));
     }
-
-    public static ByteBuffer ioResourceToByteBuffer(String resource, int bufferSize) throws IOException {
-        ByteBuffer buffer;
-        File file = new File(resource);
-            FileInputStream fis = new FileInputStream(file);
-            FileChannel fc = fis.getChannel();
-            buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
-            fc.close();
-            fis.close();
-        return buffer;
-    }
-
-    /*private ByteBuffer ioResourceToByteBuffer() {
-        try {
-            FileInputStream fi = new FileInputStream(this.filepath);
-            FileChannel fChan = fi.getChannel();
-            try {
-                ByteBuffer mBuf = ByteBuffer.allocate((int)fChan.size());
-                fChan.read(mBuf);
-                mBuf.rewind();
-                fChan.close();
-                fi.close();
-                return mBuf;
-            } catch (IOException e) {
-                e.printStackTrace();
-                try {
-                    fChan.close();
-                    fi.close();
-                } catch (IOException e2) {
-                    e2.printStackTrace();
-                }
-                return null;
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }*/
 }

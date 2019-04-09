@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
@@ -41,6 +42,10 @@ public class Gameloop implements Runnable {
         Async<Texture> fireFlowerTexture = view.loadTexture("resources/images/fireFlower.png");
         Async<Integer> fireFlower1ID = view.createStaticTexturedRectangle(0f, 1.0f, 1.0f, 0f, 0.1f, fireFlowerTexture);
         Async<Integer> fireFlower2ID = view.createStaticTexturedRectangle(15.0f, 16.0f, 1.0f, 0f, 0.1f, fireFlowerTexture);
+
+        TextCreator tc = new TextCreator(1600, 100, Color.WHITE, "Arial");
+        Async<Texture> stringTex = tc.renderString(this.view, "the quick brown fox jumped over the lazy dog");
+        Async<Integer> textSprite = view.createStaticTexturedRectangle(0, 16, 9, 8, -0.7f, stringTex);
 
         while (true) {
             long tickStart = System.nanoTime();

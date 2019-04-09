@@ -12,21 +12,21 @@ public class Texture {
     public Texture(String path) {
         textureID = load(path);
     }
-    public Texture(BitmapAndSize parameters) {
+    public Texture(ArrayAndSize parameters) {
         this.textureID = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, this.textureID);
         this.width = parameters.width;
         this.height = parameters.height;
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, this.width, this.height, 0, GL_ALPHA, GL_UNSIGNED_BYTE, parameters.bitmap);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this.width, this.height, 0, GL_BGRA, GL_UNSIGNED_BYTE, parameters.array);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     }
 
-    static class BitmapAndSize {
+    static class ArrayAndSize {
         final int width, height;
-        final ByteBuffer bitmap;
-        BitmapAndSize(ByteBuffer bitmap, int width, int height) {
-            this.bitmap = bitmap;
+        final int[] array;
+        ArrayAndSize(int[] array, int width, int height) {
+            this.array = array;
             this.width = width;
             this.height = height;
         }

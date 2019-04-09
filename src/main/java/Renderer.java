@@ -721,9 +721,9 @@ public class Renderer implements Runnable {
 
     static class LoadTextureFromBitmapTask implements Task {
         ArrayBlockingQueue<Texture> callbackQueue = new ArrayBlockingQueue<>(1);
-        private final Texture.BitmapAndSize params;
+        private final Texture.ArrayAndSize params;
 
-        LoadTextureFromBitmapTask(Texture.BitmapAndSize params) {
+        LoadTextureFromBitmapTask(Texture.ArrayAndSize params) {
             this.params = params;
         }
 
@@ -735,7 +735,7 @@ public class Renderer implements Runnable {
             }
         }
     }
-    Async<Texture> loadTexture(Texture.BitmapAndSize params) {
+    Async<Texture> loadTexture(Texture.ArrayAndSize params) {
         LoadTextureFromBitmapTask tsk = new LoadTextureFromBitmapTask(params);
         try {
             this.taskQueue.put(tsk);

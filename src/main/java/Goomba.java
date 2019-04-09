@@ -31,7 +31,6 @@ public class Goomba implements Movable {
 
         //TODO: add logic regarding choice of direction
         Vector3f nextPos = this.translation.add(this.velocity);
-        System.out.println("nextpos:" + nextPos.values[0]);
         if(nextPos.values[0] < 0) {
             this.velocity = new Vector3f(3 * (gameloop.TICKDURATION/(float)1000), 0, 0);
             this.currentState = Goomba.STATE_MOVING_RIGHT;
