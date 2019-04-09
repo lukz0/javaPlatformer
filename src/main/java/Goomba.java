@@ -14,7 +14,7 @@ public class Goomba implements Movable {
 
         Async<Renderer.Drawable> movingRightSprite = view.getNewAnimatedTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("primeGoomb_fwd.png"),
                 this.translation, this.velocity, 500, timestamp);
-        Async<Renderer.Drawable> movingLeftSprite = view.getNewAnimatedTexturedRectangle(1, 0, 1, 0, -0.5f, textures.get("primeGoomb_fwd.png"),
+        Async<Renderer.Drawable> movingLeftSprite = view.getNewAnimatedTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("primeGoomb_fwd.png"),
                 this.translation, this.velocity, 500, timestamp);
 
         HashMap<Integer, Async<Renderer.Drawable>> states = new HashMap<>();
