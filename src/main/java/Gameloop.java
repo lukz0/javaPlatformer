@@ -26,7 +26,6 @@ public class Gameloop implements Runnable {
 
     public boolean holdingLeft = false;
     public boolean holdingRight = false;
-    public float xTranslation = 0;
 
     public void start() {
         if (thread == null) {
