@@ -18,4 +18,17 @@ class Vector3f {
     }
 
     static Vector3f EMPTY = new Vector3f(0, 0, 0);
+
+    void setX(float x) {
+        this.values[0] = x;
+    }
+
+    void setY(float y) {
+        this.values[1] = y;
+    }
+
+    void setZ(float z) {
+        this.values[2] = z;
+    }
+
 }
