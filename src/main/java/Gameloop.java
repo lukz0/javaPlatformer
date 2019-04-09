@@ -51,6 +51,7 @@ public class Gameloop implements Runnable {
             // Use tickStart as timestamp argument to View methods
 
             mario.doMove(this, tickStart);
+            goomba.doMove(this, tickStart);
 
             long tickEnd = System.nanoTime();
             try {
