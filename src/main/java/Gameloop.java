@@ -47,16 +47,7 @@ public class Gameloop implements Runnable {
         Async<Integer> fireFlower1ID = view.createStaticTexturedRectangle(0f, 1.0f, 1.0f, 0f, 0.1f, fireFlowerTexture);
         Async<Integer> fireFlower2ID = view.createStaticTexturedRectangle(15.0f, 16.0f, 1.0f, 0f, 0.1f, fireFlowerTexture);
 
-        TextCreator tc = new TextCreator(1600*4, 100*4, Color.WHITE, "Arial");
-        Async<Texture> stringTex = tc.renderString(this.view, "the quick brown fox jumped over the lazy dog");
-        TextCreator tc2 = new TextCreator(1500*4, 100*2, Color.BLACK, "Arial");
-        Async<Texture> beeString = tc2.renderString(this.view, "According to all known laws of aviation there is no way a bee should be able to fly.");
-        Async<Texture> beeString2 = tc2.renderString(this.view, "Its wings are too small to get its fat little body off the ground.");
-        Async<Texture> beeString3 = tc2.renderString(this.view, "The bee, of course, flies anyways. Because bees don't care what humans think is impossible.");
-        Async<Integer> textSprite = view.createStaticTexturedRectangle(0, 16, 9, 8, -0.7f, stringTex);
-        Async<Integer> textSprite2 = view.createStaticTexturedRectangle(1, 16, 5, 4.5f, -0.7f, beeString);
-        Async<Integer> textSprite3 = view.createStaticTexturedRectangle(1, 16, 4.5f, 4, -0.7f, beeString2);
-        Async<Integer> textSprite4 = view.createStaticTexturedRectangle(1, 16, 4, 3.5f, -0.7f, beeString3);
+        loadChunk();
 
         while (true) {
             long tickStart = System.nanoTime();
@@ -80,25 +71,29 @@ public class Gameloop implements Runnable {
         }
     }
 
-    // TODO
-    /*void loadChunk() {
+    void loadChunk() {
         Chunk cnk = new Chunk();
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 9; x++) {
                 AbstractBlock block = cnk.blockList.get(y).get(x);
                 if (block != null) {
+                    System.out.println(block.isStatic);
                     if (block.isStatic) {
                         Async<Texture> texture;
-                        if (this.textures.containsKey(((StaticAbstractBlock)block).texturePath)) {
-                            texture = this.textures.get(((StaticAbstractBlock)block).texturePath);
+                        String texturePath = ((StaticAbstractBlock)block).texturePath;
+                        if (this.textures.containsKey(texturePath)) {
+                            texture = this.textures.get(texturePath);
+                        } else {
+                            texture = this.view.loadTexture(texturePath);
+                            this.textures.put(texturePath, texture);
                         }
-                        view.createTexturedRectangle(x, x+1, y+1, y, 0, );
-                        view.createTexturedRectangle()
+                        view.createTexturedRectangle(x, x+1, y+1, y, 0, texture,
+                                Vector3f.EMPTY, Vector3f.EMPTY, System.nanoTime());
                     }
                 }
             }
         }
-    }*/
+    }
 
     void runKeyEventQueue() {
         if (!this.keyEventQueue.isEmpty()) {

@@ -19,13 +19,13 @@ class Mario {
         /*if (!textures.containsKey("mario_jump.png")) {
             textures.put("mario_jump.png", view.loadTexture("resources/images/mario_jump.png"));
         }*/
-        Async<Renderer.Drawable> movingRightSprite = view.getNewAnimatedTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("mario_right.png"),
+        Async<Renderer.Drawable> movingRightSprite = view.getNewAnimatedTexturedRectangle(0, 1, 2, 1, -0.5f, textures.get("mario_right.png"),
                 this.translation, this.velocity, 500, timestamp);
-        Async<Renderer.Drawable> movingLeftSprite = view.getNewAnimatedTexturedRectangle(1, 0, 1, 0, -0.5f, textures.get("mario_right.png"),
+        Async<Renderer.Drawable> movingLeftSprite = view.getNewAnimatedTexturedRectangle(1, 0, 2, 1, -0.5f, textures.get("mario_right.png"),
                 this.translation, this.velocity, 500, timestamp);
-        Async<Renderer.Drawable> marioIdleRight = view.getNewTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("mario_stand.png"),
+        Async<Renderer.Drawable> marioIdleRight = view.getNewTexturedRectangle(0, 1, 2, 1, -0.5f, textures.get("mario_stand.png"),
                 this.translation, this.velocity, timestamp);
-        Async<Renderer.Drawable> marioIdleLeft = view.getNewTexturedRectangle(1, 0, 1, 0, -0.5f, textures.get("mario_stand.png"),
+        Async<Renderer.Drawable> marioIdleLeft = view.getNewTexturedRectangle(1, 0, 2, 1, -0.5f, textures.get("mario_stand.png"),
                 this.translation, this.velocity, timestamp);
 
         HashMap<Integer, Async<Renderer.Drawable>> states = new HashMap<>();

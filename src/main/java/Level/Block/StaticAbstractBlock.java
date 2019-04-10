@@ -1,6 +1,8 @@
 package Level.Block;
 
 public abstract class StaticAbstractBlock extends AbstractBlock {
-    public boolean isStatic = true;
+    StaticAbstractBlock() {
+        this.isStatic = true;
+    }
     public String texturePath;
 }
