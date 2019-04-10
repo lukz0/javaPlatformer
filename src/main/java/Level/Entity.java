@@ -1,4 +1,7 @@
 package Level;
 
-public class Entity {
+import Game.Gameloop;
+
+public abstract class Entity {
+    public abstract void doMove(Gameloop gameloop, long tickStart);
 }

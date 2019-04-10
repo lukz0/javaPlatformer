@@ -1,8 +1,5 @@
 package Game;
 
-import Game.Model;
-import Game.Renderer;
-
 import java.awt.image.BufferedImage;
 
 import static org.lwjgl.opengl.GL45.*;

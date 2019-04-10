@@ -1,15 +1,17 @@
 package Game;
 
+import Level.Entity;
+
 import java.util.HashMap;
 
-public class Goomba implements Movable {
+public class Goomba extends Entity implements Movable {
     private static final int STATE_MOVING_RIGHT = 1;
     private static final int STATE_MOVING_LEFT = 2;
     Async<Integer> drawableID;
     Vector3f translation = new Vector3f(16, 0, 0), velocity = new Vector3f(1 * (Gameloop.TICKDURATION/(float)1000), 0, 0);;
     int currentState;
 
-    Goomba(View view, HashMap<String, Async<Texture>> textures, long timestamp) {
+    public Goomba(View view, HashMap<String, Async<Texture>> textures, long timestamp) {
         if (!textures.containsKey("primeGoomb_fwd.png")) {
             textures.put("primeGoomb_fwd.png", view.loadTexture("resources/images/primeGoomb_fwd.png"));
         }

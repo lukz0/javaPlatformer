@@ -1,9 +1,5 @@
 package Game;
 
-import Game.Async;
-import Game.Renderer;
-import Game.Texture;
-import Game.Vector3f;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWWindowCloseCallback;
 
@@ -72,7 +68,7 @@ public class View {
      * The z_index has to be BETWEEN 1.0f and -1.0f to be visible, smaller z_index means in front of
      * Can be deleted by calling deleteDrawable
      */
-    Async<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long currentTimeNanos) {
+    public Async<Integer> createTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long currentTimeNanos) {
         return this.addToStage(this.getNewTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeNanos));
     }
 

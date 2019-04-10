@@ -12,8 +12,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Gameloop implements Runnable {
-    static final float WORLD_LAYER = 0f;
-    static final float SKY_LAYER = 0.9f;
+    public static final float WORLD_LAYER = 0f;
+    public static final float SKY_LAYER = 0.9f;
 
     final Controller controller;
     final View view;
@@ -43,17 +43,8 @@ public class Gameloop implements Runnable {
     }
 
     public void run() {
-        Mario mario = new Mario(this.view, this.textures, System.nanoTime());
-        Goomba goomba = new Goomba(this.view, this.textures, System.nanoTime());
 
-        Async<Texture> fireFlowerTexture = view.loadTexture("resources/images/fireFlower.png");
-        Async<Integer> fireFlower1ID = view.createStaticTexturedRectangle(0f, 1.0f, 1.0f, 0f, 0.1f, fireFlowerTexture);
-        Async<Integer> fireFlower2ID = view.createStaticTexturedRectangle(15.0f, 16.0f, 1.0f, 0f, 0.1f, fireFlowerTexture);
-
-        loadChunk();
-
-        /*Async<Texture> background1 = this.view.loadTexture("resources/images/backgrounds/plainsSky.png");
-        this.view.createBackground(Gameloop.SKY_LAYER, background1, new Vector3f(0, 0, 0), new Vector3f(0.01f, 0, 0), System.nanoTime(), 64f/288f);*/
+        Level lvl = loadChunk();
 
         while (true) {
             long tickStart = System.nanoTime();
@@ -63,8 +54,7 @@ public class Gameloop implements Runnable {
             // TODO: game logic
             // Use tickStart as timestamp argument to View methods
 
-            mario.doMove(this, tickStart);
-            goomba.doMove(this, tickStart);
+            lvl.doPhysics(this, tickStart);
 
             long tickEnd = System.nanoTime();
             try {
@@ -77,7 +67,7 @@ public class Gameloop implements Runnable {
         }
     }
 
-    void loadChunk() {
+    Level loadChunk() {
         Chunk cnk = Chunk.groundChunk();
         ArrayList<Chunk> chunkList = new ArrayList<Chunk>();
         chunkList.add(cnk);
@@ -85,26 +75,8 @@ public class Gameloop implements Runnable {
         ArrayList<Level.LevelBackground> backgrounds = new ArrayList<>();
         backgrounds.add(background1);
         Level lvl = new Level(chunkList, backgrounds);
-        lvl.loadLevel(this.view);
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
-                AbstractBlock block = cnk.blockList.get(y).get(x);
-                if (block != null) {
-                    if (block.isStatic) {
-                        Async<Texture> texture;
-                        String texturePath = ((StaticAbstractBlock)block).texturePath;
-                        if (this.textures.containsKey(texturePath)) {
-                            texture = this.textures.get(texturePath);
-                        } else {
-                            texture = this.view.loadTexture(texturePath);
-                            this.textures.put(texturePath, texture);
-                        }
-                        view.createTexturedRectangle(x, x+1, y+1, y, Gameloop.WORLD_LAYER, texture,
-                                Vector3f.EMPTY, Vector3f.EMPTY, System.nanoTime());
-                    }
-                }
-            }
-        }
+        lvl.loadLevel(this.view, System.nanoTime());
+        return lvl;
     }
 
     void runKeyEventQueue() {

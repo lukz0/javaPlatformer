@@ -1,11 +1,11 @@
 package Game;
 
-import Game.Async;
-import Game.Gameloop;
+
+import Level.Entity;
 
 import java.util.HashMap;
 
-class Mario {
+public class Mario extends Entity {
     private static final int STATE_MOVING_RIGHT = 1;
     private static final int STATE_MOVING_LEFT = 2;
     private static final int STATE_IDLE_RIGHT = 3;
@@ -14,7 +14,7 @@ class Mario {
     Vector3f translation = Vector3f.EMPTY, velocity = Vector3f.EMPTY;
     int currentState;
 
-    Mario(View view, HashMap<String, Async<Texture>> textures, long timestamp) {
+    public Mario(View view, HashMap<String, Async<Texture>> textures, long timestamp) {
         if (!textures.containsKey("mario_right.png")) {
             textures.put("mario_right.png", view.loadTexture("resources/images/mario_right.png"));
         }
@@ -47,13 +47,13 @@ class Mario {
     public void doMove(Gameloop gameloop, long tickStart) {
         if (gameloop.holdingLeft != gameloop.holdingRight) {
             if (gameloop.holdingLeft) {
-                this.velocity = new Vector3f(-3 * (gameloop.TICKDURATION/(float)1000), 0, 0);
+                this.velocity = new Vector3f(-3 * (Gameloop.TICKDURATION/(float)1000), 0, 0);
                 if (this.currentState != this.STATE_MOVING_LEFT) {
                     this.currentState = this.STATE_MOVING_LEFT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 }
             } else {
-                this.velocity = new Vector3f(3 * (gameloop.TICKDURATION/(float)1000), 0, 0);
+                this.velocity = new Vector3f(3 * (Gameloop.TICKDURATION/(float)1000), 0, 0);
                 if (this.currentState != this.STATE_MOVING_RIGHT) {
                     this.currentState = this.STATE_MOVING_RIGHT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);

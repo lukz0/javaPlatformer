@@ -1,16 +1,9 @@
 package Level;
 
-import Game.Async;
-import Game.Texture;
-import Game.Vector3f;
-import Game.View;
+import Game.*;
 
-import java.time.Clock;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Vector;
 
 public class Level {
     final ArrayList<Chunk> chunks;
@@ -28,18 +21,29 @@ public class Level {
         }
     }
 
-    public void loadLevel(View view) {
+    public void loadLevel(View view, long timestamp) {
         for (LevelBackground b : backgrounds) {
             if (!textures.get().containsKey(b.imagePath)) {
                 textures.get().put(b.imagePath, view.loadTexture(b.imagePath));
             }
             b.spriteID = view.createBackground(b.z_index, textures.get().get(b.imagePath), Vector3f.EMPTY, Vector3f.EMPTY, System.nanoTime(), b.aspectRatio);
+            this.entities.add(new Mario(view, textures.get(), timestamp));
+            this.entities.add(new Goomba(view, textures.get(), timestamp));
+            loadChunk(0, view, timestamp);
         }
     }
 
     public void unloadLevel(View view) {
         backgrounds.forEach((background) -> view.deleteDrawable(background.spriteID));
         textures.get().forEach((key, value) -> view.unloadTexture(value));
+    }
+
+    private void loadChunk(int i, View view, long timestamp) {
+        this.chunks.get(i).load(view, this.textures.get(), timestamp);
+    }
+
+    public void doPhysics(Gameloop gameloop, long timestamp) {
+        this.entities.forEach((entity) -> entity.doMove(gameloop, timestamp));
     }
 
     public static class LevelBackground {

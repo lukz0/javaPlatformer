@@ -1,7 +1,5 @@
 package Game;
 
-import Game.Async;
-import Game.Cheater;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWWindowCloseCallback;
 
