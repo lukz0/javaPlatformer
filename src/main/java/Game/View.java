@@ -112,7 +112,7 @@ public class View {
     /**
      * For updating position of multiple Drawables implementing PosUpdateable at once
      */
-    void updatePositions(ArrayList<Async<Integer>> ids, Vector3f translation, Vector3f velocity, long timestamp) {
+    public void updatePositions(ArrayList<Async<Integer>> ids, Vector3f translation, Vector3f velocity, long timestamp) {
         ids.forEach((id) -> this.updatePosition(id, translation, velocity, timestamp));
     }
 
