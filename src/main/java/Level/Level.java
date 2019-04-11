@@ -39,7 +39,7 @@ public class Level {
     }
 
     private void loadChunk(int i, View view, long timestamp) {
-        this.chunks.get(i).load(view, this.textures.get(), timestamp);
+        this.chunks.get(i).loadChunk(view, this.textures.get(), timestamp);
     }
 
     public void doPhysics(Gameloop gameloop, long timestamp) {

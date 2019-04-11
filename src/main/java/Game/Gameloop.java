@@ -67,8 +67,16 @@ public class Gameloop implements Runnable {
         }
     }
 
+    // TODO: add a better way to load Levels
     Level loadChunk() {
-        Chunk cnk = Chunk.groundChunk();
+        Chunk cnk = new Chunk();
+        ArrayList<String> blockList = new ArrayList<>();
+        for (int y = 0; y < 9; y++) {
+            for (int x = 0; x < 9; x++) {
+                blockList.add((y == 0) ? "Ground2" : null);
+            }
+        }
+        cnk.loadStringList(blockList.stream().toArray(String[]::new));
         ArrayList<Chunk> chunkList = new ArrayList<Chunk>();
         chunkList.add(cnk);
         Level.LevelBackground background1 = new Level.LevelBackground("resources/images/backgrounds/plainsSky.png", 64f/288f, Gameloop.SKY_LAYER);

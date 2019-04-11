@@ -2,9 +2,11 @@ package Level;
 
 import Game.*;
 import Level.Block.AbstractBlock;
+import Level.Block.BlockList;
 import Level.Block.Ground;
 import Level.Block.StaticAbstractBlock;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
@@ -19,14 +21,33 @@ public class Chunk {
             }
         }
     }
-    public static Chunk groundChunk() {
-        Chunk cnk = new Chunk();
-        for (int x = 0; x < 9; x++) {
-            cnk.blockList.get(0).set(x, new Ground());
+    public void loadStringList(String[] names) {
+        if (names.length != 81) {
+            System.err.println("names.length should equal 81, instead is equals: ".concat(Integer.toString(names.length)));
+            return;
         }
-        return cnk;
+        for (int y = 0; y < 9; y++) {
+            for (int x = 0; x < 9; x++) {
+                try {
+                    String name = names[x+y*9];
+                    if (name != null) {
+                        this.blockList.get(y).set(x, (AbstractBlock) (BlockList.getClassForName(name).getDeclaredConstructor().newInstance()));
+                    } else {
+                        this.blockList.get(y).set(x, null);
+                    }
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
-    public void load(View view, HashMap<String, Async<Texture>> textures, long timestamp) {
+    public void loadChunk(View view, HashMap<String, Async<Texture>> textures, long timestamp) {
         for (int y = 0; y < 9; y++) {
             ArrayList<AbstractBlock> row = this.blockList.get(y);
             for (int x = 0; x < 9; x++) {
