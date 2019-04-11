@@ -11,6 +11,16 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl:natives-linux:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-assimp:natives-linux:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-bgfx:natives-linux:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-glfw:natives-linux:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-nanovg:natives-linux:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-nuklear:natives-linux:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-openal:natives-linux:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-opengl:natives-linux:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-par:natives-linux:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-stb:natives-linux:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-assimp:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-bgfx:3.2.1" level="project" />
