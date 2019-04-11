@@ -4,6 +4,7 @@ import Level.Block.AbstractBlock;
 import Level.Block.StaticAbstractBlock;
 import Level.Chunk;
 import Level.Level;
+import Level.Tilemap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,7 +83,7 @@ public class Gameloop implements Runnable {
         Level.LevelBackground background1 = new Level.LevelBackground("resources/images/backgrounds/plainsSky.png", 64f/288f, Gameloop.SKY_LAYER);
         ArrayList<Level.LevelBackground> backgrounds = new ArrayList<>();
         backgrounds.add(background1);
-        Level lvl = new Level(chunkList, backgrounds);
+        Level lvl = new Level(backgrounds, new Tilemap(2, Temporary.Temporary.doubleGroundStringArray()));
         lvl.loadLevel(this.view, System.nanoTime());
         return lvl;
     }
