@@ -26,6 +26,7 @@ public class Temporary {
                 tileList.add(null);
             }
         }
+        tileList.set(2+2*9, "MarioSpawnTile");
         return tileList.toArray(new String[]{});
     }
 }

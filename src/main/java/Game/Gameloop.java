@@ -47,8 +47,8 @@ public class Gameloop implements Runnable {
 
         Level lvl = loadChunk();
 
+        long tickStart = System.nanoTime();
         while (true) {
-            long tickStart = System.nanoTime();
             runKeyEventQueue();
             runCommandQueue();
 
@@ -59,9 +59,16 @@ public class Gameloop implements Runnable {
 
             long tickEnd = System.nanoTime();
             try {
-                long sleepDur = TICKDURATION-((tickEnd-tickStart)/1000000);
-                sleepDur = (sleepDur < 0) ? 0 : sleepDur;
-                Thread.sleep(sleepDur);
+                long sleepDur = TICKDURATION*1000000-(tickEnd-tickStart);
+                if (sleepDur < 0) {
+                    System.out.println("[GAMELOOP] Can't keep up!");
+                    sleepDur = 0;
+                } else {
+                    System.out.println("[GAMELOOP] tickEnd: ".concat(Long.toString(tickEnd)).concat("\ntickStart: ").concat(Long.toString(tickStart)));
+                }
+                MiliAndNano miliAndNano = new MiliAndNano(sleepDur);
+                Thread.sleep(miliAndNano.mili, (int)miliAndNano.nano);
+                tickStart = System.nanoTime();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -144,6 +151,14 @@ public class Gameloop implements Runnable {
             this.holdingRight = true;
         } else if (key == GLFW_KEY_RIGHT && action == GLFW_RELEASE) {
             this.holdingRight = false;
+        }
+    }
+    static class MiliAndNano {
+        public long mili;
+        public long nano;
+        MiliAndNano(long nano) {
+            this.nano = (nano%1000000);
+            this.mili = (nano/1000000);
         }
     }
 }

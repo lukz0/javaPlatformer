@@ -47,13 +47,13 @@ public class Mario extends Entity {
     public void doMove(Gameloop gameloop, long tickStart) {
         if (gameloop.holdingLeft != gameloop.holdingRight) {
             if (gameloop.holdingLeft) {
-                this.velocity = new Vector3f(-3 * (Gameloop.TICKDURATION/(float)1000), 0, 0);
+                this.velocity = new Vector3f(-1 * (Gameloop.TICKDURATION/(float)1000), 0, 0);
                 if (this.currentState != this.STATE_MOVING_LEFT) {
                     this.currentState = this.STATE_MOVING_LEFT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 }
             } else {
-                this.velocity = new Vector3f(3 * (Gameloop.TICKDURATION/(float)1000), 0, 0);
+                this.velocity = new Vector3f(1 * (Gameloop.TICKDURATION/(float)1000), 0, 0);
                 if (this.currentState != this.STATE_MOVING_RIGHT) {
                     this.currentState = this.STATE_MOVING_RIGHT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
@@ -72,6 +72,9 @@ public class Mario extends Entity {
                 }
             //}
         }
+
+        System.out.println("[MARIO] velocity: ".concat(Float.toString(this.velocity.values[0])));
+        System.out.println("[Mario] translation: ".concat(Float.toString(this.translation.values[0])));
 
         // TODO: replace when we add collisions
         this.translation = this.translation.add(this.velocity);
