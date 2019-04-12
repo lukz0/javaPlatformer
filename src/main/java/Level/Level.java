@@ -63,7 +63,7 @@ public class Level {
     public void doPhysics(Gameloop gameloop, long timestamp) {
         this.chunks.forEach(cnk -> cnk.moveEntities(this.chunks, gameloop, timestamp));
         if (this.player != null) {
-            this.chunks.forEach(cnk -> cnk.translateChunk(gameloop.view, timestamp, new Vector3f(-(float)this.player.xPos+8+cnk.chunkIndex*9, 0, 0), new Vector3f(-(float)this.player.xVelocity, 0, 0)));
+            this.chunks.forEach(cnk -> cnk.translateChunk(gameloop.view, timestamp, new Vector3f(-(float)this.player.xPos+7.5f+cnk.chunkIndex*9, 0, 0), new Vector3f(-(float)this.player.xVelocity, 0, 0)));
         }
     }
 
