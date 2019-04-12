@@ -87,7 +87,7 @@ public class Mario extends Entity {
         // TODO: changing chunks when translation < 0 or translation > 9
         this.xPos += this.xVelocity;
 
-        this.velocity = new Vector3f((float)this.xVelocity, (float)this.yVelocity, 0);
+        this.velocity = new Vector3f(0, (float)this.yVelocity, 0);
         this.translation = new Vector3f((float)8, (float)yPos, 0);
         gameloop.view.updatePosition(this.drawableID, this.translation, this.velocity, tickStart);
     }
