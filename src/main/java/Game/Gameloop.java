@@ -9,6 +9,7 @@ import Level.Tilemap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -61,17 +62,10 @@ public class Gameloop implements Runnable {
             try {
                 long sleepDur = TICKDURATION*1000000-(tickEnd-tickStart);
                 if (sleepDur < 0) {
-                    //System.out.println("[GAMELOOP] Can't keep up!");
                     sleepDur = 0;
                 }
-                //System.out.println("Tickstart: " + tickStart);
-                //System.out.println("Tickend: " + tickEnd);
-                MiliAndNano miliAndNano = new MiliAndNano(sleepDur);
-                System.out.println(sleepDur);
-                System.out.println("Before sleep: " + System.nanoTime());
-                Thread.sleep(miliAndNano.mili, (int)miliAndNano.nano);
-                System.out.println("After sleep: " + System.nanoTime());
-                tickStart = System.nanoTime();
+                TimeUnit.NANOSECONDS.sleep(sleepDur);
+                tickStart = tickEnd+sleepDur;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -154,14 +148,6 @@ public class Gameloop implements Runnable {
             this.holdingRight = true;
         } else if (key == GLFW_KEY_RIGHT && action == GLFW_RELEASE) {
             this.holdingRight = false;
-        }
-    }
-    static class MiliAndNano {
-        public long mili;
-        public long nano;
-        MiliAndNano(long nano) {
-            this.nano = (nano%1000000);
-            this.mili = (nano/1000000);
         }
     }
 }
