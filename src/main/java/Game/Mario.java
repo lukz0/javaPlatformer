@@ -22,6 +22,8 @@ public class Mario extends Entity {
         this.chunkIndex = chunkIndex;
         this.height = 1;
         this.width = 1;
+        this.xVelocity = 0;
+        this.yVelocity = 0;
         if (!textures.containsKey("mario_right.png")) {
             textures.put("mario_right.png", view.loadTexture("resources/images/mario_right.png"));
         }
@@ -52,23 +54,22 @@ public class Mario extends Entity {
     }
 
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
-        double xSpeed;
         if (gameloop.holdingLeft != gameloop.holdingRight) {
             if (gameloop.holdingLeft) {
-                xSpeed = -3 * (Gameloop.TICKDURATION/(double)1000);
+                this.xVelocity = -3 * (Gameloop.TICKDURATION/(double)1000);
                 if (this.currentState != this.STATE_MOVING_LEFT) {
                     this.currentState = this.STATE_MOVING_LEFT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 }
             } else {
-                xSpeed = 3 * (Gameloop.TICKDURATION/(double)1000);
+                this.xVelocity = 3 * (Gameloop.TICKDURATION/(double)1000);
                 if (this.currentState != this.STATE_MOVING_RIGHT) {
                     this.currentState = this.STATE_MOVING_RIGHT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 }
             }
         } else {
-            xSpeed = 0;
+            this.xVelocity = 0;
             if(this.currentState == this.STATE_MOVING_LEFT) {
                 this.currentState = this.STATE_IDLE_LEFT;
                 gameloop.view.setActiveState(this.drawableID, this.currentState);
@@ -82,9 +83,11 @@ public class Mario extends Entity {
         //System.out.println("[MARIO] velocity: ".concat(Float.toString(this.velocity.values[0])));
         //System.out.println("[Mario] translation: ".concat(Float.toString(this.translation.values[0])));
 
-        // TODO: replace when we add collisions
-        this.xPos += xSpeed;
-        this.velocity = new Vector3f((float)xSpeed, 0, 0);
+        // TODO: add collision detection before adding velocity to position
+        // TODO: changing chunks when translation < 0 or translation > 9
+        this.xPos += this.xVelocity;
+
+        this.velocity = new Vector3f((float)this.xVelocity, (float)this.yVelocity, 0);
         this.translation = new Vector3f((float)xPos, (float)yPos, 0);
         gameloop.view.updatePosition(this.drawableID, this.translation, this.velocity, tickStart);
     }
