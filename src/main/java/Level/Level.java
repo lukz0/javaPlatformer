@@ -45,9 +45,6 @@ public class Level {
                 textures.get().put(b.imagePath, view.loadTexture(b.imagePath));
             }
             b.spriteID = view.createBackground(b.z_index, textures.get().get(b.imagePath), Vector3f.EMPTY, b.tickTranslation, System.nanoTime(), b.aspectRatio);
-            // TODO, automatic chunk loading and entities from non-static self-disabling blocks
-            //this.entities.add(new Mario(view, textures.get(), timestamp));
-            //this.entities.add(new Goomba(view, textures.get(), timestamp));
             loadChunk(0, view, timestamp);
             loadChunk(1, view, timestamp);
             this.chunks.get(1).translateChunk(view, timestamp, new Vector3f(9, 0, 0), Vector3f.EMPTY);
@@ -65,7 +62,9 @@ public class Level {
 
     public void doPhysics(Gameloop gameloop, long timestamp) {
         this.chunks.forEach(cnk -> cnk.moveEntities(this.chunks, gameloop, timestamp));
-        //this.entities.forEach((entity) -> entity.doMove(gameloop, timestamp));
+        if (this.player != null) {
+            this.chunks.forEach(cnk -> cnk.translateChunk(gameloop.view, timestamp, new Vector3f(-(float)this.player.xPos+8+cnk.chunkIndex*9, 0, 0), new Vector3f(-(float)this.player.xVelocity, 0, 0)));
+        }
     }
 
     public void setPlayer(Mario player) {

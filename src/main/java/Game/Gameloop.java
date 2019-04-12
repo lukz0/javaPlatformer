@@ -19,7 +19,7 @@ public class Gameloop implements Runnable {
     public static final float SKY_LAYER = 0.9f;
 
     final Controller controller;
-    final View view;
+    public final View view;
 
     HashMap<String, Async<Texture>> textures = new HashMap<>();
 

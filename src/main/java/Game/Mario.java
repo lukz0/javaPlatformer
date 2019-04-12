@@ -88,7 +88,7 @@ public class Mario extends Entity {
         this.xPos += this.xVelocity;
 
         this.velocity = new Vector3f((float)this.xVelocity, (float)this.yVelocity, 0);
-        this.translation = new Vector3f((float)xPos, (float)yPos, 0);
+        this.translation = new Vector3f((float)8, (float)yPos, 0);
         gameloop.view.updatePosition(this.drawableID, this.translation, this.velocity, tickStart);
     }
 }
