@@ -8,6 +8,7 @@ import Level.Tilemap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Vector;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -74,7 +75,7 @@ public class Gameloop implements Runnable {
 
     // TODO: add a better way to load Levels
     Level loadChunk() {
-        Level.LevelBackground background1 = new Level.LevelBackground("resources/images/backgrounds/plainsSky.png", 64f/288f, Gameloop.SKY_LAYER);
+        Level.LevelBackground background1 = new Level.LevelBackground("resources/images/backgrounds/plainsSky.png", 64f/288f, Gameloop.SKY_LAYER, 0, new Vector3f(0.01f, 0, 0));
         ArrayList<Level.LevelBackground> backgrounds = new ArrayList<>();
         backgrounds.add(background1);
         Level lvl = new Level(backgrounds, new Tilemap(2, Temporary.Temporary.doubleGroundStringArray()));

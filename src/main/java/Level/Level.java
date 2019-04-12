@@ -55,7 +55,7 @@ public class Level {
             if (!textures.get().containsKey(b.imagePath)) {
                 textures.get().put(b.imagePath, view.loadTexture(b.imagePath));
             }
-            b.spriteID = view.createBackground(b.z_index, textures.get().get(b.imagePath), Vector3f.EMPTY, Vector3f.EMPTY, System.nanoTime(), b.aspectRatio);
+            b.spriteID = view.createBackground(b.z_index, textures.get().get(b.imagePath), Vector3f.EMPTY, b.tickTranslation, System.nanoTime(), b.aspectRatio);
             // TODO, automatic chunk loading and entities from non-static self-disabling blocks
             //this.entities.add(new Mario(view, textures.get(), timestamp));
             //this.entities.add(new Goomba(view, textures.get(), timestamp));
@@ -92,10 +92,14 @@ public class Level {
         final float aspectRatio;
         final float z_index;
         Async<Integer> spriteID;
-        public LevelBackground(String imagePath, float aspectRatio, float z_index) {
+        final float moveTranslation;
+        final Vector3f tickTranslation;
+        public LevelBackground(String imagePath, float aspectRatio, float z_index, float moveTranslation, Vector3f tickTranslation) {
             this.imagePath = imagePath;
             this.aspectRatio = aspectRatio;
             this.z_index = z_index;
+            this.moveTranslation = moveTranslation;
+            this.tickTranslation = tickTranslation;
         }
     }
 }
