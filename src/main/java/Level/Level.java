@@ -46,8 +46,14 @@ public class Level {
             }
             b.spriteID = view.createBackground(b.z_index, textures.get().get(b.imagePath), Vector3f.EMPTY, b.tickTranslation, System.nanoTime(), b.aspectRatio);
             loadChunk(0, view, timestamp);
-            loadChunk(1, view, timestamp);
-            this.chunks.get(1).translateChunk(view, timestamp, new Vector3f(9, 0, 0), Vector3f.EMPTY);
+            if (this.chunks.size() >= 2) {
+                loadChunk(1, view, timestamp);
+                this.chunks.get(1).translateChunk(view, timestamp, new Vector3f(9, 0, 0), Vector3f.EMPTY);
+            }
+            if (this.chunks.size() >= 3) {
+                loadChunk(2, view, timestamp);
+                this.chunks.get(2).translateChunk(view, timestamp, new Vector3f(18, 0, 0), Vector3f.EMPTY);
+            }
         }
     }
 
