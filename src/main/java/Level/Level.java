@@ -46,7 +46,7 @@ public class Level {
             }
             b.spriteID = view.createBackground(b.z_index, textures.get().get(b.imagePath), Vector3f.EMPTY, Vector3f.EMPTY, System.nanoTime(), b.aspectRatio);
             // TODO, automatic chunk loading and entities from non-static self-disabling blocks
-            this.entities.add(new Mario(view, textures.get(), timestamp));
+            //this.entities.add(new Mario(view, textures.get(), timestamp));
             this.entities.add(new Goomba(view, textures.get(), timestamp));
             loadChunk(0, view, timestamp);
             loadChunk(1, view, timestamp);

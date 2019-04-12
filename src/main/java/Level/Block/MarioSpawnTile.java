@@ -12,7 +12,7 @@ public class MarioSpawnTile extends NonStaticAbstractBlock {
     private boolean alreadyUsed = false;
     public void init(Level level, View view, HashMap<String, Async<Texture>> textures, long timestamp) {
         if (!alreadyUsed) {
-            //level.setPlayer(new Mario(view, textures, timestamp));
+            level.setPlayer(new Mario(view, textures, timestamp));
             alreadyUsed = true;
         }
     }
