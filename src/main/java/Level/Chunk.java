@@ -4,10 +4,7 @@ import Game.*;
 import Level.Block.*;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Vector;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Chunk {
@@ -78,8 +75,12 @@ public class Chunk {
         }
     }
 
+    public void deleteChunk(Level level, View view) {
+        this.spriteIDs.stream().filter(Objects::nonNull).forEach(view::deleteDrawable);
+    }
+
     public void translateChunk(View view, long timestamp, Vector3f translation, Vector3f velocity) {
-        view.updatePositions((ArrayList<Async<Integer>>)(this.spriteIDs.stream().filter(id ->id!=null).collect(Collectors.toList())), translation, velocity, timestamp);
+        view.updatePositions((ArrayList<Async<Integer>>)(this.spriteIDs.stream().filter(Objects::nonNull).collect(Collectors.toList())), translation, velocity, timestamp);
     }
 
     public void moveEntities(ArrayList<Chunk> chunks, Gameloop gameloop, long timestamp) {

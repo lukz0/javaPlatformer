@@ -57,9 +57,10 @@ public class Level {
         }
     }
 
-    public void unloadLevel(View view) {
-        backgrounds.forEach((background) -> view.deleteDrawable(background.spriteID));
-        textures.get().forEach((key, value) -> view.unloadTexture(value));
+    public void deleteLevel(View view) {
+        this.backgrounds.forEach((background) -> view.deleteDrawable(background.spriteID));
+        this.chunks.forEach(chunk -> chunk.deleteChunk(this, view));
+        this.textures.get().forEach((key, value) -> view.unloadTexture(value));
     }
 
     private void loadChunk(int i, View view, long timestamp) {
