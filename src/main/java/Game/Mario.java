@@ -61,16 +61,14 @@ public class Mario extends Entity {
             }
         } else {
             this.velocity = Vector3f.EMPTY;
-            //if (this.currentState != this.STATE_IDLE_RIGHT && this.currentState != this.STATE_IDLE_LEFT) {
-                if(this.currentState == this.STATE_MOVING_LEFT) {
-                    this.currentState = this.STATE_IDLE_LEFT;
-                    gameloop.view.setActiveState(this.drawableID, this.currentState);
-                }
-                else if (this.currentState == this.STATE_MOVING_RIGHT) {
-                    this.currentState = this.STATE_IDLE_RIGHT;
-                    gameloop.view.setActiveState(this.drawableID, this.currentState);
-                }
-            //}
+            if(this.currentState == this.STATE_MOVING_LEFT) {
+                this.currentState = this.STATE_IDLE_LEFT;
+                gameloop.view.setActiveState(this.drawableID, this.currentState);
+            }
+            else if (this.currentState == this.STATE_MOVING_RIGHT) {
+                this.currentState = this.STATE_IDLE_RIGHT;
+                gameloop.view.setActiveState(this.drawableID, this.currentState);
+            }
         }
 
         //System.out.println("[MARIO] velocity: ".concat(Float.toString(this.velocity.values[0])));
