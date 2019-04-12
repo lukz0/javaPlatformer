@@ -6,10 +6,14 @@ import Level.Block.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Vector;
 import java.util.stream.Collectors;
 
 public class Chunk {
+    LinkedList<Entity> entities = new LinkedList<>();
+    public final int chunkIndex;
+
     public ArrayList<ArrayList<AbstractBlock>> blockList = new ArrayList<>(81);
     public ArrayList<Async<Integer>> spriteIDs = new ArrayList<Async<Integer>>(81) {
         {
@@ -18,7 +22,8 @@ public class Chunk {
             }
         }
     };
-    public Chunk() {
+    public Chunk(int chunkIndex) {
+        this.chunkIndex = chunkIndex;
         for (int y = 0; y < 9; y++) {
             this.blockList.add(new ArrayList<AbstractBlock>(9));
             for (int x = 0; x < 9; x ++) {
@@ -66,7 +71,7 @@ public class Chunk {
                         this.spriteIDs.set(x+y*9, view.createTexturedRectangle(x, x+1, y+1, y, Gameloop.WORLD_LAYER, textures.get(texturePath),
                                 Vector3f.EMPTY, Vector3f.EMPTY, timestamp));
                     } else {
-                        ((NonStaticAbstractBlock)block).init(level, view, textures, timestamp);
+                        ((NonStaticAbstractBlock)block).init(level, view, textures, timestamp, this.chunkIndex, x, y);
                     }
                 }
             }
@@ -75,5 +80,16 @@ public class Chunk {
 
     public void translateChunk(View view, long timestamp, Vector3f translation, Vector3f velocity) {
         view.updatePositions((ArrayList<Async<Integer>>)(this.spriteIDs.stream().filter(id ->id!=null).collect(Collectors.toList())), translation, velocity, timestamp);
+    }
+
+    public void moveEntities(ArrayList<Chunk> chunks, Gameloop gameloop, long timestamp) {
+        this.entities.forEach(entity -> entity.doMove(chunks, gameloop, timestamp));
+    }
+
+    public void addEntity(Entity entity) {
+        this.entities.add(entity);
+    }
+    public void removeEntity(Entity entity) {
+        this.entities.remove(entity);
     }
 }

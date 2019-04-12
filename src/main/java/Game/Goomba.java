@@ -1,10 +1,12 @@
 package Game;
 
+import Level.Chunk;
 import Level.Entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Goomba extends Entity implements Movable {
+public class Goomba extends Entity {
     private static final int STATE_MOVING_RIGHT = 1;
     private static final int STATE_MOVING_LEFT = 2;
     Async<Integer> drawableID;
@@ -31,7 +33,7 @@ public class Goomba extends Entity implements Movable {
     }
 
     @Override
-    public void doMove(Gameloop gameloop, long tickStart) {
+    public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
 
         //TODO: add logic regarding choice of direction
         Vector3f nextPos = this.translation.add(this.velocity);

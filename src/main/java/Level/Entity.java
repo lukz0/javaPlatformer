@@ -2,6 +2,13 @@ package Level;
 
 import Game.Gameloop;
 
+import java.util.ArrayList;
+
 public abstract class Entity {
-    public abstract void doMove(Gameloop gameloop, long tickStart);
+    public int chunkIndex;
+    public double xPos;
+    public double yPos;
+    public double width;
+    public double height;
+    public abstract void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart);
 }

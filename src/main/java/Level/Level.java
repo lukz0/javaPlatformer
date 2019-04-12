@@ -9,7 +9,7 @@ import java.util.Vector;
 public class Level {
     final ArrayList<Chunk> chunks;
     final ArrayList<Boolean> isChunkLoaded;
-    final ArrayList<Entity> entities = new ArrayList<Entity>();
+    //final ArrayList<Entity> entities = new ArrayList<Entity>();
     final ArrayList<LevelBackground> backgrounds;
     final ThreadLocal<HashMap<String, Async<Texture>>> textures = ThreadLocal.withInitial(HashMap::new);
     private Mario player = null;
@@ -17,7 +17,7 @@ public class Level {
     public Level(ArrayList<LevelBackground> backgrounds, Tilemap tilemap) {
         this.chunks = new ArrayList<Chunk>(tilemap.chunkAmount);
         for (int chunkIndex = 0; chunkIndex < tilemap.chunkAmount; chunkIndex++) {
-            this.chunks.add(new Chunk());
+            this.chunks.add(new Chunk(chunkIndex));
             String[] tiles = {
                     tilemap.tileNames[tilemap.chunkAmount+0+0*tilemap.chunkAmount+chunkIndex], tilemap.tileNames[1+0*tilemap.chunkAmount+chunkIndex*9], tilemap.tileNames[2+0*tilemap.chunkAmount+chunkIndex*9], tilemap.tileNames[3+0*tilemap.chunkAmount+chunkIndex*9], tilemap.tileNames[4+0*tilemap.chunkAmount+chunkIndex*9], tilemap.tileNames[5+0*tilemap.chunkAmount+chunkIndex*9], tilemap.tileNames[6+0*tilemap.chunkAmount+chunkIndex*9], tilemap.tileNames[7+0*tilemap.chunkAmount+chunkIndex*9], tilemap.tileNames[8+0*tilemap.chunkAmount+chunkIndex*9],
                     tilemap.tileNames[tilemap.chunkAmount+0+9*tilemap.chunkAmount+chunkIndex], tilemap.tileNames[1+9*tilemap.chunkAmount+chunkIndex*9], tilemap.tileNames[2+9*tilemap.chunkAmount+chunkIndex*9], tilemap.tileNames[3+9*tilemap.chunkAmount+chunkIndex*9], tilemap.tileNames[4+9*tilemap.chunkAmount+chunkIndex*9], tilemap.tileNames[5+9*tilemap.chunkAmount+chunkIndex*9], tilemap.tileNames[6+9*tilemap.chunkAmount+chunkIndex*9], tilemap.tileNames[7+9*tilemap.chunkAmount+chunkIndex*9], tilemap.tileNames[8+9*tilemap.chunkAmount+chunkIndex*9],
@@ -47,7 +47,7 @@ public class Level {
             b.spriteID = view.createBackground(b.z_index, textures.get().get(b.imagePath), Vector3f.EMPTY, Vector3f.EMPTY, System.nanoTime(), b.aspectRatio);
             // TODO, automatic chunk loading and entities from non-static self-disabling blocks
             //this.entities.add(new Mario(view, textures.get(), timestamp));
-            this.entities.add(new Goomba(view, textures.get(), timestamp));
+            //this.entities.add(new Goomba(view, textures.get(), timestamp));
             loadChunk(0, view, timestamp);
             loadChunk(1, view, timestamp);
             this.chunks.get(1).translateChunk(view, timestamp, new Vector3f(9, 0, 0), Vector3f.EMPTY);
@@ -64,12 +64,16 @@ public class Level {
     }
 
     public void doPhysics(Gameloop gameloop, long timestamp) {
-        this.entities.forEach((entity) -> entity.doMove(gameloop, timestamp));
+        this.chunks.forEach(cnk -> cnk.moveEntities(this.chunks, gameloop, timestamp));
+        //this.entities.forEach((entity) -> entity.doMove(gameloop, timestamp));
     }
 
     public void setPlayer(Mario player) {
         this.player = player;
-        entities.add(this.player);
+    }
+
+    public void addEntityToChunk(int index, Entity ent) {
+        this.chunks.get(index).addEntity(ent);
     }
 
     public static class LevelBackground {
