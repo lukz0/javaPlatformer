@@ -73,8 +73,8 @@ public class Mario extends Entity {
             //}
         }
 
-        System.out.println("[MARIO] velocity: ".concat(Float.toString(this.velocity.values[0])));
-        System.out.println("[Mario] translation: ".concat(Float.toString(this.translation.values[0])));
+        //System.out.println("[MARIO] velocity: ".concat(Float.toString(this.velocity.values[0])));
+        //System.out.println("[Mario] translation: ".concat(Float.toString(this.translation.values[0])));
 
         // TODO: replace when we add collisions
         this.translation = this.translation.add(this.velocity);

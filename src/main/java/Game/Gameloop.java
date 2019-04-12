@@ -61,13 +61,16 @@ public class Gameloop implements Runnable {
             try {
                 long sleepDur = TICKDURATION*1000000-(tickEnd-tickStart);
                 if (sleepDur < 0) {
-                    System.out.println("[GAMELOOP] Can't keep up!");
+                    //System.out.println("[GAMELOOP] Can't keep up!");
                     sleepDur = 0;
-                } else {
-                    System.out.println("[GAMELOOP] tickEnd: ".concat(Long.toString(tickEnd)).concat("\ntickStart: ").concat(Long.toString(tickStart)));
                 }
+                //System.out.println("Tickstart: " + tickStart);
+                //System.out.println("Tickend: " + tickEnd);
                 MiliAndNano miliAndNano = new MiliAndNano(sleepDur);
+                System.out.println(sleepDur);
+                System.out.println("Before sleep: " + System.nanoTime());
                 Thread.sleep(miliAndNano.mili, (int)miliAndNano.nano);
+                System.out.println("After sleep: " + System.nanoTime());
                 tickStart = System.nanoTime();
             } catch (InterruptedException e) {
                 e.printStackTrace();
