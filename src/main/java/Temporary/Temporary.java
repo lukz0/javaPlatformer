@@ -27,6 +27,7 @@ public class Temporary {
             }
         }
         tileList.set(2+2*9, "MarioSpawnTile");
+        tileList.set(15+2*9, "GoombaSpawnTile");
         return tileList.toArray(new String[]{});
     }
 }

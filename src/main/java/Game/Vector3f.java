@@ -1,7 +1,7 @@
 package Game;
 
 public class Vector3f {
-    float[] values;
+    public float[] values;
 
     public Vector3f(float x, float y, float z) {
         this.values = new float[]{x, y, z};

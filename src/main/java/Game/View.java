@@ -105,7 +105,7 @@ public class View {
     /**
      * Used for updating position of Drawables implementing PosUpdateable
      */
-    void updatePosition(Async<Integer> id, Vector3f translation, Vector3f velocity, long timestamp) {
+    public void updatePosition(Async<Integer> id, Vector3f translation, Vector3f velocity, long timestamp) {
         this.rend.updatePosition(id, translation, velocity, timestamp);
     }
 

@@ -9,10 +9,9 @@ import java.util.Vector;
 public class Level {
     final ArrayList<Chunk> chunks;
     final ArrayList<Boolean> isChunkLoaded;
-    //final ArrayList<Entity> entities = new ArrayList<Entity>();
     final ArrayList<LevelBackground> backgrounds;
     final ThreadLocal<HashMap<String, Async<Texture>>> textures = ThreadLocal.withInitial(HashMap::new);
-    private Mario player = null;
+    public Mario player = null;
 
     public Level(ArrayList<LevelBackground> backgrounds, Tilemap tilemap) {
         this.chunks = new ArrayList<Chunk>(tilemap.chunkAmount);

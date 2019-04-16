@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 public class Chunk {
     LinkedList<Entity> entities = new LinkedList<>();
     public final int chunkIndex;
+    public final double xTranslation;
 
     public ArrayList<ArrayList<AbstractBlock>> blockList = new ArrayList<>(81);
     public ArrayList<Async<Integer>> spriteIDs = new ArrayList<Async<Integer>>(81) {
@@ -20,6 +21,7 @@ public class Chunk {
         }
     };
     public Chunk(int chunkIndex) {
+        this.xTranslation = chunkIndex*9;
         this.chunkIndex = chunkIndex;
         for (int y = 0; y < 9; y++) {
             this.blockList.add(new ArrayList<AbstractBlock>(9));
@@ -81,6 +83,7 @@ public class Chunk {
 
     public void translateChunk(View view, long timestamp, Vector3f translation, Vector3f velocity) {
         view.updatePositions((ArrayList<Async<Integer>>)(this.spriteIDs.stream().filter(Objects::nonNull).collect(Collectors.toList())), translation, velocity, timestamp);
+        this.entities.forEach(entity -> entity.updateTranslation(translation.values[0], velocity.values[0], view, timestamp));
     }
 
     public void moveEntities(ArrayList<Chunk> chunks, Gameloop gameloop, long timestamp) {

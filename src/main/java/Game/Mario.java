@@ -12,7 +12,6 @@ public class Mario extends Entity {
     private static final int STATE_MOVING_LEFT = 2;
     private static final int STATE_IDLE_RIGHT = 3;
     private static final int STATE_IDLE_LEFT = 4;
-    Async<Integer> drawableID;
     Vector3f translation = Vector3f.EMPTY, velocity = Vector3f.EMPTY;
     int currentState;
 
@@ -87,8 +86,8 @@ public class Mario extends Entity {
         // TODO: changing chunks when translation < 0 or translation > 9
         this.xPos += this.xVelocity;
 
-        this.velocity = new Vector3f(0, (float)this.yVelocity, 0);
+        /*this.velocity = new Vector3f(0, (float)this.yVelocity, 0);
         this.translation = new Vector3f(7.5f, (float)yPos, 0);
-        gameloop.view.updatePosition(this.drawableID, this.translation, this.velocity, tickStart);
+        gameloop.view.updatePosition(this.drawableID, this.translation, this.velocity, tickStart);*/
     }
 }
