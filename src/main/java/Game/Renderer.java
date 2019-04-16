@@ -1051,6 +1051,31 @@ public class Renderer implements Runnable {
         }
     }
 
+    private static class GetDrawableByIDTask implements Task {
+        private final Async<Integer> id;
+        final ArrayBlockingQueue<Drawable> callbackQueue = new ArrayBlockingQueue<>(1);
+        GetDrawableByIDTask(Async<Integer> id) {
+            this.id = id;
+        }
+        public void doTask(Renderer r) {
+            try {
+                this.callbackQueue.put(r.drawnElements.remove(this.id.get()));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    Async<Drawable> getDrawableByID(Async<Integer> id) {
+        GetDrawableByIDTask tsk = new GetDrawableByIDTask(id);
+        try {
+            this.taskQueue.put(tsk);
+            return new Async<>(tsk.callbackQueue);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private float convertToOpenGLX(float x) {
         return ((x*2f)/16f)-1f;
     }

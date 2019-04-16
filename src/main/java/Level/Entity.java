@@ -23,4 +23,25 @@ public abstract class Entity {
                 new Vector3f((float) (this.xVelocity + xChunkVelocity), (float) this.yVelocity, 0),
                 tickstart);
     }
+
+    //TODO
+    /*public void currentChunkUpdate(ArrayList<Chunk> chunks) {
+        for (this.xPos > 9 || this.xPos < 0) {
+            if (this.xPos > 9) {
+                if (this.chunkIndex+1 < chunks.size()) {
+
+                }
+            }
+        }
+    }*/
+
+    // Called when the entity moves into a chunk that isn't loaded
+    // TODO public abstract void pause();
+    // Called when reloading an previously paused chunk
+    // TODO public abstract void unPause();
+
+    public void moveToChunk(ArrayList<Chunk> chunks, int newChunkIndex) {
+        chunks.get(this.chunkIndex).removeEntity(this);
+        chunks.get(newChunkIndex).addEntity(this);
+    }
 }

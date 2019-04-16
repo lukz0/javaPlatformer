@@ -189,4 +189,11 @@ public class View {
     Async<Integer> addToStage(Async<Renderer.Drawable> drawable) {
         return this.rend.addToStage(drawable);
     }
+
+    /**
+     * Removes a drawable from the stage and returns it as an Async object
+     */
+    Async<Renderer.Drawable> getDrawableByID(Async<Integer> id) {
+        return this.rend.getDrawableByID(id);
+    }
 }
