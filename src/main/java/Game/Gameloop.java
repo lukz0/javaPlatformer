@@ -37,6 +37,7 @@ public class Gameloop implements Runnable {
 
     public boolean holdingLeft = false;
     public boolean holdingRight = false;
+    boolean holdingSpace = false;
 
     public void start() {
         if (thread == null) {
@@ -125,12 +126,14 @@ public class Gameloop implements Runnable {
     private void handleKey(int key, int action, int modifier) {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
             this.controller.stopGame(0);
-        } else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
+        } /*else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
             view.setRendererBackgroundColor(1, 0, 0);
         } else if (key == GLFW_KEY_G && action == GLFW_PRESS) {
             view.setRendererBackgroundColor(0, 1, 0);
         } else if (key == GLFW_KEY_B && action == GLFW_PRESS) {
             view.setRendererBackgroundColor(0, 0, 1);
+        }*/ else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
+            this.holdingSpace = true;
         } else if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
             this.holdingLeft = true;
         } else if (key == GLFW_KEY_LEFT && action == GLFW_RELEASE) {
