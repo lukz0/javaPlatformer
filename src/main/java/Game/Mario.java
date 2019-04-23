@@ -12,6 +12,8 @@ public class Mario extends Entity {
     private static final int STATE_MOVING_LEFT = 2;
     private static final int STATE_IDLE_RIGHT = 3;
     private static final int STATE_IDLE_LEFT = 4;
+    private static final int STATE_JUMP_RIGHT = 5;
+    private static final int STATE_JUMP_LEFT = 6;
     Vector3f translation = Vector3f.EMPTY, velocity = Vector3f.EMPTY;
     int currentState;
 
@@ -29,9 +31,9 @@ public class Mario extends Entity {
         if (!textures.containsKey("mario_stand.png")) {
             textures.put("mario_stand.png", view.loadTexture("resources/images/mario_stand.png"));
         }
-        /*if (!textures.containsKey("mario_jump.png")) {
+        if (!textures.containsKey("mario_jump.png")) {
             textures.put("mario_jump.png", view.loadTexture("resources/images/mario_jump.png"));
-        }*/
+        }
         Async<Renderer.Drawable> movingRightSprite = view.getNewAnimatedTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("mario_right.png"),
                 this.translation, this.velocity, 500, timestamp);
         Async<Renderer.Drawable> movingLeftSprite = view.getNewAnimatedTexturedRectangle(1, 0, 1, 0, -0.5f, textures.get("mario_right.png"),
@@ -40,12 +42,18 @@ public class Mario extends Entity {
                 this.translation, this.velocity, timestamp);
         Async<Renderer.Drawable> marioIdleLeft = view.getNewTexturedRectangle(1, 0, 1, 0, -0.5f, textures.get("mario_stand.png"),
                 this.translation, this.velocity, timestamp);
+        Async<Renderer.Drawable> marioJumpRight = view.getNewTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("mario_jump.png"),
+                this.translation, this.velocity, timestamp);
+        Async<Renderer.Drawable> marioJumpLeft = view.getNewTexturedRectangle(1, 0, 1, 0, -0.5f, textures.get("mario_jump.png"),
+                this.translation, this.velocity, timestamp);
 
         HashMap<Integer, Async<Renderer.Drawable>> states = new HashMap<>();
         states.put(this.STATE_MOVING_RIGHT, movingRightSprite);
         states.put(this.STATE_MOVING_LEFT, movingLeftSprite);
         states.put(this.STATE_IDLE_RIGHT, marioIdleRight);
         states.put(this.STATE_IDLE_LEFT, marioIdleLeft);
+        states.put(this.STATE_JUMP_RIGHT, marioJumpRight);
+        states.put(this.STATE_JUMP_LEFT, marioJumpLeft);
 
         this.drawableID = view.createPosUpdateableGroup(this.translation, this.velocity, states, timestamp);
         this.currentState = this.STATE_IDLE_RIGHT;
@@ -77,6 +85,14 @@ public class Mario extends Entity {
                 this.currentState = this.STATE_IDLE_RIGHT;
                 gameloop.view.setActiveState(this.drawableID, this.currentState);
             }
+        }
+        if (gameloop.holdingSpace) {
+            if (this.currentState == this.STATE_IDLE_LEFT || this.currentState == this.STATE_MOVING_LEFT) {
+                this.currentState = this.STATE_JUMP_LEFT;
+            } else if (this.currentState == this.STATE_IDLE_RIGHT || this.currentState == this.STATE_MOVING_RIGHT) {
+                this.currentState = this.STATE_JUMP_RIGHT;
+            }
+            this.velocity = this.velocity.add(new Vector3f(0, 4 * (Gameloop.TICKDURATION/(float)1000), 0));
         }
 
         //System.out.println("[MARIO] velocity: ".concat(Float.toString(this.velocity.values[0])));
