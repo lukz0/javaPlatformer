@@ -98,7 +98,7 @@ public class View {
      * The group is a posupdateable object
      * Only one drawable is shown at a time, to toggle between them use setActiveState method
      */
-    Async<Integer> createPosUpdateableGroup(Vector3f translation, Vector3f velocity, HashMap<Integer, Async<Renderer.Drawable>> states, long updatedTimestamp) {
+    public Async<Integer> createPosUpdateableGroup(Vector3f translation, Vector3f velocity, HashMap<Integer, Async<Renderer.Drawable>> states, long updatedTimestamp) {
         return this.addToStage(this.getNewPosUpdateableGroup(translation, velocity, states, updatedTimestamp));
     }
 
@@ -138,7 +138,7 @@ public class View {
      * Needs to be added to stage to become visible
      * The z_index has to be BETWEEN 1.0f and -1.0f to be visible, smaller z_index means in front of
      */
-    Async<Renderer.Drawable> getNewTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long currentTimeNanos) {
+    public Async<Renderer.Drawable> getNewTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long currentTimeNanos) {
         return this.rend.getNewTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeNanos);
     }
 
@@ -170,7 +170,7 @@ public class View {
      * Needs to be added to stage to become visible
      * Only one drawable is shown at a time, to toggle between them use setActiveState method
      */
-    Async<Renderer.Drawable> getNewPosUpdateableGroup(Vector3f translation, Vector3f velocity, HashMap<Integer, Async<Renderer.Drawable>> states, long updatedTimestamp) {
+    public Async<Renderer.Drawable> getNewPosUpdateableGroup(Vector3f translation, Vector3f velocity, HashMap<Integer, Async<Renderer.Drawable>> states, long updatedTimestamp) {
         return this.rend.getNewPosUpdateableGroup(translation, velocity, states, updatedTimestamp);
     }
 
@@ -178,7 +178,7 @@ public class View {
     /**
      * Method for toggling between different states of a PosUpdateable Object
      */
-    void setActiveState(Async<Integer> id, int state) {
+    public void setActiveState(Async<Integer> id, int state) {
         this.rend.setActiveState(id, state);
     }
 
