@@ -311,54 +311,6 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Game.Main" />
-      <module name="projectMario" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Game.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="ClojureREPL" factoryName="Local" activateToolWindowBeforeRun="false">
-      <setting name="replType" value="NREPL" />
-      <setting name="execution" value="LEININGEN" />
-      <module name="" />
-      <setting name="jvmArgs" value="" />
-      <setting name="parameters" value="" />
-      <setting name="workingDir" value="" />
-      <setting name="profiles" value="" />
-      <setting name="aliases" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="ClojureREPL" factoryName="Remote" activateToolWindowBeforeRun="false">
-      <setting name="host" value="" />
-      <setting name="port" value="0" />
-      <setting name="replType" value="0" />
-      <module name="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="bulmar.jar" type="JarApplication" temporary="true">
-      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/bulmar/bulmar.jar" />
-      <method v="2" />
-    </configuration>
-    <configuration name="projectMario.jar" type="JarApplication" temporary="true">
-      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/projectMario_jar/projectMario.jar" />
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.Main" />
-        <item itemvalue="JAR Application.projectMario.jar" />
-        <item itemvalue="JAR Application.bulmar.jar" />
-      </list>
-    </recent_temporary>
-  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
