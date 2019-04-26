@@ -16,7 +16,19 @@ public class Texture {
         glBindTexture(GL_TEXTURE_2D, this.textureID);
         this.width = parameters.width;
         this.height = parameters.height;
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this.width, this.height, 0, GL_BGRA, GL_UNSIGNED_BYTE, parameters.array);
+
+        int[] data = new int[parameters.width*parameters.height];
+        for (int i = 0; i < parameters.width*parameters.height; i++) {
+            int b = (parameters.array[i] & 0xff);
+            int g = (parameters.array[i] & 0xff00) >> 8;
+            int r = (parameters.array[i] & 0xff0000) >> 16;
+            int a = (parameters.array[i] & 0xff000000) >> 24;
+
+            data[i] = r | (g << 8) | (b << 16) | (a << 24);
+        }
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this.width, this.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this.width, this.height, 0, GL_BGRA, GL_UNSIGNED_BYTE, parameters.array);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     }

@@ -27,7 +27,7 @@ public class TextCreator {
         this.height = height;
     }
 
-    Async<Texture> renderString(View v, String s) {
+    public Async<Texture> renderString(View v, String s) {
         this.bufImg = new BufferedImage(width, height, TYPE_INT_ARGB);
         this.g = bufImg.getGraphics();
         this.g.setColor(this.color);
