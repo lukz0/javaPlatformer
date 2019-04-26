@@ -4,6 +4,7 @@ import Game.Async;
 import Game.Gameloop;
 import Game.Vector3f;
 import Game.View;
+import Level.Block.AbstractBlock;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,10 @@ public abstract class Entity {
                 new Vector3f((float) (this.xVelocity + xChunkVelocity), (float) this.yVelocity, 0),
                 tickstart);
     }
+
+    public abstract void collisionEntEnt(Entity target);
+
+    public abstract void collisionEntBlc(AbstractBlock target);
 
     //TODO
     /*public void currentChunkUpdate(ArrayList<Chunk> chunks) {

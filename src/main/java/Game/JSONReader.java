@@ -6,10 +6,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.lwjgl.system.CallbackI;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,13 +30,14 @@ public class JSONReader {
 
     static Level ReadLevel(String path) {
         JSONObject tempmap = ReadFile(path);
-        int width = (int) tempmap.get("width");
-        int chunkAmount = (int) Math.floor(width / 9);
+        int width = (int) (long) tempmap.get("width");
+        int chunkAmount = Integer.divideUnsigned(width, 9);
 
         Tilemap tilemap = null;
         ArrayList<Level.LevelBackground> levelBackgrounds = new ArrayList<>();
         JSONArray tilesets = (JSONArray) tempmap.get("tilesets");
         String tilesetSource = ((String) ((JSONObject) tilesets.get(0)).get("source"));
+        tilesetSource = Paths.get(path.substring(0, path.lastIndexOf("/")), tilesetSource).toString();
         HashMap<Integer, String> tileSet = ReadTileset(tilesetSource);
 
 
@@ -47,25 +48,21 @@ public class JSONReader {
             String layertype = (String) layer.get("type");
 
             if ("imagelayer".equals(layertype)) {
-                String imgpath = (String) layer.get("image");
-                float ratio = 0.16f;
-                float zindex = -1f * (float) layer.get("opacity");
-                float movetranslation = 0;
-                Vector3f ticktranslation = new Vector3f(0, 0, 0);
-                levelBackgrounds.add(new Level.LevelBackground(imgpath, ratio, zindex, movetranslation, ticktranslation));
+                levelBackgrounds.add(readBackground(layer, path));
             }
 
             if ("tilelayer".equals(layertype)) {
-                int[] tempblocks = (int[]) layer.get("data");
+                JSONArray tempblocks = (JSONArray) layer.get("data");
+
                 ArrayList<String> blocknames = new ArrayList<>();
-                for (int i = 8; i > 0; i--) {
+                for (int i = 8; i >= 0; i--) {
                     for (int j = 0; j < width; j++) {
-                        blocknames.add(tileSet.get(tempblocks[i+j*width]));
-                        //blocknames.add(tempblocks[i + j * width] == 1 ? "Ground" : "");
+                        blocknames.add(tileSet.get((int) (long) tempblocks.get(j + i * width)));
                     }
                 }
-
-                tilemap = new Tilemap(chunkAmount, (String[]) blocknames.toArray());
+                String[] blocknamearray = new String[blocknames.size()];
+                blocknames.toArray(blocknamearray);
+                tilemap = new Tilemap(chunkAmount, blocknamearray);
 
             }
 
@@ -80,19 +77,67 @@ public class JSONReader {
 
     static HashMap<Integer, String> ReadTileset(String path) {
         HashMap<Integer, String> tileset = new HashMap<>();
-        tileset.put(0, "");
+        tileset.put(0, null);
 
         JSONObject tileFile = ReadFile(path);
         JSONArray tileList = (JSONArray) tileFile.get("tiles");
         for (Object temptile : tileList) {
             JSONObject tile = (JSONObject) temptile;
-            //add 1 so it maps to the data correctly
-            Integer id = (Integer) tile.get("id") + 1;
+            //add 1 so it maps to the data correctly and allows 0 to be null
+            Integer id = (int) (long) (Long) tile.get("id") + 1;
             JSONArray properties = (JSONArray) tile.get("properties");
-            String name = (String) properties.get(2);
+            String name = "";
+            for (Object obj : properties) {
+                JSONObject property = (JSONObject) obj;
+                if (property.get("name").equals("name")) {
+                    name = (String) property.get("value");
+                }
+            }
             tileset.put(id, name);
         }
 
         return tileset;
+    }
+
+    private static Level.LevelBackground readBackground(JSONObject jsonObject, String mainpath) {
+        String imgpath = (String) jsonObject.get("image");
+        String actualpath = Paths.get(mainpath.substring(0, mainpath.lastIndexOf("/")), imgpath).toAbsolutePath().toString();
+        int height = 1;
+        int width = 1;
+        float z_index = 0f;
+        float relative_move = 0f;
+        float x_move = 0f;
+        float y_move = 0f;
+        float z_move = 0f;
+        for (Object property : (JSONArray) jsonObject.get("properties")) {
+            JSONObject jsonProperty = (JSONObject) property;
+            String name = (String) jsonProperty.get("name");
+            switch (name) {
+                case "width":
+                    width = (int) (long) jsonProperty.get("value");
+                    break;
+                case "height":
+                    height = (int) (long) jsonProperty.get("value");
+                    break;
+                case "x_move":
+                    x_move = (float) (double) jsonProperty.get("value");
+                    break;
+                case "y_move":
+                    y_move = (float) (long) jsonProperty.get("value");
+                    break;
+                case "z_move":
+                    z_move = (float) (long) jsonProperty.get("value");
+                    break;
+                case "z_index":
+                    z_index = (float) (double) jsonProperty.get("value");
+                    break;
+                case "relative_move":
+                    relative_move = (float) (long) jsonProperty.get("value");
+                    break;
+                default:
+            }
+        }
+        Vector3f ticktranslation = new Vector3f(x_move, y_move, z_move);
+        return new Level.LevelBackground(actualpath, (float) width / height, z_index, relative_move, ticktranslation);
     }
 }
