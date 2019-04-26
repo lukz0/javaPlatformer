@@ -8,9 +8,9 @@
  "margin":0,
  "name":"C:\/Users\/eplep\/DAT113-2\/project\/resources\/images\/",
  "spacing":0,
- "tilecount":3,
+ "tilecount":4,
  "tiledversion":"1.2.3",
- "tileheight":17,
+ "tileheight":19,
  "tiles":[
         {
          "id":0,
@@ -90,6 +90,18 @@
                  "name":"name",
                  "type":"string",
                  "value":"MarioSpawnTile"
+                }]
+        }, 
+        {
+         "id":3,
+         "image":"..\/images\/primeGoomb.png",
+         "imageheight":19,
+         "imagewidth":16,
+         "properties":[
+                {
+                 "name":"name",
+                 "type":"string",
+                 "value":"GoombaSpawnTile"
                 }]
         }],
  "tilewidth":16,
