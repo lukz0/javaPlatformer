@@ -5,7 +5,7 @@ import Game.*;
 import java.util.HashMap;
 
 public class GU_Digit {
-    public static final float KERNING = 0.6f;
+    public static final float KERNING = 0.4f;
     Async<Integer> spriteID;
 
     GU_Digit(View view, TextCreator tc, float height, float z_index, Vector3f translation) {

@@ -57,8 +57,8 @@ public class Gameloop implements Runnable {
         long tickStart = System.nanoTime();
         Level lvl = JSONReader.ReadLevel("resources/maps/plain.json").loadLevel(this.view,tickStart);
         this.score = 420;
-        GU_Number gun = new GU_Number(this.view, new TextCreator((int)(30* GU_Digit.KERNING), 30, Color.BLACK), 3, 1, -0.9f,
-                new Vector3f(14, 8, 0));
+        GU_Number gun = new GU_Number(this.view, new TextCreator((int)(200* GU_Digit.KERNING), 200, Color.BLACK), 5, 1, -0.9f,
+                new Vector3f(13.5f, 8, 0));
 
         while (true) {
             runKeyEventQueue();
