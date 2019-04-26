@@ -11,7 +11,7 @@ public class MarioSpawnTile extends NonStaticAbstractBlock {
         if (!alreadyUsed) {
             Mario mario = new Mario(view, textures, timestamp, xPos, yPos, chunkIndex);
             level.setPlayer(mario);
-            level.addEntityToChunk(chunkIndex, mario);
+            level.addEntityToChunk(chunkIndex, mario, view);
             alreadyUsed = true;
         }
     }

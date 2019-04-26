@@ -8,9 +8,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Chunk {
-    LinkedList<Entity> entities = new LinkedList<>();
+    private LinkedList<Entity> entities = new LinkedList<>();
     public final int chunkIndex;
     public final double xTranslation;
+    boolean currenlyLoaded = false;
 
     public ArrayList<ArrayList<AbstractBlock>> blockList = new ArrayList<>(81);
     public ArrayList<Async<Integer>> spriteIDs = new ArrayList<Async<Integer>>(81) {
@@ -57,6 +58,7 @@ public class Chunk {
         }
     }
     public void loadChunk(Level level ,View view, HashMap<String, Async<Texture>> textures, long timestamp) {
+        this.currenlyLoaded = true;
         for (int y = 0; y < 9; y++) {
             ArrayList<AbstractBlock> row = this.blockList.get(y);
             for (int x = 0; x < 9; x++) {
@@ -78,7 +80,10 @@ public class Chunk {
     }
 
     public void deleteChunk(Level level, View view) {
+        this.entities.forEach(entity -> entity.pause(view));
+        this.entities.clear();
         this.spriteIDs.stream().filter(Objects::nonNull).forEach(view::deleteDrawable);
+        level.chunks.remove(this.chunkIndex);
     }
 
     public void translateChunk(View view, long timestamp, Vector3f translation, Vector3f velocity) {
@@ -90,10 +95,16 @@ public class Chunk {
         this.entities.forEach(entity -> entity.doMove(chunks, gameloop, timestamp));
     }
 
-    public void addEntity(Entity entity) {
+    public void addEntity(Entity entity, View view) {
+        if (this.currenlyLoaded) {
+            entity.unPause(view);
+        } else {
+            entity.pause(view);
+        }
         this.entities.add(entity);
     }
-    public void removeEntity(Entity entity) {
+    public void removeEntity(Entity entity, View view) {
+        entity.pause(view);
         this.entities.remove(entity);
     }
 }

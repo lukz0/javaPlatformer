@@ -106,4 +106,21 @@ public class Mario extends Entity {
         this.translation = new Vector3f(7.5f, (float)yPos, 0);
         gameloop.view.updatePosition(this.drawableID, this.translation, this.velocity, tickStart);*/
     }
+
+    private boolean isPaused = false;
+    private Async<Renderer.Drawable> pausedDrawable = null;
+
+    public void pause(View view) {
+        if (!this.isPaused) {
+            this.isPaused = true;
+            this.pausedDrawable = view.getDrawableByID(this.drawableID);
+        }
+    }
+
+    public void unPause(View view) {
+        if (this.isPaused) {
+            this.isPaused = false;
+            this.drawableID = view.addToStage(this.pausedDrawable);
+        }
+    }
 }
