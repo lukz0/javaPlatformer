@@ -4,13 +4,14 @@ import Game.*;
 
 import java.util.HashMap;
 
-public class Digit {
+public class GU_Digit {
+    public static final float KERNING = 0.6f;
     Async<Integer> spriteID;
 
-    public Digit(View view, TextCreator tc, float height, float z_index, Vector3f translation) {
+    GU_Digit(View view, TextCreator tc, float height, float z_index, Vector3f translation) {
         HashMap<Integer, Async<Renderer.Drawable>> digitSymbols = new HashMap<>();
         for (int i = 0; i <= 9; i++) {
-            digitSymbols.put(i ,view.getNewTexturedRectangle(0, height*0.5f, height, 0, z_index, tc.renderString(view, Integer.toString(i)),
+            digitSymbols.put(i ,view.getNewTexturedRectangle(0, height* GU_Digit.KERNING, height, 0, z_index, tc.renderString(view, Integer.toString(i)),
                     Vector3f.EMPTY, Vector3f.EMPTY, 0));
         }
 
