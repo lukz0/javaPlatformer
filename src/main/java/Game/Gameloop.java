@@ -141,6 +141,8 @@ public class Gameloop implements Runnable {
             view.setRendererBackgroundColor(0, 0, 1);
         }*/ else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
             this.holdingSpace = true;
+        } else if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE) {
+            this.holdingSpace = false;
         } else if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
             this.holdingLeft = true;
         } else if (key == GLFW_KEY_LEFT && action == GLFW_RELEASE) {
