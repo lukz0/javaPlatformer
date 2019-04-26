@@ -11,7 +11,8 @@ public class Chunk {
     private LinkedList<Entity> entities = new LinkedList<>();
     public final int chunkIndex;
     public final double xTranslation;
-    boolean currenlyLoaded = false;
+    boolean currentlyLoaded = false;
+    boolean currentlyPaused = true;
 
     public ArrayList<ArrayList<AbstractBlock>> blockList = new ArrayList<>(81);
     public ArrayList<Async<Integer>> spriteIDs = new ArrayList<Async<Integer>>(81) {
@@ -58,7 +59,7 @@ public class Chunk {
         }
     }
     public void loadChunk(Level level ,View view, HashMap<String, Async<Texture>> textures, long timestamp) {
-        this.currenlyLoaded = true;
+        this.currentlyLoaded = true;
         for (int y = 0; y < 9; y++) {
             ArrayList<AbstractBlock> row = this.blockList.get(y);
             for (int x = 0; x < 9; x++) {
@@ -96,7 +97,7 @@ public class Chunk {
     }
 
     public void addEntity(Entity entity, View view) {
-        if (this.currenlyLoaded) {
+        if (this.currentlyPaused) {
             entity.unPause(view);
         } else {
             entity.pause(view);
@@ -106,5 +107,47 @@ public class Chunk {
     public void removeEntity(Entity entity, View view) {
         entity.pause(view);
         this.entities.remove(entity);
+    }
+
+    public ArrayList<Async<Renderer.Drawable>> pausedStaticBlocks = null;/* = new ArrayList<Async<Integer>>(81) {
+        {
+            for (int i = 0; i < 81; i++) {
+                this.add(null);
+            }
+        }
+    };*/
+
+    public void pause(View view) {
+        if (!this.currentlyPaused) {
+            this.currentlyPaused = true;
+            this.entities.forEach(entity -> entity.pause(view));
+            this.pausedStaticBlocks = new ArrayList<>();
+            this.spriteIDs.forEach(block -> {
+                if (block == null) {
+                    this.pausedStaticBlocks.add(null);
+                } else {
+                    this.pausedStaticBlocks.add(view.getDrawableByID(block));
+                }
+            });
+        }
+    }
+
+    public void unPause(Level level ,View view, HashMap<String, Async<Texture>> textures, long timestamp) {
+        if (this.currentlyPaused) {
+            this.currentlyPaused = false;
+            if (this.currentlyLoaded) {
+                this.loadChunk(level, view, textures, timestamp);
+            } else {
+                this.entities.forEach(entity -> entity.unPause(view));
+                this.spriteIDs = new ArrayList<>();
+                this.pausedStaticBlocks.forEach(block -> {
+                    if (block == null) {
+                        this.spriteIDs.add(null);
+                    } else {
+                        this.spriteIDs.add(view.addToStage(block));
+                    }
+                });
+            }
+        }
     }
 }

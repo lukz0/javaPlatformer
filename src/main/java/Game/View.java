@@ -186,14 +186,14 @@ public class View {
      * Adds a drawable to stage (list of drawables rendered by the renderer)
      * Can be later deleted using deleteDrawable
      */
-    Async<Integer> addToStage(Async<Renderer.Drawable> drawable) {
+    public Async<Integer> addToStage(Async<Renderer.Drawable> drawable) {
         return this.rend.addToStage(drawable);
     }
 
     /**
      * Removes a drawable from the stage and returns it as an Async object
      */
-    Async<Renderer.Drawable> getDrawableByID(Async<Integer> id) {
+    public Async<Renderer.Drawable> getDrawableByID(Async<Integer> id) {
         return this.rend.getDrawableByID(id);
     }
 }

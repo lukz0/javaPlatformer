@@ -55,9 +55,6 @@ public class Gameloop implements Runnable {
             runKeyEventQueue();
             runCommandQueue();
 
-            // TODO: game logic
-            // Use tickStart as timestamp argument to View methods
-
             lvl.doPhysics(this, tickStart);
 
             long tickEnd = System.nanoTime();
