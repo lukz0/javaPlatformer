@@ -1,11 +1,14 @@
 package Game;
 
+import GUI_Utils.GU_Digit;
+import GUI_Utils.GU_Number;
 import Level.Block.AbstractBlock;
 import Level.Block.StaticAbstractBlock;
 import Level.Chunk;
 import Level.Level;
 import Level.Tilemap;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
@@ -20,6 +23,8 @@ public class Gameloop implements Runnable {
 
     final Controller controller;
     public final View view;
+
+    public int score;
 
     HashMap<String, Async<Texture>> textures = new HashMap<>();
 
@@ -51,11 +56,16 @@ public class Gameloop implements Runnable {
         //Level lvl = loadChunk();
         long tickStart = System.nanoTime();
         Level lvl = JSONReader.ReadLevel("resources/maps/plain.json").loadLevel(this.view,tickStart);
+        this.score = 420;
+        GU_Number gun = new GU_Number(this.view, new TextCreator((int)(30* GU_Digit.KERNING), 30, Color.BLACK), 3, 1, -0.9f,
+                new Vector3f(14, 8, 0));
+
         while (true) {
             runKeyEventQueue();
             runCommandQueue();
 
             lvl.doPhysics(this, tickStart);
+            gun.setNumber(this.view, score);
 
             long tickEnd = System.nanoTime();
             try {
