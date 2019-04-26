@@ -34,15 +34,12 @@ public class Cheater implements Runnable {
 
         if (command.startsWith("stop")) {
             gameloop.runCommand(new StopCommand(0));
-        }
-
-        else if (command.startsWith("set level")) {
-            int level = Integer.parseInt(command.substring(10));
+        } else if (command.startsWith("set level")) {
+            String levelpath = command.substring(10);
             //TODO: create a setlevel function in controller
-            System.out.println("[CHEATER] started level " + level);
-        }
-
-        else if (command.startsWith("set mario")) {
+            System.out.println("[CHEATER] started level " + levelpath);
+            gameloop.runCommand(new LevelCommand(JSONReader.ReadLevel(levelpath)));
+        } else if (command.startsWith("set mario")) {
             String state = command.substring(10);
             //TODO: have ways to set mario invincible etc
             System.out.println("[CHEATER] set mario state to " + state);
@@ -69,12 +66,17 @@ public class Cheater implements Runnable {
         }
     }
 
-    static class LevelCommand extends Command{
+    static class LevelCommand extends Command {
         private final Level level;
 
-        LevelCommand(Level level){this.level=level;}
+        LevelCommand(Level level) {
+            this.level = level;
+        }
 
         @Override
-        void doCommand(Gameloop gameloop){gameloop.controller;}
+        void doCommand(Gameloop gameloop) {
+            //gameloop.controller;
+            return;
+        }
     }
 }

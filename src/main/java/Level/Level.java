@@ -38,7 +38,7 @@ public class Level {
         }
     }
 
-    public void loadLevel(View view, long timestamp) {
+    public Level loadLevel(View view, long timestamp) {
         for (LevelBackground b : backgrounds) {
             if (!textures.get().containsKey(b.imagePath)) {
                 textures.get().put(b.imagePath, view.loadTexture(b.imagePath));
@@ -54,6 +54,7 @@ public class Level {
                 this.chunks.get(2).translateChunk(view, timestamp, new Vector3f(18, 0, 0), Vector3f.EMPTY);
             }
         }
+        return this;
     }
 
     public void deleteLevel(View view) {
