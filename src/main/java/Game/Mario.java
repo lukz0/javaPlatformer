@@ -103,12 +103,12 @@ public class Mario extends Entity {
 
         // TODO: add collision detection before adding velocity to position
         // TODO: changing chunks when translation < 0 or translation > 9
-        /*this.xPos += this.xVelocity;
-        this.yPos += this.yVelocity;*/
+        this.xPos += this.xVelocity;
+        this.yPos += this.yVelocity;
 
-        /*this.velocity = new Vector3f(0, (float)this.yVelocity, 0);
+        this.velocity = new Vector3f(0, (float)this.yVelocity, 0);
         this.translation = new Vector3f(7.5f, (float)yPos, 0);
-        gameloop.view.updatePosition(this.drawableID, this.translation, this.velocity, tickStart);*/
+        gameloop.view.updatePosition(this.drawableID, this.translation, this.velocity, tickStart);
     }
 
     @Override
@@ -129,6 +129,7 @@ public class Mario extends Entity {
     public void collisionEntBlc(AbstractBlock target) {
         double mXA = this.xPos + this.xVelocity;
         double mYA = this.yPos + this.yVelocity;
+        /*
         if ((mXA <= target.xPos + 1) && (mXA + 1 >= target.xPos) && (mYA <= target.yPos + 1) && (mYA + 1 >= target.yPos)) {
             this.yVelocity = 0;
             mYA = this.yPos;
@@ -137,6 +138,7 @@ public class Mario extends Entity {
         if ((mXA <= target.xPos + 1) && (mXA + 1 >= target.xPos) && (mYA <= target.yPos + 1) && (mYA + 1 >= target.yPos)) {
             this.xVelocity = 0;
         }
+        */
     }
 
     private boolean isPaused = false;

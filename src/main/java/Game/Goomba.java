@@ -75,6 +75,7 @@ public class Goomba extends Entity {
     public void collisionEntBlc(AbstractBlock target) {
         double mXA = this.xPos + this.xVelocity;
         double mYA = this.yPos + this.yVelocity;
+        /*
         if ((mXA <= target.xPos + 1) && (mXA + 1 >= target.xPos) && (mYA <= target.yPos + 1) && (mYA + 1 >= target.yPos)) {
             this.yVelocity = 0;
             mYA = this.yPos;
@@ -83,6 +84,7 @@ public class Goomba extends Entity {
         if ((mXA <= target.xPos + 1) && (mXA + 1 >= target.xPos) && (mYA <= target.yPos + 1) && (mYA + 1 >= target.yPos)) {
             this.xVelocity *= -1;
         }
+        */
     }
 
     @Override
@@ -90,7 +92,7 @@ public class Goomba extends Entity {
         double mXA = this.xPos + this.xVelocity;
         double mYA = this.yPos + this.yVelocity;
         if ((mXA <= target.xPos + 1) && (mXA + 1 >= target.xPos) && (mYA <= target.yPos + 1) && (mYA + 1 >= target.yPos)) {
-            if (target is Mario) {
+            if (target instanceof Mario) {
                 //Do nothing, Mario handles stuff
                 //Possibly die here if Mario moves downward?
             }
