@@ -95,8 +95,11 @@ public class Mario extends Entity {
             } else if (this.currentState == this.STATE_IDLE_RIGHT || this.currentState == this.STATE_MOVING_RIGHT) {
                 this.currentState = this.STATE_JUMP_RIGHT;
             }
-            this.yVelocity += 5 * (Gameloop.TICKDURATION/(double)1000);
+            this.yVelocity += 1 * (Gameloop.TICKDURATION/(double)1000);
         }
+        /*else {
+            if (this.currentState)
+        }*/
 
         this.yVelocity -= 0.5 * (Gameloop.TICKDURATION/(double)1000);
 
@@ -122,7 +125,7 @@ public class Mario extends Entity {
     public boolean collisionEntEnt(Entity target) {  //TODO: replace 1 with entity width and height
         double mXA = this.xPos + this.xVelocity;
         double mYA = this.yPos + this.yVelocity;
-        if ((mXA <= target.xPos + 1) && (mXA + 1 >= target.xPos) && (mYA <= target.yPos + 1) && (mYA + 1 >= target.yPos)) {
+        if ((mXA <= target.xPos + target.width) && (mXA + this.width >= target.xPos) && (mYA <= target.yPos + target.height) && (mYA + this.height >= target.yPos)) {
             if (this.yVelocity < 0) {
                 //Goomba ded, Mario jumps
             }
@@ -139,12 +142,12 @@ public class Mario extends Entity {
         double mXA = this.xPos + this.xVelocity;
         double mYA = this.yPos + this.yVelocity;
         /*
-        if ((mXA <= target.xPos + 1) && (mXA + 1 >= target.xPos) && (mYA <= target.yPos + 1) && (mYA + 1 >= target.yPos)) {
+        if ((mXA <= target.xPos + target.width) && (mXA + this.width >= target.xPos) && (mYA <= target.yPos + target.height) && (mYA + this.height >= target.yPos)) {
             this.yVelocity = 0;
             mYA = this.yPos;
 
         }
-        if ((mXA <= target.xPos + 1) && (mXA + 1 >= target.xPos) && (mYA <= target.yPos + 1) && (mYA + 1 >= target.yPos)) {
+        if ((mXA <= target.xPos + target.width) && (mXA + this.width >= target.xPos) && (mYA <= target.yPos + target.height) && (mYA + this.height >= target.yPos)) {
             this.xVelocity = 0;
             return true;
         }
