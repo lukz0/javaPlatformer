@@ -39,7 +39,7 @@ public class Renderer implements Runnable {
     private GLFWWindowCloseCallback closeHandler;
 
     public ArrayList<Boolean> usedDrawnElementIDs = new ArrayList<>();
-    interface Drawable {
+    public interface Drawable {
         // If it changes glActiveTexture, it should be reset to GL_TEXTURE_0 at the end
         void draw(long currentTimeStamp);
         void delete();

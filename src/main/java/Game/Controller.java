@@ -13,11 +13,9 @@ class Controller {
         // Creates a window and starts a openGL renderer on a separate thread
         v.startRenderer(new KeyboardHandler(), new WindowCloseHandler());
 
-        //TODO: make gameloop contain more logic
         gameloop = new Gameloop(this, this.v);
         gameloop.start();
 
-        //TODO: create debugger
         Thread cheater = new Thread(new Cheater(this.gameloop));
         cheater.start();
 
