@@ -95,24 +95,31 @@ public class Mario extends Entity {
             } else if (this.currentState == this.STATE_IDLE_RIGHT || this.currentState == this.STATE_MOVING_RIGHT) {
                 this.currentState = this.STATE_JUMP_RIGHT;
             }
-            this.yVelocity += 20;
+            this.yVelocity += 5 * (Gameloop.TICKDURATION/(double)1000);
         }
+
+        this.yVelocity -= 0.5 * (Gameloop.TICKDURATION/(double)1000);
 
         //System.out.println("[MARIO] velocity: ".concat(Float.toString(this.velocity.values[0])));
         //System.out.println("[Mario] translation: ".concat(Float.toString(this.translation.values[0])));
 
         // TODO: add collision detection before adding velocity to position
         // TODO: changing chunks when translation < 0 or translation > 9
-        this.xPos += this.xVelocity;
-        this.yPos += this.yVelocity;
 
-        this.velocity = new Vector3f(0, (float)this.yVelocity, 0);
+
+        /*this.velocity = new Vector3f(0, (float)this.yVelocity, 0);
         this.translation = new Vector3f(7.5f, (float)yPos, 0);
-        gameloop.view.updatePosition(this.drawableID, this.translation, this.velocity, tickStart);
+        gameloop.view.updatePosition(this.drawableID, this.translation, this.velocity, tickStart);*/
     }
 
     @Override
-    public void collisionEntEnt(Entity target) {  //TODO: replace 1 with entity width and height
+    public void updatePos(){
+        this.xPos += this.xVelocity;
+        this.yPos += this.yVelocity;
+    }
+
+    @Override
+    public boolean collisionEntEnt(Entity target) {  //TODO: replace 1 with entity width and height
         double mXA = this.xPos + this.xVelocity;
         double mYA = this.yPos + this.yVelocity;
         if ((mXA <= target.xPos + 1) && (mXA + 1 >= target.xPos) && (mYA <= target.yPos + 1) && (mYA + 1 >= target.yPos)) {
@@ -120,13 +127,15 @@ public class Mario extends Entity {
                 //Goomba ded, Mario jumps
             }
             else {
-                //Mario ded
+                System.out.println("Mario has died. Please close the game.");
             }
+            return true;
         }
+        return false;
     }
 
     @Override
-    public void collisionEntBlc(AbstractBlock target) {
+    public boolean collisionEntBlc(AbstractBlock target) {
         double mXA = this.xPos + this.xVelocity;
         double mYA = this.yPos + this.yVelocity;
         /*
@@ -137,8 +146,10 @@ public class Mario extends Entity {
         }
         if ((mXA <= target.xPos + 1) && (mXA + 1 >= target.xPos) && (mYA <= target.yPos + 1) && (mYA + 1 >= target.yPos)) {
             this.xVelocity = 0;
+            return true;
         }
         */
+        return false;
     }
 
     private boolean isPaused = false;

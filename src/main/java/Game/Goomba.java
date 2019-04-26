@@ -52,7 +52,6 @@ public class Goomba extends Entity {
             this.xVelocity = -3 * (Gameloop.TICKDURATION/(float)1000);
             nextXPos = this.xPos + this.xVelocity;
         }
-        this.xPos = nextXPos;
 
         //TODO: add logic regarding choice of direction
         /*Vector3f nextPos = this.translation.add(this.velocity);
@@ -72,7 +71,12 @@ public class Goomba extends Entity {
     }
 
     @Override
-    public void collisionEntBlc(AbstractBlock target) {
+    public void updatePos(){
+        this.xPos += this.xVelocity;
+    }
+
+    @Override
+    public boolean collisionEntBlc(AbstractBlock target) {
         double mXA = this.xPos + this.xVelocity;
         double mYA = this.yPos + this.yVelocity;
         /*
@@ -83,12 +87,14 @@ public class Goomba extends Entity {
         }
         if ((mXA <= target.xPos + 1) && (mXA + 1 >= target.xPos) && (mYA <= target.yPos + 1) && (mYA + 1 >= target.yPos)) {
             this.xVelocity *= -1;
+            return true;
         }
         */
+        return false;
     }
 
     @Override
-    public void collisionEntEnt(Entity target) {
+    public boolean collisionEntEnt(Entity target) {
         double mXA = this.xPos + this.xVelocity;
         double mYA = this.yPos + this.yVelocity;
         if ((mXA <= target.xPos + 1) && (mXA + 1 >= target.xPos) && (mYA <= target.yPos + 1) && (mYA + 1 >= target.yPos)) {
@@ -99,7 +105,9 @@ public class Goomba extends Entity {
             else {
                 this.xVelocity *= -1;
             }
+            return true;
         }
+        return false;
     }
 
     private boolean isPaused = false;

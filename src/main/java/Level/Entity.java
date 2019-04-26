@@ -25,9 +25,11 @@ public abstract class Entity {
                 tickstart);
     }
 
-    public abstract void collisionEntEnt(Entity target);
+    public abstract boolean collisionEntEnt(Entity target);
 
-    public abstract void collisionEntBlc(AbstractBlock target);
+    public abstract boolean collisionEntBlc(AbstractBlock target);
+
+    public abstract void updatePos();
 
     //TODO
     /*public void currentChunkUpdate(ArrayList<Chunk> chunks) {
