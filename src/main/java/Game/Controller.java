@@ -23,11 +23,6 @@ class Controller {
         Thread cheater = new Thread(new Cheater(this.gameloop));
         cheater.start();
 
-        GU_Number gun = new GU_Number(this.v, new TextCreator((int)(30* GU_Digit.KERNING), 30, Color.BLACK), 3, 1, -0.9f,
-                new Vector3f(14, 8, 0));
-
-        gun.setNumber(this.v, 85);
-
         /*v.createAnimatedTexturedRectangle(0, 16, 9, 0, -0.5f, v.loadTexture("resources/images/marioForwardAnimated.png"),
                 new Vector3f(0, 0, 0), new Vector3f(0.01f, 0, 0), 500, System.nanoTime());*/
 

@@ -29,7 +29,6 @@ public class GU_Number {
             int digit = number%(int)Math.pow(10, i+1);
             number -= digit;
             digit /= Math.pow(10, i);
-            System.out.println(digit);
             this.Digits.get(this.Digits.size()-(i+1)).setState(view, digit);
         }
     }
