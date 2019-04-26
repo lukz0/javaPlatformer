@@ -47,11 +47,12 @@ public class JSONReader {
             String layertype = (String) layer.get("type");
 
             if ("imagelayer".equals(layertype)) {
+                //NOTE: imgpath is a relative path from the tiled file, will probably not work without planning
                 String imgpath = (String) layer.get("image");
-                float ratio = 0.16f;
-                float zindex = -1f * (float) layer.get("opacity");
+                float ratio = 64f/288f;
+                float zindex = Gameloop.SKY_LAYER;
                 float movetranslation = 0;
-                Vector3f ticktranslation = new Vector3f(0, 0, 0);
+                Vector3f ticktranslation = new Vector3f(0.01f, 0, 0);
                 levelBackgrounds.add(new Level.LevelBackground(imgpath, ratio, zindex, movetranslation, ticktranslation));
             }
 

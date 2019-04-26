@@ -1,5 +1,7 @@
 package Game;
 
+import Level.Level;
+
 import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -32,7 +34,6 @@ public class Cheater implements Runnable {
 
         if (command.startsWith("stop")) {
             gameloop.runCommand(new StopCommand(0));
-            //controller.stopGame(0);
         }
 
         else if (command.startsWith("set level")) {
@@ -66,5 +67,14 @@ public class Cheater implements Runnable {
         void doCommand(Gameloop gameloop) {
             gameloop.controller.stopGame(this.status);
         }
+    }
+
+    static class LevelCommand extends Command{
+        private final Level level;
+
+        LevelCommand(Level level){this.level=level;}
+
+        @Override
+        void doCommand(Gameloop gameloop){gameloop.controller;}
     }
 }
