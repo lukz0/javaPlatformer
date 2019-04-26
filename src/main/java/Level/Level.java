@@ -77,8 +77,8 @@ public class Level {
         this.player = player;
     }
 
-    public void addEntityToChunk(int index, Entity ent) {
-        this.chunks.get(index).addEntity(ent);
+    public void addEntityToChunk(int index, Entity ent, View view) {
+        this.chunks.get(index).addEntity(ent, view);
     }
 
     public static class LevelBackground {

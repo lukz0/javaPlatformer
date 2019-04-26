@@ -36,12 +36,13 @@ public abstract class Entity {
     }*/
 
     // Called when the entity moves into a chunk that isn't loaded
-    // TODO public abstract void pause();
+    // Should be called before the entity is removed so that the entities drawable is not in the renderers stage
+    public abstract void pause(View view);
     // Called when reloading an previously paused chunk
-    // TODO public abstract void unPause();
+    public abstract void unPause(View view);
 
-    public void moveToChunk(ArrayList<Chunk> chunks, int newChunkIndex) {
-        chunks.get(this.chunkIndex).removeEntity(this);
-        chunks.get(newChunkIndex).addEntity(this);
+    public void moveToChunk(ArrayList<Chunk> chunks, int newChunkIndex, View view) {
+        chunks.get(this.chunkIndex).removeEntity(this, view);
+        chunks.get(newChunkIndex).addEntity(this, view);
     }
 }
