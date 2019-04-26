@@ -50,7 +50,7 @@ public class Gameloop implements Runnable {
 
         //Level lvl = loadChunk();
         long tickStart = System.nanoTime();
-        Level lvl = JSONReader.ReadLevel("resources/maps/maptest.json").loadLevel(this.view,tickStart);
+        Level lvl = JSONReader.ReadLevel("resources/maps/plain.json").loadLevel(this.view,tickStart);
         while (true) {
             runKeyEventQueue();
             runCommandQueue();
