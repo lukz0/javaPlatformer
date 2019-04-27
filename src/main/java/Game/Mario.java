@@ -155,6 +155,7 @@ public class Mario extends Entity {
         if (this.isPaused) {
             this.isPaused = false;
             this.drawableID = view.addToStage(this.pausedDrawable);
+            System.out.println("drawableID: " + this.drawableID);
         }
     }
 }

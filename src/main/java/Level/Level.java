@@ -4,10 +4,12 @@ import Game.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Vector;
 
 public class Level {
     final ArrayList<Chunk> chunks;
+    private HashSet<Chunk> activeChunks = new HashSet<>();
     final ArrayList<Boolean> isChunkLoaded;
     final ArrayList<LevelBackground> backgrounds;
     final ThreadLocal<HashMap<String, Async<Texture>>> textures = ThreadLocal.withInitial(HashMap::new);
@@ -45,13 +47,16 @@ public class Level {
             }
             b.spriteID = view.createBackground(b.z_index, textures.get().get(b.imagePath), Vector3f.EMPTY, b.tickTranslation, System.nanoTime(), b.aspectRatio);
             loadChunk(0, view, timestamp);
+            this.activeChunks.add(this.chunks.get(0));
             if (this.chunks.size() >= 2) {
                 loadChunk(1, view, timestamp);
                 this.chunks.get(1).translateChunk(view, timestamp, new Vector3f(9, 0, 0), Vector3f.EMPTY);
+                this.activeChunks.add(this.chunks.get(1));
             }
             if (this.chunks.size() >= 3) {
                 loadChunk(2, view, timestamp);
                 this.chunks.get(2).translateChunk(view, timestamp, new Vector3f(18, 0, 0), Vector3f.EMPTY);
+                this.activeChunks.add(this.chunks.get(2));
             }
         }
         return this;
@@ -96,5 +101,13 @@ public class Level {
             this.moveTranslation = moveTranslation;
             this.tickTranslation = tickTranslation;
         }
+    }
+
+    public void pause(View view) {
+        this.activeChunks.forEach(chunk -> chunk.pause(view));
+    }
+
+    public void unPause(View view, long timestamp) {
+        this.activeChunks.forEach(chunk -> chunk.unPause(this, view, this.textures.get(), timestamp));
     }
 }

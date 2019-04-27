@@ -60,6 +60,7 @@ public class Chunk {
     }
     public void loadChunk(Level level ,View view, HashMap<String, Async<Texture>> textures, long timestamp) {
         this.currentlyLoaded = true;
+        this.currentlyPaused = false;
         for (int y = 0; y < 9; y++) {
             ArrayList<AbstractBlock> row = this.blockList.get(y);
             for (int x = 0; x < 9; x++) {
@@ -97,11 +98,6 @@ public class Chunk {
     }
 
     public void addEntity(Entity entity, View view) {
-        if (this.currentlyPaused) {
-            entity.unPause(view);
-        } else {
-            entity.pause(view);
-        }
         this.entities.add(entity);
     }
     public void removeEntity(Entity entity, View view) {
@@ -109,13 +105,7 @@ public class Chunk {
         this.entities.remove(entity);
     }
 
-    public ArrayList<Async<Renderer.Drawable>> pausedStaticBlocks = null;/* = new ArrayList<Async<Integer>>(81) {
-        {
-            for (int i = 0; i < 81; i++) {
-                this.add(null);
-            }
-        }
-    };*/
+    public ArrayList<Async<Renderer.Drawable>> pausedStaticBlocks = null;
 
     public void pause(View view) {
         if (!this.currentlyPaused) {
