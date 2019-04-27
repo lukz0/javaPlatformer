@@ -22,15 +22,6 @@ class Controller {
 
         Thread cheater = new Thread(new Cheater(this.gameloop));
         cheater.start();
-
-        /*v.createAnimatedTexturedRectangle(0, 16, 9, 0, -0.5f, v.loadTexture("resources/images/marioForwardAnimated.png"),
-                new Vector3f(0, 0, 0), new Vector3f(0.01f, 0, 0), 500, System.nanoTime());*/
-
-        /*TextCreator txtC = new TextCreator("resources/fonts/Roboto-Black.ttf");
-        Texture.BitmapAndSize bitMS = txtC.createBitmap();
-        Async<Texture> font = v.loadTexture(bitMS);
-        v.createStaticTexturedRectangle(0, 9, 9, 0, -0.5f, font);*/
-
     }
 
     public class KeyboardHandler extends GLFWKeyCallback {

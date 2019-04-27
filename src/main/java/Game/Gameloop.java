@@ -21,7 +21,7 @@ public class Gameloop implements Runnable {
     public static final float WORLD_LAYER = 0f;
     public static final float SKY_LAYER = 0.9f;
 
-    final Controller controller;
+    public final Controller controller;
     public final View view;
 
     public int score;
@@ -33,7 +33,7 @@ public class Gameloop implements Runnable {
         this.view = view;
     }
 
-    static final long TICKDURATION = 20;
+    public static final long TICKDURATION = 20;
 
     private Thread thread;
 
@@ -42,6 +42,9 @@ public class Gameloop implements Runnable {
 
     public boolean holdingLeft = false;
     public boolean holdingRight = false;
+    public boolean holdingUp = false;
+    public boolean holdingDown = false;
+    public boolean holdingEnter = false;
     boolean holdingSpace = false;
 
     public void start() {
@@ -51,11 +54,32 @@ public class Gameloop implements Runnable {
         }
     }
 
+    Level level;
+
+    private boolean isPaused = false;
+    PauseMenu.Main pm;
+    public void enterPause() {
+        if (!this.isPaused) {
+            this.isPaused = true;
+            this.pm = new PauseMenu.Main(this.view, this);
+            this.level.pause(this.view);
+        }
+    }
+
+    public void exitPause() {
+        if (this.isPaused) {
+            this.isPaused = false;
+            this.pm.deleteMenu();
+            this.level.unPause(this.view, System.nanoTime());
+            this.pm = null;
+        }
+    }
+
     public void run() {
 
         //Level lvl = loadChunk();
         long tickStart = System.nanoTime();
-        Level lvl = JSONReader.ReadLevel("resources/maps/plain.json").loadLevel(this.view,tickStart);
+        this.level = JSONReader.ReadLevel("resources/maps/plain.json").loadLevel(this.view,tickStart);
         this.score = 420;
         GU_Number gun = new GU_Number(this.view, new TextCreator((int)(200* GU_Digit.KERNING), 200, Color.BLACK), 5, 1, -0.9f,
                 new Vector3f(13.5f, 8, 0));
@@ -64,7 +88,12 @@ public class Gameloop implements Runnable {
             runKeyEventQueue();
             runCommandQueue();
 
-            lvl.doPhysics(this, tickStart);
+            if (this.isPaused) {
+                this.pm.tick(this);
+            } else {
+                this.level.doPhysics(this, tickStart);
+            }
+
             gun.setNumber(this.view, score);
 
             long tickEnd = System.nanoTime();
@@ -132,25 +161,53 @@ public class Gameloop implements Runnable {
 
     private void handleKey(int key, int action, int modifier) {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-            this.controller.stopGame(0);
-        } /*else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
-            view.setRendererBackgroundColor(1, 0, 0);
-        } else if (key == GLFW_KEY_G && action == GLFW_PRESS) {
-            view.setRendererBackgroundColor(0, 1, 0);
-        } else if (key == GLFW_KEY_B && action == GLFW_PRESS) {
-            view.setRendererBackgroundColor(0, 0, 1);
-        }*/ else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
-            this.holdingSpace = true;
-        } else if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE) {
-            this.holdingSpace = false;
-        } else if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
-            this.holdingLeft = true;
-        } else if (key == GLFW_KEY_LEFT && action == GLFW_RELEASE) {
-            this.holdingLeft = false;
-        } else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
-            this.holdingRight = true;
-        } else if (key == GLFW_KEY_RIGHT && action == GLFW_RELEASE) {
-            this.holdingRight = false;
+            this.enterPause();
+        } else if (action == GLFW_PRESS) {
+            switch (key) {
+                case GLFW_KEY_SPACE:
+                    this.holdingSpace = true;
+                    break;
+                case GLFW_KEY_LEFT:
+                    this.holdingLeft = true;
+                    break;
+                case GLFW_KEY_RIGHT:
+                    this.holdingRight = true;
+                    break;
+                case GLFW_KEY_UP:
+                    this.holdingUp = true;
+                    break;
+                case GLFW_KEY_DOWN:
+                    this.holdingDown = true;
+                    break;
+                case GLFW_KEY_ENTER:
+                    this.holdingEnter = true;
+                    break;
+            }
+        } else if (action == GLFW_RELEASE) {
+            switch (key) {
+                case GLFW_KEY_SPACE:
+                    this.holdingSpace = false;
+                    break;
+                case GLFW_KEY_LEFT:
+                    this.holdingLeft = false;
+                    break;
+                case GLFW_KEY_RIGHT:
+                    this.holdingRight = false;
+                    break;
+                case GLFW_KEY_UP:
+                    this.holdingUp = false;
+                    break;
+                case GLFW_KEY_DOWN:
+                    this.holdingDown = false;
+                    break;
+                case GLFW_KEY_ENTER:
+                    this.holdingEnter = false;
+                    break;
+            }
         }
+    }
+
+    public void stopGame(int i) {
+        this.controller.stopGame(i);
     }
 }
