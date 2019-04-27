@@ -4,8 +4,9 @@ import GUI_Utils.GU_Button;
 import GUI_Utils.GU_Menu;
 import Game.*;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class Main {
@@ -29,10 +30,22 @@ public class Main {
         };
 
         try {
-            this.menu = new GU_Menu(this.view, new HashMap<GU_Button.Textures, GU_Button.EnterEventHandler>() {
+            this.menu = new GU_Menu(this.view, new ArrayList<Map.Entry<GU_Button.Textures, GU_Button.EnterEventHandler>>() {
                 {
-                    this.put(new GU_Button.Textures(textures.get("resume_inactive"), textures.get("resume_active")), new ResumeHandler());
-                    this.put(new GU_Button.Textures(textures.get("exit_inactive"), textures.get("exit_active")), new ExitHandler());
+                    this.add(new Map.Entry<GU_Button.Textures, GU_Button.EnterEventHandler>() {
+                        private final GU_Button.Textures key = new GU_Button.Textures(textures.get("resume_inactive"), textures.get("resume_active"));
+                        private final GU_Button.EnterEventHandler value = new ResumeHandler();
+                        public GU_Button.Textures getKey() {return this.key;}
+                        public GU_Button.EnterEventHandler getValue() {return this.value;}
+                        public GU_Button.EnterEventHandler setValue(GU_Button.EnterEventHandler enterEventHandler) {return null;}
+                    });
+                    this.add(new Map.Entry<GU_Button.Textures, GU_Button.EnterEventHandler>() {
+                        private final GU_Button.Textures key = new GU_Button.Textures(textures.get("exit_inactive"), textures.get("exit_active"));
+                        private final GU_Button.EnterEventHandler value = new ExitHandler();
+                        public GU_Button.Textures getKey() {return this.key;}
+                        public GU_Button.EnterEventHandler getValue() {return this.value;}
+                        public GU_Button.EnterEventHandler setValue(GU_Button.EnterEventHandler enterEventHandler) {return null;}
+                    });
                 }
             }, -0.9f);
         } catch (Exception e) {
@@ -49,7 +62,6 @@ public class Main {
     }
 
     public void deleteMenu() {
-        System.out.println("Deleting menu");
         this.view.deleteDrawable(this.backgroundSpriteID);
         this.menu.pause();
         this.textures.values().forEach(view::unloadTexture);
@@ -57,13 +69,11 @@ public class Main {
 
     private class ResumeHandler extends GU_Button.EnterEventHandler {
         public void enter() {
-            System.out.println("Resume event!");
             gameloop.exitPause();
         }
     }
     private class ExitHandler extends GU_Button.EnterEventHandler {
         public void enter() {
-            System.out.println("Exit event!");
             gameloop.stopGame(0);
         }
     }

@@ -125,7 +125,7 @@ public class Chunk {
     public void unPause(Level level ,View view, HashMap<String, Async<Texture>> textures, long timestamp) {
         if (this.currentlyPaused) {
             this.currentlyPaused = false;
-            if (this.currentlyLoaded) {
+            if (!this.currentlyLoaded) {
                 this.loadChunk(level, view, textures, timestamp);
             } else {
                 this.entities.forEach(entity -> entity.unPause(view));

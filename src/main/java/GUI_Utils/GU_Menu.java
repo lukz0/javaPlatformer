@@ -5,6 +5,7 @@ import Game.View;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class GU_Menu {
     private static final long TICK_DELAY = Long.divideUnsigned(Long.divideUnsigned(1000, Gameloop.TICKDURATION), 3);
@@ -14,13 +15,27 @@ public class GU_Menu {
     private final ArrayList<Item> itemList = new ArrayList<>();
     private int activeItem = 0;
 
-    // This constructor is for GU_Button only menus
+    /*
     public GU_Menu(View view, HashMap<GU_Button.Textures, GU_Button.EnterEventHandler> buttonList, float z_index) throws Exception {
         this.view = view;
         ButtonPositionCounter posCount = new ButtonPositionCounter();
         buttonList.forEach((textures, enterEventHandler) -> {
             float position = posCount.getPosition();
             this.itemList.add(new GU_Button(this.view, 0.5f, 5.5f, position, position-1, z_index, textures, enterEventHandler));
+        });
+        if (this.itemList.size() == 0) {
+            throw new Exception("buttonList cannot be empty");
+        } else {
+            this.itemList.get(this.activeItem).activate(view);
+        }
+    }*/
+    // This constructor is for GU_Button only menus
+    public GU_Menu(View view, ArrayList<Map.Entry<GU_Button.Textures, GU_Button.EnterEventHandler>> buttonList, float z_index) throws Exception {
+        this.view = view;
+        ButtonPositionCounter posCount = new ButtonPositionCounter();
+        buttonList.forEach(entry -> {
+            float position = posCount.getPosition();
+            this.itemList.add(new GU_Button(this.view, 0.5f, 5.5f, position, position-1, z_index, entry.getKey(), entry.getValue()));
         });
         if (this.itemList.size() == 0) {
             throw new Exception("buttonList cannot be empty");

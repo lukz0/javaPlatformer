@@ -64,51 +64,51 @@ public class Mario extends Entity {
 
 
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
-        if (gameloop.holdingLeft != gameloop.holdingRight) {
-            if (gameloop.holdingLeft) {
-                this.xVelocity = -3 * (Gameloop.TICKDURATION/(double)1000);
-                if (this.currentState != this.STATE_MOVING_LEFT) {
-                    this.currentState = this.STATE_MOVING_LEFT;
-                    gameloop.view.setActiveState(this.drawableID, this.currentState);
+        if (!this.isPaused) {
+            if (gameloop.holdingLeft != gameloop.holdingRight) {
+                if (gameloop.holdingLeft) {
+                    this.xVelocity = -3 * (Gameloop.TICKDURATION / (double) 1000);
+                    if (this.currentState != this.STATE_MOVING_LEFT) {
+                        this.currentState = this.STATE_MOVING_LEFT;
+                        gameloop.view.setActiveState(this.drawableID, this.currentState);
+                    }
+                } else {
+                    this.xVelocity = 3 * (Gameloop.TICKDURATION / (double) 1000);
+                    if (this.currentState != this.STATE_MOVING_RIGHT) {
+                        this.currentState = this.STATE_MOVING_RIGHT;
+                        gameloop.view.setActiveState(this.drawableID, this.currentState);
+                    }
                 }
             } else {
-                this.xVelocity = 3 * (Gameloop.TICKDURATION/(double)1000);
-                if (this.currentState != this.STATE_MOVING_RIGHT) {
-                    this.currentState = this.STATE_MOVING_RIGHT;
+                this.xVelocity = 0;
+                if (this.currentState == this.STATE_MOVING_LEFT) {
+                    this.currentState = this.STATE_IDLE_LEFT;
+                    gameloop.view.setActiveState(this.drawableID, this.currentState);
+                } else if (this.currentState == this.STATE_MOVING_RIGHT) {
+                    this.currentState = this.STATE_IDLE_RIGHT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 }
             }
-        } else {
-            this.xVelocity = 0;
-            if(this.currentState == this.STATE_MOVING_LEFT) {
-                this.currentState = this.STATE_IDLE_LEFT;
-                gameloop.view.setActiveState(this.drawableID, this.currentState);
+            if (gameloop.holdingSpace) {
+                if (this.currentState == this.STATE_IDLE_LEFT || this.currentState == this.STATE_MOVING_LEFT) {
+                    this.currentState = this.STATE_JUMP_LEFT;
+                } else if (this.currentState == this.STATE_IDLE_RIGHT || this.currentState == this.STATE_MOVING_RIGHT) {
+                    this.currentState = this.STATE_JUMP_RIGHT;
+                }
+                this.yVelocity += 20;
             }
-            else if (this.currentState == this.STATE_MOVING_RIGHT) {
-                this.currentState = this.STATE_IDLE_RIGHT;
-                gameloop.view.setActiveState(this.drawableID, this.currentState);
-            }
+
+            //System.out.println("[MARIO] velocity: ".concat(Float.toString(this.velocity.values[0])));
+            //System.out.println("[Mario] translation: ".concat(Float.toString(this.translation.values[0])));
+
+            // TODO: add collision detection before adding velocity to position
+            // TODO: changing chunks when translation < 0 or translation > 9
+            this.xPos += this.xVelocity;
+            this.yPos += this.yVelocity;
+
+            this.velocity = new Vector3f(0, (float) this.yVelocity, 0);
+            this.translation = new Vector3f(7.5f, (float) yPos, 0);
         }
-        if (gameloop.holdingSpace) {
-            if (this.currentState == this.STATE_IDLE_LEFT || this.currentState == this.STATE_MOVING_LEFT) {
-                this.currentState = this.STATE_JUMP_LEFT;
-            } else if (this.currentState == this.STATE_IDLE_RIGHT || this.currentState == this.STATE_MOVING_RIGHT) {
-                this.currentState = this.STATE_JUMP_RIGHT;
-            }
-            this.yVelocity += 20;
-        }
-
-        //System.out.println("[MARIO] velocity: ".concat(Float.toString(this.velocity.values[0])));
-        //System.out.println("[Mario] translation: ".concat(Float.toString(this.translation.values[0])));
-
-        // TODO: add collision detection before adding velocity to position
-        // TODO: changing chunks when translation < 0 or translation > 9
-        this.xPos += this.xVelocity;
-        this.yPos += this.yVelocity;
-
-        this.velocity = new Vector3f(0, (float)this.yVelocity, 0);
-        this.translation = new Vector3f(7.5f, (float)yPos, 0);
-        gameloop.view.updatePosition(this.drawableID, this.translation, this.velocity, tickStart);
     }
 
     @Override
@@ -155,7 +155,6 @@ public class Mario extends Entity {
         if (this.isPaused) {
             this.isPaused = false;
             this.drawableID = view.addToStage(this.pausedDrawable);
-            System.out.println("drawableID: " + this.drawableID);
         }
     }
 }

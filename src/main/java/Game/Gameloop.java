@@ -67,7 +67,6 @@ public class Gameloop implements Runnable {
     }
 
     public void exitPause() {
-        System.out.println("exitPause method  with isPaused: " + this.isPaused);
         if (this.isPaused) {
             this.isPaused = false;
             this.pm.deleteMenu();

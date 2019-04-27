@@ -1012,7 +1012,11 @@ public class Renderer implements Runnable {
             this.timestamp = timestamp;
         }
         public void doTask(Renderer r) {
-            ((PosUpdateable)r.drawnElements.get(id.get())).updatePosition(this.translation, this.velocity, this.timestamp);
+            try {
+                ((PosUpdateable) r.drawnElements.get(id.get())).updatePosition(this.translation, this.velocity, this.timestamp);
+            } catch(NullPointerException e) {
+                e.printStackTrace();
+            }
         }
     }
     void updatePosition(Async<Integer> id, Vector3f translation, Vector3f velocity, long timestamp) {
