@@ -33,7 +33,7 @@ public class Gameloop implements Runnable {
         this.view = view;
     }
 
-    static final long TICKDURATION = 20;
+    public static final long TICKDURATION = 20;
 
     private Thread thread;
 
@@ -60,12 +60,17 @@ public class Gameloop implements Runnable {
         GU_Number gun = new GU_Number(this.view, new TextCreator((int)(200* GU_Digit.KERNING), 200, Color.BLACK), 5, 1, -0.9f,
                 new Vector3f(13.5f, 8, 0));
 
+        PauseMenu.Main pm = new PauseMenu.Main(this.view);
+        //pm.deleteMenu();
+
         while (true) {
             runKeyEventQueue();
             runCommandQueue();
 
             lvl.doPhysics(this, tickStart);
             gun.setNumber(this.view, score);
+
+            pm.tick(this);
 
             long tickEnd = System.nanoTime();
             try {
