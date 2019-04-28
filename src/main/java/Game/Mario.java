@@ -92,15 +92,17 @@ public class Mario extends Entity {
             if (gameloop.holdingSpace) {
                 if (this.currentState == this.STATE_IDLE_LEFT || this.currentState == this.STATE_MOVING_LEFT) {
                     this.currentState = this.STATE_JUMP_LEFT;
+                    gameloop.view.setActiveState(this.drawableID, this.currentState);
                 } else if (this.currentState == this.STATE_IDLE_RIGHT || this.currentState == this.STATE_MOVING_RIGHT) {
                     this.currentState = this.STATE_JUMP_RIGHT;
+                    gameloop.view.setActiveState(this.drawableID, this.currentState);
                 }
                 // TODO: change
                 this.yVelocity += 0.1f * (Gameloop.TICKDURATION/(double)1000);
             }
 
             // TODO: change
-            this.yVelocity -= 0.05f * (Gameloop.TICKDURATION/(double)1000);
+            this.yVelocity -= 0.0005f * (Gameloop.TICKDURATION/(double)1000);
         }
         /*else {
             if (this.currentState)
