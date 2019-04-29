@@ -80,7 +80,6 @@ public class Gameloop implements Runnable {
 
     public void setCurrentMenu(Menu newMenu) {
         this.currentMenu = newMenu;
-        System.out.println("[GAMELOOP] Current Menu: ".concat(this.currentMenu.toString()));
     }
 
     public void run() {
