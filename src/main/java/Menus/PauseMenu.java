@@ -1,4 +1,4 @@
-package PauseMenu;
+package Menus;
 
 import GUI_Utils.GU_Button;
 import GUI_Utils.GU_Menu;
@@ -9,20 +9,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Main {
-    private final View view;
+public class PauseMenu extends Menu {
     private final Gameloop gameloop;
     private final HashMap<String, Async<Texture>> textures;
-    private GU_Menu menu;
-    private Async<Integer> backgroundSpriteID;
+    private final PauseMenu that;
 
-    public Main(View view, Gameloop gameloop) {
+    public PauseMenu(View view, Gameloop gameloop) {
+        this.that = this;
         this.view = view;
         this.gameloop = gameloop;
         this.textures = new HashMap<String, Async<Texture>>() {
             {
                 this.put("exit_active", view.loadTexture("resources/GUI/Buttons/exit_active.png"));
                 this.put("exit_inactive", view.loadTexture("resources/GUI/Buttons/exit_inactive.png"));
+                this.put("options_active", view.loadTexture("resources/GUI/Buttons/options_active.png"));
+                this.put("options_inactive", view.loadTexture("resources/GUI/Buttons/options_inactive.png"));
                 this.put("resume_active", view.loadTexture("resources/GUI/Buttons/resume_active.png"));
                 this.put("resume_inactive", view.loadTexture("resources/GUI/Buttons/resume_inactive.png"));
                 this.put("background", view.loadTexture("resources/GUI/Backgrounds/1.png"));
@@ -32,20 +33,9 @@ public class Main {
         try {
             this.menu = new GU_Menu(this.view, new ArrayList<Map.Entry<GU_Button.Textures, GU_Button.EnterEventHandler>>() {
                 {
-                    this.add(new Map.Entry<GU_Button.Textures, GU_Button.EnterEventHandler>() {
-                        private final GU_Button.Textures key = new GU_Button.Textures(textures.get("resume_inactive"), textures.get("resume_active"));
-                        private final GU_Button.EnterEventHandler value = new ResumeHandler();
-                        public GU_Button.Textures getKey() {return this.key;}
-                        public GU_Button.EnterEventHandler getValue() {return this.value;}
-                        public GU_Button.EnterEventHandler setValue(GU_Button.EnterEventHandler enterEventHandler) {return null;}
-                    });
-                    this.add(new Map.Entry<GU_Button.Textures, GU_Button.EnterEventHandler>() {
-                        private final GU_Button.Textures key = new GU_Button.Textures(textures.get("exit_inactive"), textures.get("exit_active"));
-                        private final GU_Button.EnterEventHandler value = new ExitHandler();
-                        public GU_Button.Textures getKey() {return this.key;}
-                        public GU_Button.EnterEventHandler getValue() {return this.value;}
-                        public GU_Button.EnterEventHandler setValue(GU_Button.EnterEventHandler enterEventHandler) {return null;}
-                    });
+                    this.add(new GU_Menu.SimpleButtonInfo(new ResumeHandler(), textures.get("resume_inactive"), textures.get("resume_active")));
+                    this.add(new GU_Menu.SimpleButtonInfo(new ExitHandler(), textures.get("exit_inactive"), textures.get("exit_active")));
+                    this.add(new GU_Menu.SimpleButtonInfo(new OptionsHandler(), textures.get("options_inactive"), textures.get("options_active")));
                 }
             }, -0.9f);
         } catch (Exception e) {
@@ -56,6 +46,9 @@ public class Main {
     }
 
     public void tick(Gameloop gameloop) {
+        if (this.isPaused) {
+            System.err.println("Paused menu recieved tick!");
+        }
         try {
             this.menu.tick(gameloop);
         } catch(NullPointerException e) {}
@@ -75,6 +68,13 @@ public class Main {
     private class ExitHandler extends GU_Button.EnterEventHandler {
         public void enter() {
             gameloop.stopGame(0);
+        }
+    }
+    private class OptionsHandler extends GU_Button.EnterEventHandler {
+        public void enter() {
+            that.pause();
+            Options optionsMenu = new Options(that, that.gameloop, that.view);
+            that.gameloop.setCurrentMenu(optionsMenu);
         }
     }
 }
