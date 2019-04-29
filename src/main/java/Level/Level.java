@@ -75,11 +75,26 @@ public class Level {
     public void doPhysics(Gameloop gameloop, long timestamp, View view) {
         this.chunks.forEach(cnk -> cnk.moveEntities(this.chunks, gameloop, timestamp));
         if (this.player != null) {
+            chunkManager(view);
             this.chunks.forEach(chunk -> chunk.updateEntitiesChunk(this.chunks, view));
             this.chunks.forEach(cnk -> cnk.translateChunk(gameloop.view, timestamp, new Vector3f(-(float)(this.player.xPos+this.player.chunkIndex*9)+7.5f+cnk.chunkIndex*9, 0, 0), new Vector3f(-(float)this.player.xVelocity, 0, 0)));
         }
     }
-
+    private void chunkManager(View view){
+        //TODO: create a function to unload a chunk
+        if (this.player.chunkIndex>=2 && this.chunks.get(this.player.chunkIndex-2).currentlyLoaded){
+            //this.chunks.get(this.player.chunkIndex-2).unload();
+        }
+        if (this.player.chunkIndex>=1 && !this.chunks.get(this.player.chunkIndex-1).currentlyLoaded){
+            loadChunk(this.player.chunkIndex-1,view, System.nanoTime());
+        }
+        if (this.player.chunkIndex+1<=this.chunks.size()-1 && !this.chunks.get(this.player.chunkIndex+1).currentlyLoaded){
+            loadChunk(this.player.chunkIndex+1,view,System.nanoTime());
+        }
+        if (this.player.chunkIndex+2<=this.chunks.size()-1 && this.chunks.get(this.player.chunkIndex+2).currentlyLoaded){
+            //this.chunks.get(this.player.chunkIndex+2).unload();
+        }
+    }
     public void setPlayer(Mario player) {
         this.player = player;
     }
