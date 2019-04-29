@@ -1,6 +1,8 @@
 package GUI_Utils;
 
+import Game.Async;
 import Game.Gameloop;
+import Game.Texture;
 import Game.View;
 
 import java.util.ArrayList;
@@ -15,20 +17,21 @@ public class GU_Menu {
     private final ArrayList<Item> itemList = new ArrayList<>();
     private int activeItem = 0;
 
-    /*
-    public GU_Menu(View view, HashMap<GU_Button.Textures, GU_Button.EnterEventHandler> buttonList, float z_index) throws Exception {
-        this.view = view;
-        ButtonPositionCounter posCount = new ButtonPositionCounter();
-        buttonList.forEach((textures, enterEventHandler) -> {
-            float position = posCount.getPosition();
-            this.itemList.add(new GU_Button(this.view, 0.5f, 5.5f, position, position-1, z_index, textures, enterEventHandler));
-        });
-        if (this.itemList.size() == 0) {
-            throw new Exception("buttonList cannot be empty");
-        } else {
-            this.itemList.get(this.activeItem).activate(view);
+    public static class SimpleButtonInfo extends ArrayList<Object> implements Map.Entry<GU_Button.Textures, GU_Button.EnterEventHandler> {
+        public SimpleButtonInfo(GU_Button.EnterEventHandler handler, Async<Texture> inactive, Async<Texture> active) {
+            super(2);
+            this.add(new GU_Button.Textures(inactive, active));
+            this.add(handler);
         }
-    }*/
+        public GU_Button.Textures getKey() {
+            return (GU_Button.Textures)this.get(0);
+        }
+        public GU_Button.EnterEventHandler getValue() {
+            return (GU_Button.EnterEventHandler)this.get(1);
+        }
+        public GU_Button.EnterEventHandler setValue(GU_Button.EnterEventHandler value) {return null;}
+    }
+
     // This constructor is for GU_Button only menus
     public GU_Menu(View view, ArrayList<Map.Entry<GU_Button.Textures, GU_Button.EnterEventHandler>> buttonList, float z_index) throws Exception {
         this.view = view;

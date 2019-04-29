@@ -38,10 +38,14 @@ public class GU_Button implements GU_Menu.Item {
     }
 
     public void activate(View view) {
-        view.setActiveState(this.spriteID, GU_Button.ACTIVE);
+        if (!this.isPaused) {
+            view.setActiveState(this.spriteID, GU_Button.ACTIVE);
+        }
     }
     public void deactivate(View view) {
-        view.setActiveState(this.spriteID, GU_Button.INACTIVE);
+        if (!this.isPaused) {
+            view.setActiveState(this.spriteID, GU_Button.INACTIVE);
+        }
     }
 
     public static class Textures {

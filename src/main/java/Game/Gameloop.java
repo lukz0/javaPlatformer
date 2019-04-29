@@ -7,6 +7,8 @@ import Level.Block.StaticAbstractBlock;
 import Level.Chunk;
 import Level.Level;
 import Level.Tilemap;
+import Menus.Menu;
+import Menus.PauseMenu;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -54,14 +56,15 @@ public class Gameloop implements Runnable {
         }
     }
 
+
     Level level;
 
     private boolean isPaused = false;
-    PauseMenu.Main pm;
+    private Menus.Menu currentMenu;
     public void enterPause() {
         if (!this.isPaused) {
             this.isPaused = true;
-            this.pm = new PauseMenu.Main(this.view, this);
+            this.currentMenu = new PauseMenu(this.view, this);
             this.level.pause(this.view);
         }
     }
@@ -69,10 +72,15 @@ public class Gameloop implements Runnable {
     public void exitPause() {
         if (this.isPaused) {
             this.isPaused = false;
-            this.pm.deleteMenu();
+            this.currentMenu.deleteMenu();
             this.level.unPause(this.view, System.nanoTime());
-            this.pm = null;
+            this.currentMenu = null;
         }
+    }
+
+    public void setCurrentMenu(Menu newMenu) {
+        this.currentMenu = newMenu;
+        System.out.println("[GAMELOOP] Current Menu: ".concat(this.currentMenu.toString()));
     }
 
     public void run() {
@@ -89,7 +97,7 @@ public class Gameloop implements Runnable {
             runCommandQueue();
 
             if (this.isPaused) {
-                this.pm.tick(this);
+                this.currentMenu.tick(this);
             } else {
                 this.level.doPhysics(this, tickStart);
             }

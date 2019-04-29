@@ -10,7 +10,7 @@ public class Async<T> {
         this.queue = queue;
     }
 
-    T get() {
+    public T get() {
         if (this.queue != null) {
             try {
                 this.value = this.queue.take();
