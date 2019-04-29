@@ -109,7 +109,36 @@ public class Chunk {
         this.entities.forEach(entity -> entity.updatePos());
     }
 
+    public void updateEntitiesChunk(ArrayList<Chunk> chunks, View view){
+        int maxchunk = chunks.size()-1;
+        this.entities.forEach(entity -> updateEntitieshelper(entity,chunks,maxchunk,view));
+    }
+
+    private void updateEntitieshelper(Entity entity, ArrayList<Chunk> chunks, int maxchunk, View view){
+        if (entity.xPos>9){
+            if (entity.chunkIndex<maxchunk){
+                entity.moveToChunk(chunks,entity.chunkIndex+1, view);
+                entity.chunkIndex++;
+                entity.xPos-=9;
+            }
+            else {
+                entity.xPos=9;
+            }
+        }
+        else if (entity.xPos<0){
+            if (entity.chunkIndex>0){
+                entity.moveToChunk(chunks,entity.chunkIndex-1,view);
+                entity.chunkIndex--;
+                entity.xPos+=9;
+            }
+            else {
+                entity.xPos=0;
+            }
+        }
+    }
+
     public void addEntity(Entity entity, View view) {
+        entity.unPause(view);
         this.entities.add(entity);
     }
     public void removeEntity(Entity entity, View view) {

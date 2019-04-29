@@ -91,7 +91,7 @@ public class Gameloop implements Runnable {
             if (this.isPaused) {
                 this.pm.tick(this);
             } else {
-                this.level.doPhysics(this, tickStart);
+                this.level.doPhysics(this, tickStart, this.view);
             }
 
             gun.setNumber(this.view, score);
