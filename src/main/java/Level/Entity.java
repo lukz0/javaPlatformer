@@ -6,6 +6,7 @@ import Game.Vector3f;
 import Game.View;
 import Level.Block.AbstractBlock;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public abstract class Entity {
@@ -27,7 +28,7 @@ public abstract class Entity {
 
     public abstract boolean collisionEntEnt(Entity target);
 
-    public abstract boolean collisionEntBlc(AbstractBlock target);
+    public abstract boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target);
 
     public abstract void updatePos();
 

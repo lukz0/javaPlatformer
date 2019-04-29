@@ -94,12 +94,20 @@ public class Chunk {
     }
 
     public void moveEntities(ArrayList<Chunk> chunks, Gameloop gameloop, long timestamp) {
+        boolean entCol;
         this.entities.forEach(entity -> entity.doMove(chunks, gameloop, timestamp));
 
         for(Entity entity: entities) {
+            entCol = false;
             for(Entity target: entities) {
                 if(entity != target) {
                     if(entity.collisionEntEnt(target)) {
+                        entCol = true;
+                    }
+                    if(entity.collisionEntBlc(blockList)) {
+                        break;
+                    }
+                    if(entCol) {
                         break;
                     }
                 }

@@ -21,7 +21,7 @@ public class Goomba extends Entity {
         this.level = level;
         this.xPos = xPos;
         this.yPos = yPos;
-        this.xVelocity = 3 * (Gameloop.TICKDURATION/(float)1000);
+        this.xVelocity = 1 * (Gameloop.TICKDURATION/(float)1000);
         this.yVelocity = 0;
         this.chunkIndex = chunkIndex;
         if (!textures.containsKey("primeGoomb_fwd.png")) {
@@ -46,10 +46,10 @@ public class Goomba extends Entity {
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
         double nextXPos = this.xPos + this.xVelocity;
         if (nextXPos < 0) {
-            this.xVelocity = 3 * (Gameloop.TICKDURATION/(float)1000);
+            this.xVelocity = 1 * (Gameloop.TICKDURATION/(float)1000);
             nextXPos = this.xPos + this.xVelocity;
         } else if (nextXPos > (9-this.width)) {
-            this.xVelocity = -3 * (Gameloop.TICKDURATION/(float)1000);
+            this.xVelocity = -1 * (Gameloop.TICKDURATION/(float)1000);
             nextXPos = this.xPos + this.xVelocity;
         }
 
@@ -76,10 +76,10 @@ public class Goomba extends Entity {
     }
 
     @Override
-    public boolean collisionEntBlc(AbstractBlock target) {
-        double mXA = this.xPos + this.xVelocity;
+    public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target) {
+        /*double mXA = this.xPos + this.xVelocity;
         double mYA = this.yPos + this.yVelocity;
-        /*
+
         if ((mXA <= target.xPos + target.width) && (mXA + this.width >= target.xPos) && (mYA <= target.yPos + target.height) && (mYA + this.height >= target.yPos)) {
             this.yVelocity = 0;
             mYA = this.yPos;

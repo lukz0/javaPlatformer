@@ -2,6 +2,7 @@ package Game;
 
 
 import Level.Block.AbstractBlock;
+import Level.Block.NonStaticAbstractBlock;
 import Level.Chunk;
 import Level.Entity;
 
@@ -17,6 +18,7 @@ public class Mario extends Entity {
     private static final int STATE_JUMP_LEFT = 6;
     Vector3f translation = Vector3f.EMPTY, velocity = Vector3f.EMPTY;
     int currentState;
+    private boolean grounded = true;
 
     public Mario(View view, HashMap<String, Async<Texture>> textures, long timestamp, double xPos, double yPos, int chunkIndex) {
         this.xPos = xPos;
@@ -62,58 +64,68 @@ public class Mario extends Entity {
     }
 
 
-
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
         if (!this.isPaused) {
+            System.out.println(this.currentState + " / " + grounded);
             if (gameloop.holdingLeft != gameloop.holdingRight) {
                 if (gameloop.holdingLeft) {
                     this.xVelocity = -3 * (Gameloop.TICKDURATION / (double) 1000);
-                    if (this.currentState != this.STATE_MOVING_LEFT) {
+                    if (this.currentState != this.STATE_MOVING_LEFT && grounded) {
                         this.currentState = this.STATE_MOVING_LEFT;
+                        gameloop.view.setActiveState(this.drawableID, this.currentState);
+                    } else if(!grounded) {
+                        this.currentState = this.STATE_JUMP_LEFT;
                         gameloop.view.setActiveState(this.drawableID, this.currentState);
                     }
                 } else {
                     this.xVelocity = 3 * (Gameloop.TICKDURATION / (double) 1000);
-                    if (this.currentState != this.STATE_MOVING_RIGHT) {
+                    if (this.currentState != this.STATE_MOVING_RIGHT && grounded) {
                         this.currentState = this.STATE_MOVING_RIGHT;
+                        gameloop.view.setActiveState(this.drawableID, this.currentState);
+                    } else if(!grounded) {
+                        this.currentState = this.STATE_JUMP_RIGHT;
                         gameloop.view.setActiveState(this.drawableID, this.currentState);
                     }
                 }
             } else {
                 this.xVelocity = 0;
-                if (this.currentState == this.STATE_MOVING_LEFT) {
+                if ((this.currentState == this.STATE_MOVING_LEFT || this.currentState == this.STATE_JUMP_LEFT) && grounded) {
                     this.currentState = this.STATE_IDLE_LEFT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
-                } else if (this.currentState == this.STATE_MOVING_RIGHT) {
+                } else if ((this.currentState == this.STATE_MOVING_RIGHT || this.currentState == this.STATE_JUMP_RIGHT) && grounded) {
                     this.currentState = this.STATE_IDLE_RIGHT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 }
             }
             if (gameloop.holdingSpace) {
-                if (this.currentState == this.STATE_IDLE_LEFT || this.currentState == this.STATE_MOVING_LEFT) {
-                    this.currentState = this.STATE_JUMP_LEFT;
-                    gameloop.view.setActiveState(this.drawableID, this.currentState);
-                } else if (this.currentState == this.STATE_IDLE_RIGHT || this.currentState == this.STATE_MOVING_RIGHT) {
-                    this.currentState = this.STATE_JUMP_RIGHT;
-                    gameloop.view.setActiveState(this.drawableID, this.currentState);
-                }
-                // TODO: change
-                this.yVelocity += 0.1f * (Gameloop.TICKDURATION/(double)1000);
+                //System.out.println("Mario is grounded: " + grounded + " / His Y is " + this.yVelocity);
+                //if(grounded) {
+                    if (this.currentState == this.STATE_IDLE_LEFT || this.currentState == this.STATE_MOVING_LEFT) {
+                        this.currentState = this.STATE_JUMP_LEFT;
+                        gameloop.view.setActiveState(this.drawableID, this.currentState);
+                    } else if (this.currentState == this.STATE_IDLE_RIGHT || this.currentState == this.STATE_MOVING_RIGHT) {
+                        this.currentState = this.STATE_JUMP_RIGHT;
+                        gameloop.view.setActiveState(this.drawableID, this.currentState);
+                    }
+
+                    // TODO: find appropriate value
+                    this.yVelocity += 0.2f * (Gameloop.TICKDURATION/(double)1000);
+                    this.grounded = false;
+                //}
+                /*else {
+                    this.yVelocity = 0;
+                }*/
             }
 
             // TODO: change
-            this.yVelocity -= 0.0005f * (Gameloop.TICKDURATION/(double)1000);
+            this.yVelocity -= 0.05f * (Gameloop.TICKDURATION/(double)1000);
         }
-        /*else {
-            if (this.currentState)
-        }*/
+
         // TODO: add collision detection before adding velocity to position
         // TODO: changing chunks when translation < 0 or translation > 9
 
 
-        /*this.velocity = new Vector3f(0, (float)this.yVelocity, 0);
-        this.translation = new Vector3f(7.5f, (float)yPos, 0);
-        gameloop.view.updatePosition(this.drawableID, this.translation, this.velocity, tickStart);*/
+        //gameloop.view.updatePosition(this.drawableID, this.translation, this.velocity, tickStart);
     }
 
     @Override
@@ -123,7 +135,7 @@ public class Mario extends Entity {
     }
 
     @Override
-    public boolean collisionEntEnt(Entity target) {  //TODO: replace 1 with entity width and height
+    public boolean collisionEntEnt(Entity target) {
         double mXA = this.xPos + this.xVelocity;
         double mYA = this.yPos + this.yVelocity;
         if ((mXA <= target.xPos + target.width) && (mXA + this.width >= target.xPos) && (mYA <= target.yPos + target.height) && (mYA + this.height >= target.yPos)) {
@@ -131,7 +143,7 @@ public class Mario extends Entity {
                 //Goomba ded, Mario jumps
             }
             else {
-                System.out.println("Mario has died. Please close the game.");
+                //System.out.println("Mario has died. Please close the game.");
             }
             return true;
         }
@@ -139,21 +151,29 @@ public class Mario extends Entity {
     }
 
     @Override
-    public boolean collisionEntBlc(AbstractBlock target) {
-        double mXA = this.xPos + this.xVelocity;
-        double mYA = this.yPos + this.yVelocity;
-        /*
-        if ((mXA <= target.xPos + target.width) && (mXA + this.width >= target.xPos) && (mYA <= target.yPos + target.height) && (mYA + this.height >= target.yPos)) {
-            this.yVelocity = 0;
-            mYA = this.yPos;
+    public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target) {
+        int mXA = (int) Math.floor(this.xPos + this.xVelocity);
+        int mYA = (int) Math.floor(this.yPos + this.yVelocity);
 
+        if ((target.get(mYA).get(mXA) != null && !(target.get(mYA).get(mXA) instanceof NonStaticAbstractBlock))||
+                (target.get(mYA).get(mXA + (int) this.width) != null && !(target.get(mYA).get(mXA + (int) this.width) instanceof NonStaticAbstractBlock)) ||
+                (target.get(mYA + (int) this.height).get(mXA) != null && !(target.get(mYA + (int) this.height).get(mXA) instanceof NonStaticAbstractBlock)) ||
+                (target.get(mYA + (int) this.height).get(mXA + (int) this.width) != null && !(target.get(mYA + (int) this.height).get(mXA + (int) this.width) instanceof NonStaticAbstractBlock))) {
+            this.yPos = this.yVelocity <= 0 ? mYA + 1 : mYA - 1;
+            this.yVelocity = 0;
+            mYA = (int) this.yPos;
+            this.grounded = true;
         }
-        if ((mXA <= target.xPos + target.width) && (mXA + this.width >= target.xPos) && (mYA <= target.yPos + target.height) && (mYA + this.height >= target.yPos)) {
+
+        if ((target.get(mYA).get(mXA) != null && !(target.get(mYA).get(mXA) instanceof NonStaticAbstractBlock))||
+                (target.get(mYA).get(mXA + (int) this.width) != null && !(target.get(mYA).get(mXA + (int) this.width) instanceof NonStaticAbstractBlock)) ||
+                (target.get(mYA + (int) this.height).get(mXA) != null && !(target.get(mYA + (int) this.height).get(mXA) instanceof NonStaticAbstractBlock)) ||
+                (target.get(mYA + (int) this.height).get(mXA + (int) this.width) != null && !(target.get(mYA + (int) this.height).get(mXA + (int) this.width) instanceof NonStaticAbstractBlock))) {
             this.xVelocity = 0;
             return true;
         }
-        */
-        return false;
+
+        return this.grounded;
     }
 
     private boolean isPaused = false;
