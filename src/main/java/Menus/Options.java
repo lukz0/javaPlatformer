@@ -19,15 +19,18 @@ public class Options extends Menu {
         this.gameloop = gameloop;
         this.textures = new HashMap<String, Async<Texture>>() {
             {
-                this.put("exit_active", view.loadTexture("resources/GUI/Buttons/exit_active.png"));
-                this.put("exit_inactive", view.loadTexture("resources/GUI/Buttons/exit_inactive.png"));
+                this.put("discard_exit_active", view.loadTexture("resources/GUI/Buttons/discard_exit_active.png"));
+                this.put("discard_exit_inactive", view.loadTexture("resources/GUI/Buttons/discard_exit_inactive.png"));
+                this.put("apply_exit_active", view.loadTexture("resources/GUI/Buttons/apply_exit_active.png"));
+                this.put("apply_exit_inactive", view.loadTexture("resources/GUI/Buttons/apply_exit_inactive.png"));
                 this.put("background", view.loadTexture("resources/GUI/Backgrounds/1.png"));
             }
         };
         try {
             this.menu = new GU_Menu(this.view, new ArrayList<Map.Entry<GU_Button.Textures, GU_Button.EnterEventHandler>>() {
                 {
-                    this.add(new GU_Menu.SimpleButtonInfo(new ExitHandler(), textures.get("exit_inactive"), textures.get("exit_active")));
+                    this.add(new GU_Menu.SimpleButtonInfo(new ExitHandler(), textures.get("discard_exit_inactive"), textures.get("discard_exit_active")));
+                    this.add(new GU_Menu.SimpleButtonInfo(new ExitHandler(), textures.get("apply_exit_inactive"), textures.get("apply_exit_active")));
                 }
             }, -0.9f);
         } catch (Exception e) {
