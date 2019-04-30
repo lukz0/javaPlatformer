@@ -55,9 +55,22 @@ public class Renderer implements Runnable {
     }
     ArrayBlockingQueue<Task> taskQueue = new ArrayBlockingQueue<>(1000);
 
-    Renderer(GLFWKeyCallback keyHandler, GLFWWindowCloseCallback closeHandler) {
+    public static class Options {
+        final int width, height;
+        final boolean fullscreen, vsync;
+        Options(int width, int height, boolean fullscreen, boolean vsync) {
+            this.width = width;
+            this.height = height;
+            this.fullscreen = fullscreen;
+            this.vsync = vsync;
+        }
+    }
+    final Options currentOptions;
+
+    Renderer(GLFWKeyCallback keyHandler, GLFWWindowCloseCallback closeHandler, Options options) {
         this.keyHandler = keyHandler;
         this.closeHandler = closeHandler;
+        this.currentOptions = options;
     }
 
     public void run() {
@@ -100,7 +113,7 @@ public class Renderer implements Runnable {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
         // Create the window
-        window = glfwCreateWindow(1280, 720, "Project Mario!", (Main.FULLSCREEN) ? glfwGetPrimaryMonitor() : NULL, NULL);
+        window = glfwCreateWindow(this.currentOptions.width, this.currentOptions.height, "Project Mario!", (this.currentOptions.fullscreen) ? glfwGetPrimaryMonitor() : NULL, NULL);
         if (window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
@@ -132,7 +145,7 @@ public class Renderer implements Runnable {
         // Make the OpenGL context current
         glfwMakeContextCurrent(window);
         // Enable v-sync
-        glfwSwapInterval(Main.VSYNC);
+        glfwSwapInterval((this.currentOptions.vsync) ? 1 : 0);
 
         // Make the window visible
         glfwShowWindow(window);

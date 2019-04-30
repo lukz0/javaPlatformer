@@ -20,8 +20,8 @@ public class View {
     /**
      * Creates a window and a renderer on a separate thread
      */
-    void startRenderer(GLFWKeyCallback keyHandler, GLFWWindowCloseCallback closeHandler) {
-        this.rend = new Renderer(keyHandler, closeHandler);
+    void startRenderer(GLFWKeyCallback keyHandler, GLFWWindowCloseCallback closeHandler, Renderer.Options options) {
+        this.rend = new Renderer(keyHandler, closeHandler, options);
         this.rend.start();
     }
 

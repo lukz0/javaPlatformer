@@ -15,7 +15,12 @@ class Controller {
         v = new View();
 
         // Creates a window and starts a openGL renderer on a separate thread
-        v.startRenderer(new KeyboardHandler(), new WindowCloseHandler());
+        v.startRenderer(new KeyboardHandler(), new WindowCloseHandler(), new Renderer.Options(
+                1280,
+                720,
+                false,
+                true
+        ));
 
         gameloop = new Gameloop(this, this.v);
         gameloop.start();
