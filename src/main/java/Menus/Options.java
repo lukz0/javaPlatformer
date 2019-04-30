@@ -45,10 +45,25 @@ public class Options extends Menu {
                 this.put("vsync_on_inactive", view.loadTexture("resources/GUI/Sliders/vsync_on_inactive.png"));
                 this.put("vsync_off_active", view.loadTexture("resources/GUI/Sliders/vsync_off_active.png"));
                 this.put("vsync_off_inactive", view.loadTexture("resources/GUI/Sliders/vsync_off_inactive.png"));
+
+                this.put("fullscreen_on_active", view.loadTexture("resources/GUI/Sliders/fullscreen_on_active.png"));
+                this.put("fullscreen_on_inactive", view.loadTexture("resources/GUI/Sliders/fullscreen_on_inactive.png"));
+                this.put("fullscreen_off_active", view.loadTexture("resources/GUI/Sliders/fullscreen_off_active.png"));
+                this.put("fullscreen_off_inactive", view.loadTexture("resources/GUI/Sliders/fullscreen_off_inactive.png"));
+
+                this.put("resolution_640x360_active", view.loadTexture("resources/GUI/Sliders/resolution_640x360_active.png"));
+                this.put("resolution_640x360_inactive", view.loadTexture("resources/GUI/Sliders/resolution_640x360_inactive.png"));
+                this.put("resolution_1280x720_active", view.loadTexture("resources/GUI/Sliders/resolution_1280x720_active.png"));
+                this.put("resolution_1280x720_inactive", view.loadTexture("resources/GUI/Sliders/resolution_1280x720_inactive.png"));
+                this.put("resolution_1600x900_active", view.loadTexture("resources/GUI/Sliders/resolution_1600x900_active.png"));
+                this.put("resolution_1600x900_inactive", view.loadTexture("resources/GUI/Sliders/resolution_1600x900_inactive.png"));
+
                 this.put("discard_active", view.loadTexture("resources/GUI/Buttons/discard_active.png"));
                 this.put("discard_inactive", view.loadTexture("resources/GUI/Buttons/discard_inactive.png"));
+
                 this.put("apply_active", view.loadTexture("resources/GUI/Buttons/apply_active.png"));
                 this.put("apply_inactive", view.loadTexture("resources/GUI/Buttons/apply_inactive.png"));
+
                 this.put("background", view.loadTexture("resources/GUI/Backgrounds/1.png"));
             }
         };
@@ -61,8 +76,22 @@ public class Options extends Menu {
                             this.add(new GU_Button.Textures(textures.get("vsync_off_inactive"), textures.get("vsync_off_active")));
                         }
                     }, (that.sliderStates.vsync) ? 0 : 1));
-                    this.add(new GU_Menu.SimpleButtonInfo(new ExitHandler(), textures.get("discard_inactive"), textures.get("discard_active")));
+                    this.add(new GU_Menu.SliderInfo(new EmptyEnterHandler(), new FullscreenStateChanger(sliderStates), new ArrayList<GU_Button.Textures>() {
+                        {
+                            this.add(new GU_Button.Textures(textures.get("fullscreen_on_inactive"), textures.get("fullscreen_on_active")));
+                            this.add(new GU_Button.Textures(textures.get("fullscreen_off_inactive"), textures.get("fullscreen_off_active")));
+                        }
+                    }, (that.sliderStates.fullscreen) ? 0 : 1));
+                    this.add(new GU_Menu.SliderInfo(new EmptyEnterHandler(), new ResolutionStateChanger(sliderStates), new ArrayList<GU_Button.Textures>() {
+                        {
+                            this.add(new GU_Button.Textures(textures.get("resolution_640x360_inactive"), textures.get("resolution_640x360_active")));
+                            this.add(new GU_Button.Textures(textures.get("resolution_1280x720_inactive"), textures.get("resolution_1280x720_active")));
+                            this.add(new GU_Button.Textures(textures.get("resolution_1600x900_inactive"), textures.get("resolution_1600x900_active")));
+                        }
+                    }, (sliderStates.width == 640 && sliderStates.height == 360) ? 0 :
+                            (sliderStates.width == 1280 && sliderStates.height == 720) ? 1 : 2));
                     this.add(new GU_Menu.SimpleButtonInfo(new ApplyHandler(), textures.get("apply_inactive"), textures.get("apply_active")));
+                    this.add(new GU_Menu.SimpleButtonInfo(new ExitHandler(), textures.get("discard_inactive"), textures.get("discard_active")));
                 }
             }, -0.9f);
         } catch (Exception e) {
@@ -103,7 +132,7 @@ public class Options extends Menu {
             pause();
             if (!sliderStates.equalsInitial()) {
                 JSONReader.WriteOptions(new Renderer.Options(sliderStates.width, sliderStates.height, sliderStates.fullscreen, sliderStates.vsync));
-                System.out.println("Changes to config writte, please restart the game");
+                System.out.println("Changes to config write, please restart the game");
             }
         }
     }
@@ -121,7 +150,35 @@ public class Options extends Menu {
             this.states = states;
         }
         public void state(int state) {
-            states.vsync = (state == 0);
+            this.states.vsync = (state == 0);
+        }
+    }
+    private static class FullscreenStateChanger extends GU_Slider.SlideEventHandler {
+        private final SliderStates states;
+        FullscreenStateChanger(SliderStates states) {
+            this.states = states;
+        }
+        public void state(int state) {
+            this.states.fullscreen = (state == 0);
+        }
+    }
+    private static class ResolutionStateChanger extends GU_Slider.SlideEventHandler {
+        private final SliderStates states;
+        ResolutionStateChanger(SliderStates states) {
+            this.states = states;
+        }
+        public void state(int state) {
+            switch (state) {
+                case 0:
+                    this.states.width = 360;
+                    this.states.height = 640;
+                case 1:
+                    this.states.width = 1280;
+                    this.states.height = 720;
+                case 2:
+                    this.states.width = 1600;
+                    this.states.height = 900;
+            }
         }
     }
 }
