@@ -56,9 +56,9 @@ public class Renderer implements Runnable {
     ArrayBlockingQueue<Task> taskQueue = new ArrayBlockingQueue<>(1000);
 
     public static class Options {
-        final int width, height;
-        final boolean fullscreen, vsync;
-        Options(int width, int height, boolean fullscreen, boolean vsync) {
+        public final int width, height;
+        public final boolean fullscreen, vsync;
+        public Options(int width, int height, boolean fullscreen, boolean vsync) {
             this.width = width;
             this.height = height;
             this.fullscreen = fullscreen;

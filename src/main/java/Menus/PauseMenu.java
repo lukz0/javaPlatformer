@@ -70,9 +70,9 @@ public class PauseMenu extends Menu {
     }
     private class OptionsHandler extends GU_Button.EnterEventHandler {
         public void enter() {
-            that.pause();
             Options optionsMenu = new Options(that, that.gameloop, that.view);
             that.gameloop.setCurrentMenu(optionsMenu);
+            that.pause();
         }
     }
 }
