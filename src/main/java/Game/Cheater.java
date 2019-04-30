@@ -22,7 +22,7 @@ public class Cheater implements Runnable {
         while (shouldRun) {
             command = scanner.nextLine();
             if (command != null) {
-                doCommand(command);
+                doCommand(command.trim());
             }
         }
         scanner.close();
@@ -44,6 +44,18 @@ public class Cheater implements Runnable {
             //TODO: have ways to set mario invincible etc
             System.out.println("[CHEATER] set mario state to " + state);
 
+        } else if (command.startsWith("set score ")) {
+            String s_score = command.substring(10);
+            try {
+                int score = Integer.valueOf(s_score);
+                if (score >= 0) {
+                    gameloop.runCommand(new SetScoreCommand(score));
+                } else {
+                    System.out.println("Please enter a positive number");
+                }
+            } catch (Exception e) {
+                System.out.println("Not a valid integer");
+            }
         }
     }
 
@@ -77,6 +89,16 @@ public class Cheater implements Runnable {
         void doCommand(Gameloop gameloop) {
             //gameloop.controller;
             return;
+        }
+    }
+
+    static class SetScoreCommand extends Command {
+        private final int score;
+        SetScoreCommand(int score) {
+            this.score = score;
+        }
+        void doCommand(Gameloop gameloop) {
+            gameloop.score = this.score;
         }
     }
 }

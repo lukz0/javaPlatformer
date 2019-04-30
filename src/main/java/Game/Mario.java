@@ -65,8 +65,8 @@ public class Mario extends Entity {
 
 
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
-        System.out.println("Chunk index: "+ Integer.toString(this.chunkIndex));
-        System.out.println("Xpos : "+ Double.toString(this.xPos));
+        //System.out.println("Chunk index: "+ Integer.toString(this.chunkIndex));
+        //System.out.println("Xpos : "+ Double.toString(this.xPos));
         if (!this.isPaused) {
             if (gameloop.holdingLeft != gameloop.holdingRight) {
                 if (gameloop.holdingLeft) {
