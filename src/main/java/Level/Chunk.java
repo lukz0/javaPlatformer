@@ -85,7 +85,7 @@ public class Chunk {
         this.entities.forEach(entity -> entity.pause(view));
         this.entities.clear();
         this.spriteIDs.stream().filter(Objects::nonNull).forEach(view::deleteDrawable);
-        level.chunks.remove(this.chunkIndex);
+        level.chunks.set(this.chunkIndex, null);
     }
 
     public void translateChunk(View view, long timestamp, Vector3f translation, Vector3f velocity) {
