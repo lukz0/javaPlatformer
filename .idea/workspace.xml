@@ -7,8 +7,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aae774cb-0e9f-42bf-837b-96f75ab9670a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/.Button_inactive.png-autosave.kra" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Menus/Options.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Menus/Options.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -99,8 +97,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Menus/Options.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="32" column="133" selection-start-line="32" selection-start-column="133" selection-end-line="32" selection-end-column="133" />
+            <state relative-caret-position="399">
+              <caret line="39" column="133" selection-start-line="39" selection-start-column="133" selection-end-line="39" selection-end-column="133" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -782,8 +780,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Menus/Options.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="32" column="133" selection-start-line="32" selection-start-column="133" selection-end-line="32" selection-end-column="133" />
+        <state relative-caret-position="399">
+          <caret line="39" column="133" selection-start-line="39" selection-start-column="133" selection-end-line="39" selection-end-column="133" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

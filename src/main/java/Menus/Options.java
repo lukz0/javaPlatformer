@@ -37,7 +37,7 @@ public class Options extends Menu {
             e.printStackTrace();
             this.menu = null;
         }
-        this.backgroundSpriteID = view.createBackground(0, this.textures.get("background"), Vector3f.EMPTY, new Vector3f(0.01f, 0.02f, 0), System.nanoTime(), 1);
+        this.backgroundSpriteID = view.createBackground(0, this.textures.get("background"), Vector3f.EMPTY, new Vector3f(0.02f, -0.01f, 0), System.nanoTime(), 1);
     }
 
     public void deleteMenu() {
