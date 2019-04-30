@@ -180,29 +180,39 @@ public class Mario extends Entity {
     public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target) {
         int mXA = (int) Math.floor(this.xPos + this.xVelocity);
         int mYA = (int) Math.floor(this.yPos + this.yVelocity);
-        //System.out.println(mXA + " / " + mYA);
+        System.out.println(mXA + " / " + mYA);
 
-        if ((target.get(mYA).get(mXA) != null && !(target.get(mYA).get(mXA) instanceof NonStaticAbstractBlock))||
-                (target.get(mYA).get(mXA + (int) this.width) != null && !(target.get(mYA).get(mXA + (int) this.width) instanceof NonStaticAbstractBlock)) ||
-                (target.get(mYA + (int) this.height).get(mXA) != null && !(target.get(mYA + (int) this.height).get(mXA) instanceof NonStaticAbstractBlock)) ||
-                (target.get(mYA + (int) this.height).get(mXA + (int) this.width) != null && !(target.get(mYA + (int) this.height).get(mXA + (int) this.width) instanceof NonStaticAbstractBlock))) {
-            this.yPos = this.yVelocity <= 0 ? mYA + 1 : mYA - 1;
-            if(this.yVelocity <= 0) {
-                this.grounded = true;
+        if(this.xVelocity == 0) {
+            if(this.yVelocity < 0) {
+                if((target.get(mYA).get(mXA) != null && !(target.get(mYA).get(mXA) instanceof NonStaticAbstractBlock))||
+                        (target.get(mYA).get(mXA + (int) this.width) != null && !(target.get(mYA).get(mXA + (int) this.width) instanceof NonStaticAbstractBlock))) {
+                    this.yVelocity = 0;
+                    grounded = true;
+                    return true;
+                }
+            } else {
+                if((target.get(mYA + (int) this.height).get(mXA) != null && !(target.get(mYA + (int) this.height).get(mXA) instanceof NonStaticAbstractBlock)) ||
+                        (target.get(mYA + (int) this.height).get(mXA + (int) this.width) != null && !(target.get(mYA + (int) this.height).get(mXA + (int) this.width) instanceof NonStaticAbstractBlock))) {
+                    this.yVelocity = 0;
+                    return true;
+                }
             }
-            this.yVelocity = 0;
-            mYA = (int) this.yPos;
+        } else {
+            if(!this.blockLogic(target, mXA, (int)this.yPos, (int)this.width, (int)this.height) && this.blockLogic(target, mXA, mYA, (int)this.width, (int)this.height)) {
+                this.yVelocity = 0;
+                this.grounded = true;
+                return true;
+            } else if(!this.blockLogic(target, (int)this.xPos, mYA, (int)this.width, (int)this.height) && this.blockLogic(target, mXA, mYA, (int)this.width, (int)this.height)) {
+                this.xVelocity = 0;
+                return true;
+            } else if(this.blockLogic(target, mXA, mYA, (int)this.width, (int)this.height)) {
+                this.xVelocity = 0;
+                this.yVelocity = 0;
+                return true;
+            }
         }
 
-        if ((target.get(mYA).get(mXA) != null && !(target.get(mYA).get(mXA) instanceof NonStaticAbstractBlock))||
-                (target.get(mYA).get(mXA + (int) this.width) != null && !(target.get(mYA).get(mXA + (int) this.width) instanceof NonStaticAbstractBlock)) ||
-                (target.get(mYA + (int) this.height).get(mXA) != null && !(target.get(mYA + (int) this.height).get(mXA) instanceof NonStaticAbstractBlock)) ||
-                (target.get(mYA + (int) this.height).get(mXA + (int) this.width) != null && !(target.get(mYA + (int) this.height).get(mXA + (int) this.width) instanceof NonStaticAbstractBlock))) {
-            this.xVelocity = 0;
-            return true;
-        }
-
-        return this.grounded;
+        return false;
     }
 
     private boolean isPaused = false;

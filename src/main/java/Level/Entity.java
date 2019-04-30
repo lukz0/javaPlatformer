@@ -5,8 +5,7 @@ import Game.Gameloop;
 import Game.Vector3f;
 import Game.View;
 import Level.Block.AbstractBlock;
-
-import java.lang.reflect.Array;
+import Level.Block.NonStaticAbstractBlock;
 import java.util.ArrayList;
 
 public abstract class Entity {
@@ -29,6 +28,13 @@ public abstract class Entity {
     public abstract boolean collisionEntEnt(Entity target);
 
     public abstract boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target);
+
+    public boolean blockLogic(ArrayList<ArrayList<AbstractBlock>> target, int mX, int mY, int mW, int mH) {
+        return (target.get(mY).get(mX) != null && !(target.get(mY).get(mX) instanceof NonStaticAbstractBlock))||
+                (target.get(mY).get(mX + mW) != null && !(target.get(mY).get(mX + mW) instanceof NonStaticAbstractBlock)) ||
+                (target.get(mY + mH).get(mX) != null && !(target.get(mY + mH).get(mX) instanceof NonStaticAbstractBlock)) ||
+                (target.get(mY + mH).get(mX + mW) != null && !(target.get(mY + mH).get(mX + mW) instanceof NonStaticAbstractBlock));
+    }
 
     public abstract void updatePos();
 

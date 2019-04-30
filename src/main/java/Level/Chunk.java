@@ -22,16 +22,18 @@ public class Chunk {
             }
         }
     };
+
     public Chunk(int chunkIndex) {
-        this.xTranslation = chunkIndex*9;
+        this.xTranslation = chunkIndex * 9;
         this.chunkIndex = chunkIndex;
         for (int y = 0; y < 9; y++) {
             this.blockList.add(new ArrayList<AbstractBlock>(9));
-            for (int x = 0; x < 9; x ++) {
+            for (int x = 0; x < 9; x++) {
                 this.blockList.get(y).add(null);
             }
         }
     }
+
     public void loadStringList(String[] names) {
         if (names.length != 81) {
             System.err.println("names.length should equal 81, instead is equals: ".concat(Integer.toString(names.length)));
@@ -40,7 +42,7 @@ public class Chunk {
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 9; x++) {
                 try {
-                    String name = names[x+y*9];
+                    String name = names[x + y * 9];
                     if (name != null) {
                         this.blockList.get(y).set(x, (AbstractBlock) (BlockList.getClassForName(name).getDeclaredConstructor().newInstance()));
                     } else {
@@ -58,7 +60,8 @@ public class Chunk {
             }
         }
     }
-    public void loadChunk(Level level ,View view, HashMap<String, Async<Texture>> textures, long timestamp) {
+
+    public void loadChunk(Level level, View view, HashMap<String, Async<Texture>> textures, long timestamp) {
         this.currentlyLoaded = true;
         this.currentlyPaused = false;
         for (int y = 0; y < 9; y++) {
@@ -67,14 +70,14 @@ public class Chunk {
                 AbstractBlock block = row.get(x);
                 if (block != null) {
                     if (block.isStatic) {
-                        String texturePath = ((StaticAbstractBlock)block).texturePath;
+                        String texturePath = ((StaticAbstractBlock) block).texturePath;
                         if (!textures.containsKey(texturePath)) {
                             textures.put(texturePath, view.loadTexture(texturePath));
                         }
-                        this.spriteIDs.set(x+y*9, view.createTexturedRectangle(x, x+1, y+1, y, Gameloop.WORLD_LAYER, textures.get(texturePath),
+                        this.spriteIDs.set(x + y * 9, view.createTexturedRectangle(x, x + 1, y + 1, y, Gameloop.WORLD_LAYER, textures.get(texturePath),
                                 Vector3f.EMPTY, Vector3f.EMPTY, timestamp));
                     } else {
-                        ((NonStaticAbstractBlock)block).init(level, view, textures, timestamp, this.chunkIndex, x, y);
+                        ((NonStaticAbstractBlock) block).init(level, view, textures, timestamp, this.chunkIndex, x, y);
                     }
                 }
             }
@@ -89,7 +92,7 @@ public class Chunk {
     }
 
     public void translateChunk(View view, long timestamp, Vector3f translation, Vector3f velocity) {
-        view.updatePositions((ArrayList<Async<Integer>>)(this.spriteIDs.stream().filter(Objects::nonNull).collect(Collectors.toList())), translation, velocity, timestamp);
+        view.updatePositions((ArrayList<Async<Integer>>) (this.spriteIDs.stream().filter(Objects::nonNull).collect(Collectors.toList())), translation, velocity, timestamp);
         this.entities.forEach(entity -> entity.updateTranslation(translation.values[0], velocity.values[0], view, timestamp));
     }
 
@@ -97,49 +100,43 @@ public class Chunk {
         boolean entCol;
         this.entities.forEach(entity -> entity.doMove(chunks, gameloop, timestamp));
 
-        for(Entity entity: entities) {
-            entCol = false;
-            for(Entity target: entities) {
-                if(entity != target) {
-                    if(entity.collisionEntEnt(target)) {
-                        entCol = true;
-                    }
-                    if(!(entity instanceof Mario) && entity.collisionEntBlc(blockList)) {
+        for (Entity entity : entities) {
+            for (Entity target : entities) {
+                if (entity != target) {
+                    if (entity.collisionEntEnt(target)) {
                         break;
                     }
-                    if(entCol) {
-                        break;
-                    }
+
                 }
+            }
+            if (entity.collisionEntBlc(blockList)) {
+                break;
             }
         }
 
         this.entities.forEach(entity -> entity.updatePos());
     }
 
-    public void updateEntitiesChunk(ArrayList<Chunk> chunks, View view){
-        int maxchunk = chunks.size()-1;
-        this.entities.forEach(entity -> updateEntitieshelper(entity,chunks,maxchunk,view));
+    public void updateEntitiesChunk(ArrayList<Chunk> chunks, View view) {
+        int maxchunk = chunks.size() - 1;
+        this.entities.forEach(entity -> updateEntitieshelper(entity, chunks, maxchunk, view));
     }
 
-    private void updateEntitieshelper(Entity entity, ArrayList<Chunk> chunks, int maxchunk, View view){
-        if (entity.xPos + entity.xVelocity > 9){
-            if (entity.chunkIndex<maxchunk){
-                entity.moveToChunk(chunks,entity.chunkIndex+1, view);
+    private void updateEntitieshelper(Entity entity, ArrayList<Chunk> chunks, int maxchunk, View view) {
+        if (entity.xPos + entity.xVelocity > 9) {
+            if (entity.chunkIndex < maxchunk) {
+                entity.moveToChunk(chunks, entity.chunkIndex + 1, view);
                 entity.chunkIndex++;
                 entity.xPos -= 9;
-            }
-            else {
+            } else {
                 entity.xPos = 9;
             }
-        }
-        else if (entity.xPos + entity.xVelocity < 0){
-            if (entity.chunkIndex > 0){
-                entity.moveToChunk(chunks,entity.chunkIndex-1,view);
+        } else if (entity.xPos + entity.xVelocity < 0) {
+            if (entity.chunkIndex > 0) {
+                entity.moveToChunk(chunks, entity.chunkIndex - 1, view);
                 entity.chunkIndex--;
                 entity.xPos += 9;
-            }
-            else {
+            } else {
                 entity.xPos = 0;
             }
         }
@@ -149,6 +146,7 @@ public class Chunk {
         entity.unPause(view);
         this.entities.add(entity);
     }
+
     public void removeEntity(Entity entity, View view) {
         entity.pause(view);
         this.entities.remove(entity);
@@ -171,7 +169,7 @@ public class Chunk {
         }
     }
 
-    public void unPause(Level level ,View view, HashMap<String, Async<Texture>> textures, long timestamp) {
+    public void unPause(Level level, View view, HashMap<String, Async<Texture>> textures, long timestamp) {
         if (this.currentlyPaused) {
             this.currentlyPaused = false;
             if (!this.currentlyLoaded) {

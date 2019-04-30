@@ -74,8 +74,8 @@ public class Level {
 
     public void doPhysics(Gameloop gameloop, long timestamp, View view) {
         if (this.player != null) {
-            this.player.doMove(this.chunks, gameloop, timestamp);
-            this.player.collisionEntBlc(this.chunks.get(this.player.chunkIndex).blockList);
+            //this.player.doMove(this.chunks, gameloop, timestamp);
+            //this.player.collisionEntBlc(this.chunks.get(this.player.chunkIndex).blockList);
             this.chunks.forEach(cnk -> cnk.moveEntities(this.chunks, gameloop, timestamp));
             chunkManager(view);
             this.chunks.forEach(chunk -> chunk.updateEntitiesChunk(this.chunks, view));
