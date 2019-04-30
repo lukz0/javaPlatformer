@@ -7,6 +7,7 @@ public class BlockList {
         {
             put("Ground", Ground.class);
             put("Ground2", Ground2.class);
+            put("Brick", BrickSpawnTile.class);
             put("MarioSpawnTile", MarioSpawnTile.class);
             put("GoombaSpawnTile", GoombaSpawnTile.class);
         }
