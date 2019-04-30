@@ -46,7 +46,7 @@ public class JSONReader {
         JSONObject filecontent = ReadFile("config.json");
         //it's null if the readfile failed, which means we fix it with default arguments
         if (filecontent==null){
-            WriteOptions(new Renderer.Options(1280,720,false,false));
+            WriteOptions(new Renderer.Options(1280,720,false,true));
         }
         int width = (int)(long)filecontent.get("width");
         int height = (int)(long)filecontent.get("heigth");
