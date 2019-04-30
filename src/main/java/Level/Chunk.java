@@ -123,21 +123,21 @@ public class Chunk {
     }
 
     private void updateEntitieshelper(Entity entity, ArrayList<Chunk> chunks, int maxchunk, View view){
-        if (entity.xPos>9){
+        if (entity.xPos>8){
             if (entity.chunkIndex<maxchunk){
                 entity.moveToChunk(chunks,entity.chunkIndex+1, view);
                 entity.chunkIndex++;
-                entity.xPos-=9;
+                entity.xPos-=8;
             }
             else {
-                entity.xPos=9;
+                entity.xPos=8;
             }
         }
         else if (entity.xPos<0){
             if (entity.chunkIndex>0){
                 entity.moveToChunk(chunks,entity.chunkIndex-1,view);
                 entity.chunkIndex--;
-                entity.xPos+=9;
+                entity.xPos+=8;
             }
             else {
                 entity.xPos=0;
