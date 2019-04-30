@@ -89,7 +89,6 @@ public class Cheater implements Runnable {
         void doCommand(Gameloop gameloop) {
             //gameloop.controller;
             if (level!=null){
-                gameloop.level.pause(gameloop.view);
                 gameloop.level.deleteLevel(gameloop.view);
                 gameloop.level = level.loadLevel(gameloop.view, System.nanoTime());
             }
