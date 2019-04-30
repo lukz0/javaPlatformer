@@ -8,6 +8,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class JSONReader {
     private static final JSONParser parser = new JSONParser();
 
     //Object here is actually a JSON object, the parser to make them tiles is yet to be implemented given that we don't have a Tile class
-    static JSONObject ReadFile(String path) {
+    private static JSONObject ReadFile(String path) {
         JSONObject obj = null;
         try (FileReader reader = new FileReader(path)) {
             obj = (JSONObject) parser.parse(reader);
@@ -26,6 +27,33 @@ public class JSONReader {
             e.printStackTrace();
         }
         return obj;
+    }
+
+    public void WriteOptions(Renderer.Options options){
+        JSONObject filecontent = new JSONObject();
+        filecontent.put("width",options.width);
+        filecontent.put("heigth",options.height);
+        filecontent.put("Vsync", options.vsync);
+        filecontent.put("fullscreen", options.fullscreen);
+        try (FileWriter writer = new FileWriter("config.json")){
+            writer.write(filecontent.toJSONString());
+            writer.flush();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public Renderer.Options ReadOptions(){
+        JSONObject filecontent = ReadFile("config.json");
+        //it's null if the readfile failed, which means we fix it with default arguments
+        if (filecontent==null){
+            WriteOptions(new Renderer.Options(1280,720,false,false));
+        }
+        int width = (int)filecontent.get("width");
+        int height = (int)filecontent.get("heigth");
+        boolean vsync = (boolean)filecontent.get("Vsync");
+        boolean fullscreen = (boolean)filecontent.get("fullscreen");
+        return new Renderer.Options(width,height,fullscreen,vsync);
     }
 
     static Level ReadLevel(String path) {
