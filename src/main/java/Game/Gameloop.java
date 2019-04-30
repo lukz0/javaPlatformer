@@ -91,7 +91,6 @@ public class Gameloop implements Runnable {
         GU_Number gun = new GU_Number(this.view, new TextCreator((int)(200* GU_Digit.KERNING), 200, Color.BLACK), 5, 1, -0.9f,
                 new Vector3f(13.5f, 8, 0));
 
-        this.level.deleteLevel(this.view);
         while (true) {
             runKeyEventQueue();
             runCommandQueue();
@@ -99,7 +98,7 @@ public class Gameloop implements Runnable {
             if (this.isPaused) {
                 this.currentMenu.tick(this);
             } else {
-                //this.level.doPhysics(this, tickStart, this.view);
+                this.level.doPhysics(this, tickStart, this.view);
             }
 
             gun.setNumber(this.view, score);
