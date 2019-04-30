@@ -65,8 +65,6 @@ public class Mario extends Entity {
 
 
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
-        //System.out.println("Chunk index: "+ Integer.toString(this.chunkIndex));
-        //System.out.println("Xpos : "+ Double.toString(this.xPos));
         if (!this.isPaused) {
             if (gameloop.holdingLeft != gameloop.holdingRight) {
                 if (gameloop.holdingLeft) {
@@ -99,7 +97,6 @@ public class Mario extends Entity {
                 }
             }
             if (gameloop.holdingSpace) {
-                //System.out.println("Mario is grounded: " + grounded + " / His Y is " + this.yVelocity);
                 //if(grounded) {
                     if (this.currentState == STATE_IDLE_LEFT || this.currentState == STATE_MOVING_LEFT) {
                         this.currentState = STATE_JUMP_LEFT;
@@ -180,7 +177,6 @@ public class Mario extends Entity {
     public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target) {
         int mXA = (int) Math.floor(this.xPos + this.xVelocity);
         int mYA = (int) Math.floor(this.yPos + this.yVelocity);
-        System.out.println(mXA + " / " + mYA);
 
         if(this.xVelocity == 0) {
             if(this.yVelocity < 0) {
