@@ -104,7 +104,7 @@ public class Chunk {
                     if(entity.collisionEntEnt(target)) {
                         entCol = true;
                     }
-                    if(entity.collisionEntBlc(blockList)) {
+                    if(!(entity instanceof Mario) && entity.collisionEntBlc(blockList)) {
                         break;
                     }
                     if(entCol) {
