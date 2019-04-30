@@ -31,7 +31,7 @@ public class PauseMenu extends Menu {
         };
 
         try {
-            this.menu = new GU_Menu(this.view, new ArrayList<Map.Entry<GU_Button.Textures, GU_Button.EnterEventHandler>>() {
+            this.menu = new GU_Menu(this.view, new ArrayList<GU_Menu.MenuItemInfo>() {
                 {
                     this.add(new GU_Menu.SimpleButtonInfo(new ResumeHandler(), textures.get("resume_inactive"), textures.get("resume_active")));
                     this.add(new GU_Menu.SimpleButtonInfo(new ExitHandler(), textures.get("exit_inactive"), textures.get("exit_active")));
@@ -49,9 +49,7 @@ public class PauseMenu extends Menu {
         if (this.isPaused) {
             System.err.println("Paused menu recieved tick!");
         }
-        try {
-            this.menu.tick(gameloop);
-        } catch(NullPointerException e) {}
+        this.menu.tick(gameloop);
     }
 
     public void deleteMenu() {

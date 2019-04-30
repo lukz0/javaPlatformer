@@ -4,6 +4,8 @@ import Game.Async;
 import Game.Gameloop;
 import Game.Texture;
 import Game.View;
+import Menus.Menu;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +19,9 @@ public class GU_Menu {
     private final ArrayList<Item> itemList = new ArrayList<>();
     private int activeItem = 0;
 
-    public static class SimpleButtonInfo extends ArrayList<Object> implements Map.Entry<GU_Button.Textures, GU_Button.EnterEventHandler> {
+    public interface MenuItemInfo {}
+
+    public static class SimpleButtonInfo extends ArrayList<Object> implements Map.Entry<GU_Button.Textures, GU_Button.EnterEventHandler>, MenuItemInfo {
         public SimpleButtonInfo(GU_Button.EnterEventHandler handler, Async<Texture> inactive, Async<Texture> active) {
             super(2);
             this.add(new GU_Button.Textures(inactive, active));
@@ -32,17 +36,43 @@ public class GU_Menu {
         public GU_Button.EnterEventHandler setValue(GU_Button.EnterEventHandler value) {return null;}
     }
 
-    // This constructor is for GU_Button only menus
-    public GU_Menu(View view, ArrayList<Map.Entry<GU_Button.Textures, GU_Button.EnterEventHandler>> buttonList, float z_index) throws Exception {
-        this.view = view;
-        ButtonPositionCounter posCount = new ButtonPositionCounter();
-        buttonList.forEach(entry -> {
-            float position = posCount.getPosition();
-            this.itemList.add(new GU_Button(this.view, 0.5f, 5.5f, position, position-1, z_index, entry.getKey(), entry.getValue()));
-        });
-        if (this.itemList.size() == 0) {
+    public static class SliderInfo extends ArrayList<Object> implements Map.Entry<ArrayList<GU_Button.Textures>, GU_Slider.EventHandlers>, MenuItemInfo {
+        public SliderInfo(GU_Button.EnterEventHandler enterEventHandler, GU_Slider.SlideEventHandler slideEventHandler, ArrayList<GU_Button.Textures> textures) {
+            super(2);
+            this.add(new GU_Slider.EventHandlers(enterEventHandler, slideEventHandler));
+            this.add(textures);
+        }
+        public ArrayList<GU_Button.Textures> getKey() {
+            return (ArrayList<GU_Button.Textures>)this.get(1);
+        }
+        public GU_Slider.EventHandlers getValue() {
+            return (GU_Slider.EventHandlers)this.get(0);
+        }
+        public GU_Slider.EventHandlers setValue(GU_Slider.EventHandlers value) {return null;}
+    }
+
+    public GU_Menu(View view, ArrayList<MenuItemInfo> itemList, float z_index) throws Exception {
+        if (itemList.size() == 0) {
             throw new Exception("buttonList cannot be empty");
         } else {
+            this.view = view;
+            ButtonPositionCounter posCount = new ButtonPositionCounter();
+            itemList.forEach(entry -> {
+                float position = posCount.getPosition();
+                if (entry instanceof SimpleButtonInfo) {
+                    this.itemList.add(new GU_Button(this.view, 0.5f, 5.5f, position, position - 1, z_index,
+                            ((SimpleButtonInfo) entry).getKey(), ((SimpleButtonInfo) entry).getValue()));
+                } else if (entry instanceof SliderInfo) {
+                    this.itemList.add(new GU_Slider(this.view, 0.5f, 5.5f, position, position - 1, z_index,
+                            ((SliderInfo) entry).getKey(), ((SliderInfo) entry).getValue().enterEventHandler, ((SliderInfo) entry).getValue().slideEventHandler));
+                } else {
+                    try {
+                        throw new Exception("Unknown type in itemList: " + entry);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
             this.itemList.get(this.activeItem).activate(view);
         }
     }
@@ -86,9 +116,11 @@ public class GU_Menu {
         this.delay();
     }
     private void handleLeft() {
+        this.itemList.get(this.activeItem).left_event(this.view);
         this.delay();
     }
     private void handleRight() {
+        this.itemList.get(this.activeItem).right_event(this.view);
         this.delay();
     }
     private void delay() {
