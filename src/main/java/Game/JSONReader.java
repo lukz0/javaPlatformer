@@ -17,7 +17,6 @@ import java.util.HashMap;
 public class JSONReader {
     private static final JSONParser parser = new JSONParser();
 
-    //Object here is actually a JSON object, the parser to make them tiles is yet to be implemented given that we don't have a Tile class
     private static JSONObject ReadFile(String path) {
         JSONObject obj = null;
         try (FileReader reader = new FileReader(path)) {
@@ -29,7 +28,7 @@ public class JSONReader {
         return obj;
     }
 
-    public void WriteOptions(Renderer.Options options){
+    public static void WriteOptions(Renderer.Options options){
         JSONObject filecontent = new JSONObject();
         filecontent.put("width",options.width);
         filecontent.put("heigth",options.height);
@@ -43,14 +42,14 @@ public class JSONReader {
         }
     }
 
-    public Renderer.Options ReadOptions(){
+    public static Renderer.Options ReadOptions(){
         JSONObject filecontent = ReadFile("config.json");
         //it's null if the readfile failed, which means we fix it with default arguments
         if (filecontent==null){
             WriteOptions(new Renderer.Options(1280,720,false,false));
         }
-        int width = (int)filecontent.get("width");
-        int height = (int)filecontent.get("heigth");
+        int width = (int)(long)filecontent.get("width");
+        int height = (int)(long)filecontent.get("heigth");
         boolean vsync = (boolean)filecontent.get("Vsync");
         boolean fullscreen = (boolean)filecontent.get("fullscreen");
         return new Renderer.Options(width,height,fullscreen,vsync);
