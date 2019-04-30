@@ -2,6 +2,7 @@ package Menus;
 
 import GUI_Utils.GU_Button;
 import GUI_Utils.GU_Menu;
+import GUI_Utils.GU_Slider;
 import Game.*;
 
 import java.util.ArrayList;
@@ -27,10 +28,16 @@ public class Options extends Menu {
             }
         };
         try {
-            this.menu = new GU_Menu(this.view, new ArrayList<Map.Entry<GU_Button.Textures, GU_Button.EnterEventHandler>>() {
+            this.menu = new GU_Menu(this.view, new ArrayList<GU_Menu.MenuItemInfo>() {
                 {
                     this.add(new GU_Menu.SimpleButtonInfo(new ExitHandler(), textures.get("discard_exit_inactive"), textures.get("discard_exit_active")));
                     this.add(new GU_Menu.SimpleButtonInfo(new ExitHandler(), textures.get("apply_exit_inactive"), textures.get("apply_exit_active")));
+                    this.add(new GU_Menu.SliderInfo(new EmptyEnterHandler(), new StateChangePrinter(), new ArrayList<GU_Button.Textures>() {
+                        {
+                            this.add(new GU_Button.Textures(textures.get("discard_exit_inactive"), textures.get("discard_exit_active")));
+                            this.add(new GU_Button.Textures(textures.get("apply_exit_inactive"), textures.get("apply_exit_active")));
+                        }
+                    }));
                 }
             }, -0.9f);
         } catch (Exception e) {
@@ -62,6 +69,14 @@ public class Options extends Menu {
             gameloop.setCurrentMenu(parent);
             pause();
             parent.unPause();
+        }
+    }
+    private static class EmptyEnterHandler extends GU_Button.EnterEventHandler {
+        public void enter() {}
+    }
+    private static class StateChangePrinter extends GU_Slider.SlideEventHandler {
+        public void state(int state) {
+            System.out.println("[OPTIONS] Changed state to ".concat(Integer.toString(state)));
         }
     }
 }
