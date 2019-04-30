@@ -20,22 +20,22 @@ public class Options extends Menu {
         this.gameloop = gameloop;
         this.textures = new HashMap<String, Async<Texture>>() {
             {
-                this.put("discard_exit_active", view.loadTexture("resources/GUI/Buttons/discard_exit_active.png"));
-                this.put("discard_exit_inactive", view.loadTexture("resources/GUI/Buttons/discard_exit_inactive.png"));
-                this.put("apply_exit_active", view.loadTexture("resources/GUI/Buttons/apply_exit_active.png"));
-                this.put("apply_exit_inactive", view.loadTexture("resources/GUI/Buttons/apply_exit_inactive.png"));
+                this.put("discard_active", view.loadTexture("resources/GUI/Buttons/discard_active.png"));
+                this.put("discard_inactive", view.loadTexture("resources/GUI/Buttons/discard_inactive.png"));
+                this.put("apply_active", view.loadTexture("resources/GUI/Buttons/apply_active.png"));
+                this.put("apply_inactive", view.loadTexture("resources/GUI/Buttons/apply_inactive.png"));
                 this.put("background", view.loadTexture("resources/GUI/Backgrounds/1.png"));
             }
         };
         try {
             this.menu = new GU_Menu(this.view, new ArrayList<GU_Menu.MenuItemInfo>() {
                 {
-                    this.add(new GU_Menu.SimpleButtonInfo(new ExitHandler(), textures.get("discard_exit_inactive"), textures.get("discard_exit_active")));
-                    this.add(new GU_Menu.SimpleButtonInfo(new ExitHandler(), textures.get("apply_exit_inactive"), textures.get("apply_exit_active")));
+                    this.add(new GU_Menu.SimpleButtonInfo(new ExitHandler(), textures.get("discard_inactive"), textures.get("discard_active")));
+                    this.add(new GU_Menu.SimpleButtonInfo(new ExitHandler(), textures.get("apply_inactive"), textures.get("apply_active")));
                     this.add(new GU_Menu.SliderInfo(new EmptyEnterHandler(), new StateChangePrinter(), new ArrayList<GU_Button.Textures>() {
                         {
-                            this.add(new GU_Button.Textures(textures.get("discard_exit_inactive"), textures.get("discard_exit_active")));
-                            this.add(new GU_Button.Textures(textures.get("apply_exit_inactive"), textures.get("apply_exit_active")));
+                            this.add(new GU_Button.Textures(textures.get("discard_inactive"), textures.get("discard_active")));
+                            this.add(new GU_Button.Textures(textures.get("apply_inactive"), textures.get("apply_active")));
                         }
                     }));
                 }
