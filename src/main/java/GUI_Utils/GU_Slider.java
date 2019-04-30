@@ -16,7 +16,7 @@ public class GU_Slider implements GU_Menu.Item {
     private int currentState = 0;
     private Async<Integer> spriteID;
 
-    public GU_Slider(View view, float left, float right, float top, float bottom, float z_index, ArrayList<GU_Button.Textures> textures, GU_Button.EnterEventHandler enterEventHandler, SlideEventHandler slideEventHandler) {
+    public GU_Slider(View view, float left, float right, float top, float bottom, float z_index, ArrayList<GU_Button.Textures> textures, GU_Button.EnterEventHandler enterEventHandler, SlideEventHandler slideEventHandler, int initialState) {
         this.enterEventHandler = enterEventHandler;
         this.slideEventHandler = slideEventHandler;
         this.stateAmount = textures.size();
@@ -28,6 +28,8 @@ public class GU_Slider implements GU_Menu.Item {
                     Vector3f.EMPTY, Vector3f.EMPTY, 0));
         }
         this.spriteID = view.createPosUpdateableGroup(Vector3f.EMPTY, Vector3f.EMPTY, states, 0);
+        this.currentState = initialState;
+        view.setActiveState(this.spriteID, this.currentState*2);
     }
 
     public void activate(View view) {

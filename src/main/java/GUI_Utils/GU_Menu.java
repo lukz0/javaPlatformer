@@ -4,11 +4,8 @@ import Game.Async;
 import Game.Gameloop;
 import Game.Texture;
 import Game.View;
-import Menus.Menu;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class GU_Menu {
@@ -37,10 +34,11 @@ public class GU_Menu {
     }
 
     public static class SliderInfo extends ArrayList<Object> implements Map.Entry<ArrayList<GU_Button.Textures>, GU_Slider.EventHandlers>, MenuItemInfo {
-        public SliderInfo(GU_Button.EnterEventHandler enterEventHandler, GU_Slider.SlideEventHandler slideEventHandler, ArrayList<GU_Button.Textures> textures) {
-            super(2);
+        public SliderInfo(GU_Button.EnterEventHandler enterEventHandler, GU_Slider.SlideEventHandler slideEventHandler, ArrayList<GU_Button.Textures> textures, int initialState) {
+            super(3);
             this.add(new GU_Slider.EventHandlers(enterEventHandler, slideEventHandler));
             this.add(textures);
+            this.add(initialState);
         }
         public ArrayList<GU_Button.Textures> getKey() {
             return (ArrayList<GU_Button.Textures>)this.get(1);
@@ -48,6 +46,7 @@ public class GU_Menu {
         public GU_Slider.EventHandlers getValue() {
             return (GU_Slider.EventHandlers)this.get(0);
         }
+        public int getInitialState() { return (int)this.get(2);}
         public GU_Slider.EventHandlers setValue(GU_Slider.EventHandlers value) {return null;}
     }
 
@@ -63,8 +62,9 @@ public class GU_Menu {
                     this.itemList.add(new GU_Button(this.view, 0.5f, 5.5f, position, position - 1, z_index,
                             ((SimpleButtonInfo) entry).getKey(), ((SimpleButtonInfo) entry).getValue()));
                 } else if (entry instanceof SliderInfo) {
-                    this.itemList.add(new GU_Slider(this.view, 0.5f, 5.5f, position, position - 1, z_index,
-                            ((SliderInfo) entry).getKey(), ((SliderInfo) entry).getValue().enterEventHandler, ((SliderInfo) entry).getValue().slideEventHandler));
+                    this.itemList.add(new GU_Slider(this.view, 0.5f, 10.5f, position, position - 1, z_index,
+                            ((SliderInfo) entry).getKey(), ((SliderInfo) entry).getValue().enterEventHandler,
+                            ((SliderInfo) entry).getValue().slideEventHandler, ((SliderInfo) entry).getInitialState()));
                 } else {
                     try {
                         throw new Exception("Unknown type in itemList: " + entry);
