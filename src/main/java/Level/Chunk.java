@@ -119,25 +119,23 @@ public class Chunk {
 
     public void updateEntitiesChunk(ArrayList<Chunk> chunks, View view) {
         int maxchunk = chunks.size() - 1;
-        this.entities.forEach(entity -> updateEntitieshelper(entity, chunks, maxchunk, view));
+        LinkedList<Entity> entityLinkedList = new LinkedList(this.entities);
+        entityLinkedList.forEach(entity -> updateEntitieshelper(entity, chunks, maxchunk, view));
+
     }
 
     private void updateEntitieshelper(Entity entity, ArrayList<Chunk> chunks, int maxchunk, View view) {
-        if (entity.xPos + entity.xVelocity > 9) {
+        if (entity.xPos + entity.xVelocity > 8) {
             if (entity.chunkIndex < maxchunk) {
                 entity.moveToChunk(chunks, entity.chunkIndex + 1, view);
-                entity.chunkIndex++;
-                entity.xPos -= 9;
             } else {
-                entity.xPos = 9;
+                entity.xVelocity *=-1;
             }
         } else if (entity.xPos + entity.xVelocity < 0) {
             if (entity.chunkIndex > 0) {
                 entity.moveToChunk(chunks, entity.chunkIndex - 1, view);
-                entity.chunkIndex--;
-                entity.xPos += 9;
             } else {
-                entity.xPos = 0;
+                entity.xVelocity *=-1;
             }
         }
     }
@@ -150,6 +148,13 @@ public class Chunk {
     public void removeEntity(Entity entity, View view) {
         entity.pause(view);
         this.entities.remove(entity);
+        for (Iterator<Entity> entityIterator = this.entities.iterator(); entityIterator.hasNext();) {
+            Entity test = entityIterator.next();
+            if (test.equals(entity)){
+                entityIterator.remove();
+                break;
+            }
+        }
     }
 
     public ArrayList<Async<Renderer.Drawable>> pausedStaticBlocks = null;
