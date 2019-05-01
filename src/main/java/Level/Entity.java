@@ -1,9 +1,6 @@
 package Level;
 
-import Game.Async;
-import Game.Gameloop;
-import Game.Vector3f;
-import Game.View;
+import Game.*;
 import Level.Block.AbstractBlock;
 import Level.Block.NonStaticAbstractBlock;
 import java.util.ArrayList;
@@ -18,6 +15,8 @@ public abstract class Entity {
     public double height;
     public boolean interactable = true;
     public Async<Integer> drawableID;
+    public Async<Renderer.Drawable> pausedDrawable = null;
+    private boolean isPaused = false;
     public abstract void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart);
     public void updateTranslation(double xChunkTranslation, double xChunkVelocity, View view, long tickstart) {
         view.updatePosition(this.drawableID,
@@ -52,12 +51,25 @@ public abstract class Entity {
 
     // Called when the entity moves into a chunk that isn't loaded
     // Should be called before the entity is removed so that the entities drawable is not in the renderers stage
-    public abstract void pause(View view);
+    public void pause(View view){
+        if (!this.isPaused) {
+            this.isPaused = true;
+            this.pausedDrawable = view.getDrawableByID(this.drawableID);
+        }
+    }
     // Called when reloading an previously paused chunk
-    public abstract void unPause(View view);
+    public void unPause(View view){
+        if (this.isPaused) {
+            this.isPaused = false;
+            this.drawableID = view.addToStage(this.pausedDrawable);
+        }
+    }
 
     public void moveToChunk(ArrayList<Chunk> chunks, int newChunkIndex, View view) {
         chunks.get(this.chunkIndex).removeEntity(this, view);
         chunks.get(newChunkIndex).addEntity(this, view);
+
+        this.xPos+=this.chunkIndex<newChunkIndex?-9:9;
+        this.chunkIndex=newChunkIndex;
     }
 }
