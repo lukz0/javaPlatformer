@@ -16,6 +16,7 @@ public abstract class Entity {
     public double yVelocity;
     public double width;
     public double height;
+    public boolean interactable = true;
     public Async<Integer> drawableID;
     public abstract void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart);
     public void updateTranslation(double xChunkTranslation, double xChunkVelocity, View view, long tickstart) {
