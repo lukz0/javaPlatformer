@@ -136,26 +136,61 @@ public class Mario extends Entity {
     public boolean collisionEntEnt(Entity target) {
         double mXA = this.xPos + this.xVelocity;
         double mYA = this.yPos + this.yVelocity;
-        if(!this.interactable) {return false;}
-        if(target instanceof Brick) {
-            if((mXA <= target.xPos + target.width) &&
-                    (mXA + this.width >= target.xPos) &&
-                    (mYA <= target.yPos + target.height) &&
-                    (mYA + this.height >= target.yPos)) {
-                this.yPos = this.yVelocity <= 0 ? mYA + 1 : mYA - 1;
-                if(this.yVelocity <= 0) {
-                    this.grounded = true;
-                }
-                this.yVelocity = 0;
-                mYA = (int) this.yPos;
 
-            }
-            if(grounded && (mXA <= target.xPos + target.width) &&
-                    (mXA + this.width >= target.xPos) &&
-                    (mYA <= target.yPos + target.height) &&
-                    (mYA + this.height >= target.yPos)) {
-                this.xVelocity = 0;
-                return true;
+        if(!this.interactable) {return false;}
+
+        if(target instanceof Brick) {
+            if(this.xVelocity == 0) {
+                if(this.yVelocity < 0) {
+                    if(((mXA <= target.xPos + target.width) &&
+                            (mXA + this.width >= target.xPos) &&
+                            (mYA <= target.yPos + target.height) &&
+                            (mYA + this.height >= target.yPos))) {
+                        this.yVelocity = 0;
+                        grounded = true;
+                        return true;
+                    }
+                } else {
+                    if(((mXA <= target.xPos + target.width) &&
+                            (mXA + this.width >= target.xPos) &&
+                            (mYA <= target.yPos + target.height) &&
+                            (mYA + this.height >= target.yPos))) {
+                        this.yVelocity = 0;
+                        return true;
+                    }
+                }
+            } else {
+                if(((mXA <= target.xPos + target.width) &&
+                        (mXA + this.width >= target.xPos) &&
+                        (mYA <= target.yPos + target.height) &&
+                        (mYA + this.height >= target.yPos)) &&
+
+                        !((mXA <= target.xPos + target.width) &&
+                                (mXA + this.width >= target.xPos) &&
+                                (this.yPos <= target.yPos + target.height) &&
+                                (this.yPos + this.height >= target.yPos))) {
+                    this.yVelocity = 0;
+                    this.grounded = true;
+                    return true;
+                } else if(((mXA <= target.xPos + target.width) &&
+                        (mXA + this.width >= target.xPos) &&
+                        (mYA <= target.yPos + target.height) &&
+                        (mYA + this.height >= target.yPos)) &&
+
+                        !((this.xPos <= target.xPos + target.width) &&
+                                (this.xPos + this.width >= target.xPos) &&
+                                (mYA <= target.yPos + target.height) &&
+                                (mYA + this.height >= target.yPos))) {
+                    this.xVelocity = 0;
+                    return true;
+                } else if((mXA <= target.xPos + target.width) &&
+                        (mXA + this.width >= target.xPos) &&
+                        (mYA <= target.yPos + target.height) &&
+                        (mYA + this.height >= target.yPos)) {
+                    this.xVelocity = 0;
+                    this.yVelocity = 0;
+                    return true;
+                }
             }
         } else {
             if(!target.interactable) {return false;}
@@ -168,7 +203,7 @@ public class Mario extends Entity {
                     target.interactable = false;
                     this.yVelocity += 1f * (Gameloop.TICKDURATION/(double)1000);
                 } else {
-                    //System.out.println("Mario has died. Please close the game.");
+                    //Mario has died.
                     this.yVelocity = 3 * (Gameloop.TICKDURATION/(double)1000);
                     this.interactable = false;
                 }
