@@ -63,6 +63,9 @@ public class Level {
     }
 
     public void deleteLevel(View view) {
+        if (this.isPaused) {
+            this.unPause(view, System.currentTimeMillis());
+        }
         this.backgrounds.forEach((background) -> view.deleteDrawable(background.spriteID));
         this.chunks.stream().forEach(chunk -> chunk.deleteChunk(this, view));
         this.textures.get().forEach((key, value) -> view.unloadTexture(value));
@@ -122,11 +125,18 @@ public class Level {
         }
     }
 
+    private boolean isPaused = false;
     public void pause(View view) {
-        this.activeChunks.forEach(chunk -> chunk.pause(view));
+        if (!this.isPaused) {
+            this.isPaused = true;
+            this.activeChunks.forEach(chunk -> chunk.pause(view));
+        }
     }
 
     public void unPause(View view, long timestamp) {
-        this.activeChunks.forEach(chunk -> chunk.unPause(this, view, this.textures.get(), timestamp));
+        if (this.isPaused) {
+            this.isPaused = false;
+            this.activeChunks.forEach(chunk -> chunk.unPause(this, view, this.textures.get(), timestamp));
+        }
     }
 }

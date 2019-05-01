@@ -102,10 +102,10 @@ public class Options extends Menu {
     }
 
     public void deleteMenu() {
+        this.parent.unPause();
         this.view.deleteDrawable(this.backgroundSpriteID);
         this.menu.pause();
         this.textures.values().forEach(view::unloadTexture);
-        this.parent.unPause();
         this.gameloop.setCurrentMenu(this.parent);
     }
 
@@ -120,16 +120,12 @@ public class Options extends Menu {
 
     private class ExitHandler extends GU_Button.EnterEventHandler {
         public void enter() {
-            gameloop.setCurrentMenu(parent);
-            parent.unPause();
-            pause();
+            deleteMenu();
         }
     }
     private class ApplyHandler extends GU_Button.EnterEventHandler {
         public void enter() {
-            gameloop.setCurrentMenu(parent);
-            parent.unPause();
-            pause();
+            deleteMenu();
             if (!sliderStates.equalsInitial()) {
                 JSONReader.WriteOptions(new Renderer.Options(sliderStates.width, sliderStates.height, sliderStates.fullscreen, sliderStates.vsync));
                 System.out.println("Changes to config write, please restart the game");

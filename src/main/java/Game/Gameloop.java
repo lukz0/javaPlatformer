@@ -7,6 +7,7 @@ import Level.Block.StaticAbstractBlock;
 import Level.Chunk;
 import Level.Level;
 import Level.Tilemap;
+import Menus.LevelSelector;
 import Menus.Menu;
 import Menus.PauseMenu;
 
@@ -87,7 +88,11 @@ public class Gameloop implements Runnable {
         //Level lvl = loadChunk();
         long tickStart = System.nanoTime();
         this.level = JSONReader.ReadLevel("resources/maps/plain.json").loadLevel(this.view,tickStart);
-        this.score = 420;
+
+        this.isPaused = true;
+        this.currentMenu = new LevelSelector(this.view, this);
+        this.level.pause(this.view);
+
         GU_Number gun = new GU_Number(this.view, new TextCreator((int)(200* GU_Digit.KERNING), 200, Color.BLACK), 5, 1, -0.9f,
                 new Vector3f(13.5f, 8, 0));
 
@@ -216,5 +221,12 @@ public class Gameloop implements Runnable {
 
     public void stopGame(int i) {
         this.controller.stopGame(i);
+    }
+
+    public void loadLevel(String path) {
+        if (level!=null){
+            this.level.deleteLevel(this.view);
+        }
+        this.level = JSONReader.ReadLevel(path).loadLevel(this.view, System.nanoTime());
     }
 }
