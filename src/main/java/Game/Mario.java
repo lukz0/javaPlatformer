@@ -236,14 +236,14 @@ public class Mario extends Entity {
                 }
             }
         } else {
-            if(!this.blockLogic(target, mXA, (int)this.yPos, (int)this.width, (int)this.height) && this.blockLogic(target, mXA, mYA, (int)this.width, (int)this.height)) {
+            if(mXA > 0 && mXA + (int)this.width < 9 && !this.blockLogic(target, mXA, (int)this.yPos, (int)this.width, (int)this.height) && this.blockLogic(target, mXA, mYA, (int)this.width, (int)this.height)) {
                 this.yVelocity = 0;
                 this.grounded = true;
                 return true;
-            } else if(!this.blockLogic(target, (int)this.xPos, mYA, (int)this.width, (int)this.height) && this.blockLogic(target, mXA, mYA, (int)this.width, (int)this.height)) {
+            } else if(mXA > 0 && mXA + (int)this.width < 9 && !this.blockLogic(target, (int)this.xPos, mYA, (int)this.width, (int)this.height) && this.blockLogic(target, mXA, mYA, (int)this.width, (int)this.height)) {
                 this.xVelocity = 0;
                 return true;
-            } else if(this.blockLogic(target, mXA, mYA, (int)this.width, (int)this.height)) {
+            } else if(mXA > 0 && mXA + (int)this.width < 9 && this.blockLogic(target, mXA, mYA, (int)this.width, (int)this.height)) {
                 this.xVelocity = 0;
                 this.yVelocity = 0;
                 return true;

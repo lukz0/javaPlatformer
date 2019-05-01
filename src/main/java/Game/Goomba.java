@@ -11,6 +11,7 @@ import java.util.HashMap;
 public class Goomba extends Entity {
     private static final int STATE_MOVING_RIGHT = 1;
     private static final int STATE_MOVING_LEFT = 2;
+    private static final int STATE_DEAD = 3;
     Vector3f translation = Vector3f.EMPTY, velocity = Vector3f.EMPTY;
     int currentState;
     Level level;
@@ -27,15 +28,21 @@ public class Goomba extends Entity {
         if (!textures.containsKey("primeGoomb_fwd.png")) {
             textures.put("primeGoomb_fwd.png", view.loadTexture("resources/images/primeGoomb_fwd.png"));
         }
+        if (!textures.containsKey("primeGoomb.png")) {
+            textures.put("primeGoomb.png", view.loadTexture("resources/images/primeGoomb.png"));
+        }
 
         Async<Renderer.Drawable> movingRightSprite = view.getNewAnimatedTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("primeGoomb_fwd.png"),
                 this.translation, this.velocity, 500, timestamp);
         Async<Renderer.Drawable> movingLeftSprite = view.getNewAnimatedTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("primeGoomb_fwd.png"),
                 this.translation, this.velocity, 500, timestamp);
+        Async<Renderer.Drawable> deadSprite = view.getNewTexturedRectangle(0, 1, 0, 1, -0.5f, textures.get("primeGoomb.png"),
+                this.translation, this.velocity, timestamp);
 
         HashMap<Integer, Async<Renderer.Drawable>> states = new HashMap<>();
         states.put(Goomba.STATE_MOVING_RIGHT, movingRightSprite);
         states.put(Goomba.STATE_MOVING_LEFT, movingLeftSprite);
+        states.put(Goomba.STATE_DEAD, deadSprite);
 
         this.drawableID = view.createPosUpdateableGroup(this.translation, this.velocity, states, timestamp);
         this.currentState = Goomba.STATE_MOVING_RIGHT;
@@ -44,11 +51,21 @@ public class Goomba extends Entity {
 
     @Override
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
+        //System.out.println("[GOOMBA] This Goomba's velocity is " + this.xVelocity);
         double nextXPos = this.xPos + this.xVelocity;
+
+        if(!this.interactable) {
+            this.yVelocity -= 0.1 * (Gameloop.TICKDURATION/(float)1000);
+            this.currentState = Goomba.STATE_DEAD;
+            gameloop.view.setActiveState(this.drawableID, this.currentState);
+
+            return;
+        }
+
         if (nextXPos < 0) {
             this.xVelocity = 1 * (Gameloop.TICKDURATION/(float)1000);
             nextXPos = this.xPos + this.xVelocity;
-        } else if (nextXPos > (9-this.width)) {
+        } else if (nextXPos > (9 - this.width)) {
             this.xVelocity = -1 * (Gameloop.TICKDURATION/(float)1000);
             nextXPos = this.xPos + this.xVelocity;
         }
@@ -73,6 +90,7 @@ public class Goomba extends Entity {
     @Override
     public void updatePos(){
         this.xPos += this.xVelocity;
+        this.yPos += this.yVelocity;
     }
 
     @Override
@@ -97,12 +115,8 @@ public class Goomba extends Entity {
     public boolean collisionEntEnt(Entity target) {
         double mXA = this.xPos + this.xVelocity;
         double mYA = this.yPos + this.yVelocity;
-        if ((mXA <= target.xPos + target.width) && (mXA + this.width >= target.xPos) && (mYA <= target.yPos + target.height) && (mYA + this.height >= target.yPos)) {
-            if (target instanceof Mario) {
-                //Do nothing, Mario handles stuff
-                //Possibly die here if Mario moves downward?
-            }
-            else {
+        if (!(target instanceof Mario)) {
+            if ((mXA <= target.xPos + target.width) && (mXA + this.width >= target.xPos) && (mYA <= target.yPos + target.height) && (mYA + this.height >= target.yPos)) {
                 this.xVelocity *= -1;
             }
             return true;
