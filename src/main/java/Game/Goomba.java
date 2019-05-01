@@ -123,21 +123,4 @@ public class Goomba extends Entity {
         }
         return false;
     }
-
-    private boolean isPaused = false;
-    private Async<Renderer.Drawable> pausedDrawable = null;
-
-    public void pause(View view) {
-        if (!this.isPaused) {
-            this.isPaused = true;
-            this.pausedDrawable = view.getDrawableByID(this.drawableID);
-        }
-    }
-
-    public void unPause(View view) {
-        if (this.isPaused) {
-            this.isPaused = false;
-            this.drawableID = view.addToStage(this.pausedDrawable);
-        }
-    }
 }

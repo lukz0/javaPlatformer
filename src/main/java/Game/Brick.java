@@ -27,7 +27,7 @@ public class Brick extends Entity {
             textures.put("brick.png", view.loadTexture("resources/images/brick.png"));
         }
 
-        Async<Renderer.Drawable> idleSprite = view.getNewTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("primeGoomb_fwd.png"),
+        Async<Renderer.Drawable> idleSprite = view.getNewTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("brick.png"),
                 this.translation, this.velocity, timestamp);
 
         HashMap<Integer, Async<Renderer.Drawable>> states = new HashMap<>();
@@ -48,16 +48,6 @@ public class Brick extends Entity {
 
     @Override
     public void updatePos() {}
-
-    @Override
-    public void pause(View view) {
-
-    }
-
-    @Override
-    public void unPause(View view) {
-
-    }
 
     @Override
     public boolean collisionEntEnt(Entity target) {
