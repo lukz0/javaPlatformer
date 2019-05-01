@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 public class LevelSelector extends Menu {
     private final HashMap<String, Async<Texture>> textures;
+    private Async<Integer> levelImageID;
     private final Gameloop gameloop;
     private final boolean hasCustomLevel;
 
@@ -32,6 +33,15 @@ public class LevelSelector extends Menu {
                 this.put("level_5_inactive", view.loadTexture("resources/GUI/Sliders/level_5_inactive.png"));
                 this.put("level_custom_active", view.loadTexture("resources/GUI/Sliders/level_custom_active.png"));
                 this.put("level_custom_inactive", view.loadTexture("resources/GUI/Sliders/level_custom_inactive.png"));
+
+                this.put("level_image_1", view.loadTexture("resources/GUI/LevelImages/1.png"));
+                this.put("level_image_2", view.loadTexture("resources/GUI/LevelImages/2.png"));
+                this.put("level_image_3", view.loadTexture("resources/GUI/LevelImages/3.png"));
+                this.put("level_image_4", view.loadTexture("resources/GUI/LevelImages/4.png"));
+                this.put("level_image_5", view.loadTexture("resources/GUI/LevelImages/5.png"));
+                if (hasCustomLevel) {
+                    this.put("level_image_custom", view.loadTexture("resources/GUI/LevelImages/custom.png"));
+                }
 
                 this.put("background", view.loadTexture("resources/GUI/Backgrounds/1.png"));
             }
@@ -59,11 +69,39 @@ public class LevelSelector extends Menu {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+        HashMap<Integer, Async<Renderer.Drawable>> levelImages = new HashMap<>();
+        levelImages.put(0, view.getNewTexturedRectangle(0.5f, 15.5f, 6.5f, 0.5f, -0.5f, textures.get("level_image_1"), Vector3f.EMPTY, Vector3f.EMPTY, 0));
+        levelImages.put(1, view.getNewTexturedRectangle(0.5f, 15.5f, 6.5f, 0.5f, -0.5f, textures.get("level_image_2"), Vector3f.EMPTY, Vector3f.EMPTY, 0));
+        levelImages.put(2, view.getNewTexturedRectangle(0.5f, 15.5f, 6.5f, 0.5f, -0.5f, textures.get("level_image_3"), Vector3f.EMPTY, Vector3f.EMPTY, 0));
+        levelImages.put(3, view.getNewTexturedRectangle(0.5f, 15.5f, 6.5f, 0.5f, -0.5f, textures.get("level_image_4"), Vector3f.EMPTY, Vector3f.EMPTY, 0));
+        levelImages.put(4, view.getNewTexturedRectangle(0.5f, 15.5f, 6.5f, 0.5f, -0.5f, textures.get("level_image_5"), Vector3f.EMPTY, Vector3f.EMPTY, 0));
+        if (hasCustomLevel) {
+            levelImages.put(5, view.getNewTexturedRectangle(0.5f, 15.5f, 6.5f, 0.5f, -0.5f, textures.get("level_image_custom"), Vector3f.EMPTY, Vector3f.EMPTY, 0));
+        }
+        this.levelImageID = view.createPosUpdateableGroup(Vector3f.EMPTY, Vector3f.EMPTY, levelImages, 0);
     }
 
     public void deleteMenu() {
         pause();
         this.textures.values().forEach(this.view::unloadTexture);
+    }
+
+
+    private Async<Renderer.Drawable> pausedLevelImage;
+    public void pause() {
+        if (!super.isPaused) {
+            this.pausedLevelImage = view.getDrawableByID(this.levelImageID);
+        }
+        super.pause();
+    }
+
+    public void unPause() {
+        if (super.isPaused) {
+            this.levelImageID = view.addToStage(this.pausedLevelImage);
+        }
+        super.unPause();
     }
 
     public void tick(Gameloop gameloop) {
@@ -75,6 +113,9 @@ public class LevelSelector extends Menu {
     private class SliderStateChanger extends GU_Slider.SlideEventHandler {
         public void state(int state) {
             sliderState = state;
+            if (!isPaused) {
+                view.setActiveState(levelImageID, state);
+            }
         }
     }
 
