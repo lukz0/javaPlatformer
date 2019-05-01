@@ -148,13 +148,6 @@ public class Chunk {
     public void removeEntity(Entity entity, View view) {
         entity.pause(view);
         this.entities.remove(entity);
-        for (Iterator<Entity> entityIterator = this.entities.iterator(); entityIterator.hasNext();) {
-            Entity test = entityIterator.next();
-            if (test.equals(entity)){
-                entityIterator.remove();
-                break;
-            }
-        }
     }
 
     public ArrayList<Async<Renderer.Drawable>> pausedStaticBlocks = null;
