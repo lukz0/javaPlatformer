@@ -217,19 +217,8 @@ public class Mario extends Entity {
         return false;
     }
 
-    boolean targetprinted = false;
-
     @Override
     public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target) {
-        if (!this.targetprinted) {
-            this.targetprinted = true;
-            System.out.println("Blocks");
-            target.forEach(row -> {
-                row.forEach(System.out::print);
-                System.out.println();
-            });
-        }
-
         this.touchedGround = false;
         if (!this.interactable) { return false; }
         boolean collided = false;
@@ -269,7 +258,7 @@ public class Mario extends Entity {
                 // the player is on the left side of the block
                 this.xVelocity = blockX - (this.xPos + this.width);
             }
-        } else {
+        } else if (this.xPos < blockX + 1 && this.xPos+this.width > blockX) {
             // the player was above or bellow the block
             if (this.yPos > blockY) {
                 // the player is over the block
