@@ -143,7 +143,7 @@ public class LevelSelector extends Menu {
                 this.gameloop.exitPause();
                 break;
             case 4:
-                this.gameloop.loadLevel("resources/maps/testtiles.json");
+                this.gameloop.loadLevel("resources/maps/1.json");
                 this.gameloop.exitPause();
                 break;
             case 5:
