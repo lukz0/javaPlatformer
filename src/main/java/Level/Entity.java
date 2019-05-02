@@ -62,7 +62,8 @@ public abstract class Entity {
         chunks.get(this.chunkIndex).removeEntity(this, view);
         chunks.get(newChunkIndex).addEntity(this, view);
 
-        this.xPos+=this.chunkIndex<newChunkIndex?-9:9;
+        //this.xPos+=this.chunkIndex<newChunkIndex?-9:9;
+        this.xPos += (this.chunkIndex-newChunkIndex)*9;
         this.chunkIndex=newChunkIndex;
     }
 }

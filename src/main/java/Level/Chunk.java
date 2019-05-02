@@ -120,24 +120,13 @@ public class Chunk {
     public void updateEntitiesChunk(ArrayList<Chunk> chunks, View view) {
         int maxchunk = chunks.size() - 1;
         LinkedList<Entity> entityLinkedList = new LinkedList(this.entities);
-        entityLinkedList.forEach(entity -> updateEntitieshelper(entity, chunks, maxchunk, view));
-
-    }
-
-    private void updateEntitieshelper(Entity entity, ArrayList<Chunk> chunks, int maxchunk, View view) {
-        if (entity.xPos + entity.xVelocity > 8) {
-            if (entity.chunkIndex < maxchunk) {
-                entity.moveToChunk(chunks, entity.chunkIndex + 1, view);
-            } else {
-                entity.xVelocity *=-1;
+        entityLinkedList.forEach(entity -> {
+            if (entity.xPos > 9 && this.chunkIndex != maxchunk) {
+                entity.moveToChunk(chunks, this.chunkIndex+1, view);
+            } else if (entity.xPos < 0 && this.chunkIndex != 0) {
+                entity.moveToChunk(chunks, this.chunkIndex-1, view);
             }
-        } else if (entity.xPos + entity.xVelocity < 0) {
-            if (entity.chunkIndex > 0) {
-                entity.moveToChunk(chunks, entity.chunkIndex - 1, view);
-            } else {
-                entity.xVelocity *=-1;
-            }
-        }
+        });
     }
 
     public void addEntity(Entity entity, View view) {
