@@ -130,7 +130,7 @@ public class Mario extends Entity {
     public void updatePos(){
         this.xPos += this.xVelocity;
         this.yPos += this.yVelocity;
-        System.out.println("[MARIO] Xp/Yp/Xv/Yv/cnk: " + this.xPos + "/" + this.yPos + "/" + this.xVelocity + "/" + this.yVelocity + "/" + this.chunkIndex);
+        //System.out.println("[MARIO] Xp/Yp/Xv/Yv/cnk: " + this.xPos + "/" + this.yPos + "/" + this.xVelocity + "/" + this.yVelocity + "/" + this.chunkIndex);
     }
 
     @Override
@@ -216,45 +216,68 @@ public class Mario extends Entity {
         return false;
     }
 
+
+
     @Override
     public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target) {
-        int mXA = (int) Math.floor(this.xPos + this.xVelocity);
-        int mYA = (int) Math.floor(this.yPos + this.yVelocity);
+        this.touchedGround = false;
+        if (!this.interactable) { return false; }
+        boolean collided = false;
 
-        if(!this.interactable) {return false;}
+        int x = 0, y = 0;
+        double thisMinX = this.xPos + ((this.xVelocity < 0) ? this.xVelocity : 0),
+                thisMaxX = this.xPos + this.width + ((this.xVelocity > 0) ? this.xVelocity : 0),
+                thisMinY = this.yPos + ((this.yVelocity < 0) ? this.yVelocity : 0),
+                thisMaxY = this.yPos + this.height + ((this.yVelocity > 0) ? this.yVelocity : 0);
 
-        if(this.xVelocity == 0) {
-            if(this.yVelocity < 0) {
-                if((target.get(mYA).get(mXA) != null && !(target.get(mYA).get(mXA) instanceof NonStaticAbstractBlock))||
-                        (target.get(mYA).get(mXA + (int) this.width) != null && !(target.get(mYA).get(mXA + (int) this.width) instanceof NonStaticAbstractBlock))) {
-                    this.yVelocity = 0;
-                    grounded = true;
-                    return true;
+
+        for (ArrayList<AbstractBlock> row : target) {
+            for (AbstractBlock block : row) {
+                if (block instanceof NonStaticAbstractBlock) {
+                    if (thisMinX < x+1 && thisMaxX > x) {
+                        if (thisMinY < y+1 && thisMaxY > y) {
+                            collided = true;
+                            handleBlockCollision(x, y);
+                        }
+                    }
                 }
-            } else {
-                if((target.get(mYA + (int) this.height).get(mXA) != null && !(target.get(mYA + (int) this.height).get(mXA) instanceof NonStaticAbstractBlock)) ||
-                        (target.get(mYA + (int) this.height).get(mXA + (int) this.width) != null && !(target.get(mYA + (int) this.height).get(mXA + (int) this.width) instanceof NonStaticAbstractBlock))) {
-                    this.yVelocity = 0;
-                    return true;
-                }
+                x++;
             }
-        } else {
-            if(mXA > 0 && mXA + (int)this.width < 9 && !this.blockLogic(target, mXA, (int)this.yPos, (int)this.width, (int)this.height) && this.blockLogic(target, mXA, mYA, (int)this.width, (int)this.height)) {
-                this.yVelocity = 0;
-                this.grounded = true;
-                return true;
-            } else if(mXA > 0 && mXA + (int)this.width < 9 && !this.blockLogic(target, (int)this.xPos, mYA, (int)this.width, (int)this.height) && this.blockLogic(target, mXA, mYA, (int)this.width, (int)this.height)) {
-                this.xVelocity = 0;
-                return true;
-            } else if(mXA > 0 && mXA + (int)this.width < 9 && this.blockLogic(target, mXA, mYA, (int)this.width, (int)this.height)) {
-                this.xVelocity = 0;
-                this.yVelocity = 0;
-                return true;
-            }
+            x = 0;
+            y++;
         }
 
-        return false;
+        return collided;
     }
+    private void handleBlockCollision(int blockX, int blockY) {
+        System.out.println("Block cordinates: " + blockX + ", " + blockY);
+        // checks if the block and player were on the same x cordinates, thus directly over or under the block
+        if (this.xPos < blockX+1 && this.xPos+this.width > blockX) {
+            // check if the player was over the block
+            if (this.yPos > blockY) {
+                this.touchedGround = true;
+                this.yVelocity = blockY+1 - this.yPos;
+                System.out.println("Mario hit a block from above");
+            } else {
+                // the player was under
+                this.yVelocity = blockY - (this.yPos + this.height);
+                System.out.println("Mario hit a block from below");
+            }
+        } else {
+            // the player was not over or under the block
+            // this if checks if the player was on the right side of the block
+            if (this.xPos > blockX) {
+                this.xVelocity = blockX+1 - this.xPos;
+                System.out.println("Mario hit a block from the right side");
+
+            } else {
+                this.xVelocity = blockX - (this.xPos + this.width);
+                System.out.println("Mario hit a block from the left side");
+            }
+        }
+    }
+
+    private boolean touchedGround = true;
 
     private boolean isPaused = false;
     private Async<Renderer.Drawable> pausedDrawable = null;
