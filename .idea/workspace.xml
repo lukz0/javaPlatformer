@@ -7,12 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aae774cb-0e9f-42bf-837b-96f75ab9670a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Menus/GameOver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GUI_Utils/GU_Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI_Utils/GU_Menu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Gameloop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Gameloop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Mario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Mario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Menus/LevelSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Menus/LevelSelector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Menus/PauseMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Menus/PauseMenu.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -51,8 +46,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Menus/GameOver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="623">
-              <caret line="53" column="78" selection-start-line="53" selection-start-column="78" selection-end-line="53" selection-end-column="78" />
+            <state relative-caret-position="338">
+              <caret line="52" selection-start-line="52" selection-end-line="61" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1950#1951#0" expanded="true" />
@@ -77,10 +72,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Game/Gameloop.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
+            <state relative-caret-position="384">
               <caret line="117" column="48" selection-start-line="117" selection-start-column="48" selection-end-line="117" selection-end-column="48" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -101,14 +96,16 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Menus/PauseMenu.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="536">
-              <caret line="72" column="45" selection-start-line="72" selection-start-column="45" selection-end-line="72" selection-end-column="45" />
+            <state relative-caret-position="428">
+              <caret line="44" column="138" selection-start-line="44" selection-start-column="138" selection-end-line="44" selection-end-column="138" />
               <folding>
                 <element signature="e#2635#2636#0" expanded="true" />
                 <element signature="e#2679#2680#0" expanded="true" />
+                <element signature="e#3421#3422#0" expanded="true" />
+                <element signature="e#3458#3459#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -206,10 +203,10 @@
         <option value="$PROJECT_DIR$/src/main/java/Level/Entity.java" />
         <option value="$PROJECT_DIR$/src/main/java/Level/Chunk.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Mario.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Menus/PauseMenu.java" />
         <option value="$PROJECT_DIR$/src/main/java/Menus/LevelSelector.java" />
         <option value="$PROJECT_DIR$/src/main/java/Menus/GameOver.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Gameloop.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Menus/PauseMenu.java" />
       </list>
     </option>
   </component>
@@ -758,24 +755,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Menus/Options.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1380">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Menus/PauseMenu.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="536">
-          <caret line="72" column="45" selection-start-line="72" selection-start-column="45" selection-end-line="72" selection-end-column="45" />
-          <folding>
-            <element signature="e#2635#2636#0" expanded="true" />
-            <element signature="e#2679#2680#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Menus/LevelSelector.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
@@ -793,10 +772,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Menus/Options.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1380">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Game/Gameloop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="117" column="48" selection-start-line="117" selection-start-column="48" selection-end-line="117" selection-end-column="48" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2188#2189#0" expanded="true" />
+            <element signature="e#2230#2231#0" expanded="true" />
+            <element signature="e#7864#7865#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Menus/GameOver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="623">
-          <caret line="53" column="78" selection-start-line="53" selection-start-column="78" selection-end-line="53" selection-end-column="78" />
+        <state relative-caret-position="338">
+          <caret line="52" selection-start-line="52" selection-end-line="61" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1950#1951#0" expanded="true" />
@@ -811,15 +810,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Game/Gameloop.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Menus/PauseMenu.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="117" column="48" selection-start-line="117" selection-start-column="48" selection-end-line="117" selection-end-column="48" />
+        <state relative-caret-position="428">
+          <caret line="44" column="138" selection-start-line="44" selection-start-column="138" selection-end-line="44" selection-end-column="138" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2188#2189#0" expanded="true" />
-            <element signature="e#2230#2231#0" expanded="true" />
-            <element signature="e#7864#7865#0" expanded="true" />
+            <element signature="e#2635#2636#0" expanded="true" />
+            <element signature="e#2679#2680#0" expanded="true" />
+            <element signature="e#3421#3422#0" expanded="true" />
+            <element signature="e#3458#3459#0" expanded="true" />
           </folding>
         </state>
       </provider>

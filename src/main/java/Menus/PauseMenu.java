@@ -22,10 +22,16 @@ public class PauseMenu extends Menu {
             {
                 this.put("exit_active", view.loadTexture("resources/GUI/Buttons/exit_active.png"));
                 this.put("exit_inactive", view.loadTexture("resources/GUI/Buttons/exit_inactive.png"));
+
                 this.put("options_active", view.loadTexture("resources/GUI/Buttons/options_active.png"));
                 this.put("options_inactive", view.loadTexture("resources/GUI/Buttons/options_inactive.png"));
+
                 this.put("resume_active", view.loadTexture("resources/GUI/Buttons/resume_active.png"));
                 this.put("resume_inactive", view.loadTexture("resources/GUI/Buttons/resume_inactive.png"));
+
+                this.put("select_level_active", view.loadTexture("resources/GUI/Buttons/select_level_active.png"));
+                this.put("select_level_inactive", view.loadTexture("resources/GUI/Buttons/select_level_inactive.png"));
+
                 this.put("background", view.loadTexture("resources/GUI/Backgrounds/1.png"));
             }
         };
@@ -34,8 +40,9 @@ public class PauseMenu extends Menu {
             this.menu = new GU_Menu(this.view, new ArrayList<GU_Menu.MenuItemInfo>() {
                 {
                     this.add(new GU_Menu.SimpleButtonInfo(new ResumeHandler(), textures.get("resume_inactive"), textures.get("resume_active")));
-                    this.add(new GU_Menu.SimpleButtonInfo(new ExitHandler(), textures.get("exit_inactive"), textures.get("exit_active")));
+                    this.add(new GU_Menu.SimpleButtonInfo(new LevelSelectorHandler(), textures.get("select_level_inactive"), textures.get("select_level_active")));
                     this.add(new GU_Menu.SimpleButtonInfo(new OptionsHandler(), textures.get("options_inactive"), textures.get("options_active")));
+                    this.add(new GU_Menu.SimpleButtonInfo(new ExitHandler(), textures.get("exit_inactive"), textures.get("exit_active")));
                 }
             }, -0.9f);
         } catch (Exception e) {
@@ -73,6 +80,17 @@ public class PauseMenu extends Menu {
             Options optionsMenu = new Options(that, that.gameloop, that.view);
             that.gameloop.setCurrentMenu(optionsMenu);
             that.pause();
+        }
+    }
+
+    private void selectLevel() {
+        Menu levelSelector = new LevelSelector(super.view, this.gameloop, true);
+        gameloop.setCurrentMenu(levelSelector);
+        this.deleteMenu();
+    }
+    private class LevelSelectorHandler extends GU_Button.EnterEventHandler {
+        public void enter() {
+            selectLevel();
         }
     }
 }
