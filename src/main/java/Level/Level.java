@@ -88,16 +88,18 @@ public class Level {
     }
     private void chunkManager(View view){
         //TODO: create a function to unload a chunk
-        if (this.player.chunkIndex>=2 && this.chunks.get(this.player.chunkIndex-2).currentlyLoaded){
+        if (this.player.chunkIndex>1 && this.chunks.get(this.player.chunkIndex-2).currentlyLoaded){
             //this.chunks.get(this.player.chunkIndex-2).unload();
         }
-        if (this.player.chunkIndex>=1 && !this.chunks.get(this.player.chunkIndex-1).currentlyLoaded){
+        if (this.player.chunkIndex>0 && !this.chunks.get(this.player.chunkIndex-1).currentlyLoaded){
             loadChunk(this.player.chunkIndex-1,view, System.nanoTime());
+            this.activeChunks.add(this.chunks.get(this.player.chunkIndex-1));
         }
-        if (this.player.chunkIndex+1<=this.chunks.size()-1 && !this.chunks.get(this.player.chunkIndex+1).currentlyLoaded){
+        if (this.player.chunkIndex<this.chunks.size()-1 && !this.chunks.get(this.player.chunkIndex+1).currentlyLoaded){
             loadChunk(this.player.chunkIndex+1,view,System.nanoTime());
+            this.activeChunks.add(this.chunks.get(this.player.chunkIndex+1));
         }
-        if (this.player.chunkIndex+2<=this.chunks.size()-1 && this.chunks.get(this.player.chunkIndex+2).currentlyLoaded){
+        if (this.player.chunkIndex<this.chunks.size()-2 && this.chunks.get(this.player.chunkIndex+2).currentlyLoaded){
             //this.chunks.get(this.player.chunkIndex+2).unload();
         }
     }
