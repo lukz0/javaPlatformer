@@ -57,13 +57,17 @@ public class GameOver extends Menu {
         this.highScore.setNumber(this.view, highScore);
         textures.put("score", tcColor.renderString(this.view, "score:"));
         textures.put("highScore", tcColor.renderString(this.view, "high-score:"));
-        view.createStaticTexturedRectangle(9.5f, 13.5f, 3, 2, -0.9f, textures.get("score"));
-        view.createStaticTexturedRectangle(9.5f, 13.5f, 2, 1, -0.9f, textures.get("highScore"));
+        this.scoreDrawableID = view.createStaticTexturedRectangle(9.5f, 13.5f, 3, 2, -0.9f, textures.get("score"));
+        this.highScoreDrawableID = view.createStaticTexturedRectangle(9.5f, 13.5f, 2, 1, -0.9f, textures.get("highScore"));
     }
 
     public void deleteMenu() {
         super.menu.pause();
         super.view.deleteDrawable(this.backgroundSpriteID);
+        super.view.deleteDrawable(this.scoreDrawableID);
+        super.view.deleteDrawable(this.highScoreDrawableID);
+        this.score.pause(super.view);
+        this.highScore.pause(super.view);
         this.textures.values().forEach(super.view::unloadTexture);
     }
 
