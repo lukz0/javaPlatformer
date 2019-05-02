@@ -3,6 +3,7 @@ package Game;
 
 import Level.Block.AbstractBlock;
 import Level.Block.NonStaticAbstractBlock;
+import Level.Block.StaticAbstractBlock;
 import Level.Chunk;
 import Level.Entity;
 
@@ -216,10 +217,19 @@ public class Mario extends Entity {
         return false;
     }
 
-
+    boolean targetprinted = false;
 
     @Override
     public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target) {
+        if (!this.targetprinted) {
+            this.targetprinted = true;
+            System.out.println("Blocks");
+            target.forEach(row -> {
+                row.forEach(System.out::print);
+                System.out.println();
+            });
+        }
+
         this.touchedGround = false;
         if (!this.interactable) { return false; }
         boolean collided = false;
@@ -233,7 +243,7 @@ public class Mario extends Entity {
 
         for (ArrayList<AbstractBlock> row : target) {
             for (AbstractBlock block : row) {
-                if (block instanceof NonStaticAbstractBlock) {
+                if (block instanceof StaticAbstractBlock) {
                     if (thisMinX < x+1 && thisMaxX > x) {
                         if (thisMinY < y+1 && thisMaxY > y) {
                             collided = true;
@@ -250,29 +260,24 @@ public class Mario extends Entity {
         return collided;
     }
     private void handleBlockCollision(int blockX, int blockY) {
-        System.out.println("Block cordinates: " + blockX + ", " + blockY);
-        // checks if the block and player were on the same x cordinates, thus directly over or under the block
-        if (this.xPos < blockX+1 && this.xPos+this.width > blockX) {
-            // check if the player was over the block
-            if (this.yPos > blockY) {
-                this.touchedGround = true;
-                this.yVelocity = blockY+1 - this.yPos;
-                System.out.println("Mario hit a block from above");
+        if (this.yPos < blockY + 1 && this.yPos+this.width > blockY) {
+            // the player was on the say y as the block, thus to the side
+            if (this.xPos > blockX) {
+                // the player is on the right side of the block
+                this.xVelocity = blockX+1 - this.xPos;
             } else {
-                // the player was under
-                this.yVelocity = blockY - (this.yPos + this.height);
-                System.out.println("Mario hit a block from below");
+                // the player is on the left side of the block
+                this.xVelocity = blockX - (this.xPos + this.width);
             }
         } else {
-            // the player was not over or under the block
-            // this if checks if the player was on the right side of the block
-            if (this.xPos > blockX) {
-                this.xVelocity = blockX+1 - this.xPos;
-                System.out.println("Mario hit a block from the right side");
-
+            // the player was above or bellow the block
+            if (this.yPos > blockY) {
+                // the player is over the block
+                this.touchedGround = true;
+                this.yVelocity = blockY+1 - this.yPos;
             } else {
-                this.xVelocity = blockX - (this.xPos + this.width);
-                System.out.println("Mario hit a block from the left side");
+                // the player is below the block
+                this.yVelocity = blockY - (this.yPos + this.height);
             }
         }
     }
