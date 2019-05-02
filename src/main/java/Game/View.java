@@ -58,7 +58,7 @@ public class View {
      * The z_index has to be BETWEEN 1.0f and -1.0f to be visible, smaller z_index means in front of
      * Can be deleted by calling deleteDrawable
      */
-    Async<Integer> createStaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture) {
+    public Async<Integer> createStaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture) {
         return addToStage(getNewStaticTexturedRectangle(left, right, top, bottom, z_index, texture));
     }
 

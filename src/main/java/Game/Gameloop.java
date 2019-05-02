@@ -7,6 +7,7 @@ import Level.Block.StaticAbstractBlock;
 import Level.Chunk;
 import Level.Level;
 import Level.Tilemap;
+import Menus.GameOver;
 import Menus.LevelSelector;
 import Menus.Menu;
 import Menus.PauseMenu;
@@ -67,6 +68,7 @@ public class Gameloop implements Runnable {
             this.isPaused = true;
             this.currentMenu = new PauseMenu(this.view, this);
             this.level.pause(this.view);
+            this.hideScore();
         }
     }
 
@@ -76,6 +78,7 @@ public class Gameloop implements Runnable {
             this.currentMenu.deleteMenu();
             this.level.unPause(this.view, System.nanoTime());
             this.currentMenu = null;
+            this.showScore();
         }
     }
 
@@ -90,7 +93,8 @@ public class Gameloop implements Runnable {
         this.level = JSONReader.ReadLevel("resources/maps/plain.json").loadLevel(this.view,tickStart);
 
         this.isPaused = true;
-        this.currentMenu = new LevelSelector(this.view, this);
+        //this.currentMenu = new LevelSelector(this.view, this);
+        this.currentMenu = new GameOver(this.view, this, 0);
         this.level.pause(this.view);
 
         GU_Number gun = new GU_Number(this.view, new TextCreator((int)(200* GU_Digit.KERNING), 200, Color.BLACK), 5, 1, -0.9f,
@@ -106,7 +110,18 @@ public class Gameloop implements Runnable {
                 this.level.doPhysics(this, tickStart, this.view);
             }
 
-            gun.setNumber(this.view, score);
+            if (!this.scoreHidden) {
+                if (this.scoreHiddenChanged) {
+                    gun.unPause(this.view);
+                    this.scoreHiddenChanged = false;
+                }
+                gun.setNumber(this.view, score);
+            } else {
+                if (this.scoreHiddenChanged) {
+                    gun.pause(this.view);
+                    this.scoreHiddenChanged = false;
+                }
+            }
 
             long tickEnd = System.nanoTime();
             try {
@@ -120,6 +135,15 @@ public class Gameloop implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
+    private boolean scoreHidden = true, scoreHiddenChanged = true;
+    public void showScore() {
+        this.scoreHiddenChanged = true;
+        this.scoreHidden = false;
+    }
+    public void hideScore() {
+        this.scoreHiddenChanged = true;
+        this.scoreHidden = true;
     }
 
     // TODO: add a better way to load Levels

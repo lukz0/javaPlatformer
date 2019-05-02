@@ -15,7 +15,7 @@ public class LevelSelector extends Menu {
     private final Gameloop gameloop;
     private final boolean hasCustomLevel;
 
-    public LevelSelector(View view, Gameloop gameloop) {
+    public LevelSelector(View view, Gameloop gameloop, boolean delayed) {
         hasCustomLevel = new File("customLevel.json").isFile();
         this.gameloop = gameloop;
         this.view = view;
@@ -66,6 +66,9 @@ public class LevelSelector extends Menu {
                     }, 0));
                 }
             }, -0.9f);
+            if (delayed) {
+                this.menu.delay();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
