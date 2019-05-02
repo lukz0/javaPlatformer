@@ -155,16 +155,28 @@ public class JSONReader {
                     }
                     break;
                 case "y_move":
-                    y_move = (float) (long) jsonProperty.get("value");
+                    try {
+                        y_move = (float) (double) jsonProperty.get("value");
+                    }catch (ClassCastException e){
+                        y_move=0f;
+                    }
                     break;
                 case "z_move":
-                    z_move = (float) (long) jsonProperty.get("value");
+                    try{
+                        z_move = (float) (long) jsonProperty.get("value");
+                    }catch (ClassCastException e){
+                        z_move = 0f;
+                    }
                     break;
                 case "z_index":
                     z_index = (float) (double) jsonProperty.get("value");
                     break;
                 case "relative_move":
-                    relative_move = (float) (long) jsonProperty.get("value");
+                    try{
+                        relative_move = (float) (double) jsonProperty.get("value");
+                    }catch (ClassCastException e){
+                        relative_move = 0f;
+                    }
                     break;
                 default:
             }
