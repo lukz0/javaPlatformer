@@ -108,8 +108,10 @@ public class Mario extends Entity {
                     }
 
                     // TODO: find appropriate value
-                    this.yVelocity += 0.2f * (Gameloop.TICKDURATION/(double)1000);
+                if(this.grounded) {
+                    this.yVelocity = 5f * (Gameloop.TICKDURATION/(double)1000);
                     this.grounded = false;
+                }
                 //}
                 /*else {
                     this.yVelocity = 0;
@@ -117,7 +119,7 @@ public class Mario extends Entity {
             }
 
             // TODO: change
-            this.yVelocity -= 0.1f * (Gameloop.TICKDURATION/(double)1000);
+            this.yVelocity -= 0.15f * (Gameloop.TICKDURATION/(double)1000);
         }
 
         // TODO: add collision detection before adding velocity to position
