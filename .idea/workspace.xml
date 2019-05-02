@@ -8,7 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" id="aae774cb-0e9f-42bf-837b-96f75ab9670a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/src/main/java/Game/Mario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Mario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Level/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Level/Entity.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -68,8 +67,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Game/Mario.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="217" column="5" selection-start-line="217" selection-start-column="5" selection-end-line="217" selection-end-column="5" />
+            <state relative-caret-position="249">
+              <caret line="221" column="21" selection-start-line="221" selection-start-column="21" selection-end-line="221" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -712,8 +711,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Game/Mario.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="217" column="5" selection-start-line="217" selection-start-column="5" selection-end-line="217" selection-end-column="5" />
+        <state relative-caret-position="249">
+          <caret line="221" column="21" selection-start-line="221" selection-start-column="21" selection-end-line="221" selection-end-column="21" />
         </state>
       </provider>
     </entry>

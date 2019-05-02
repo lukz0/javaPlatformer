@@ -219,7 +219,7 @@ public class Mario extends Entity {
 
     @Override
     public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target) {
-        this.touchedGround = false;
+        this.grounded = false;
         if (!this.interactable) { return false; }
         boolean collided = false;
 
@@ -262,7 +262,7 @@ public class Mario extends Entity {
             // the player was above or bellow the block
             if (this.yPos > blockY) {
                 // the player is over the block
-                this.touchedGround = true;
+                this.grounded = true;
                 this.yVelocity = blockY+1 - this.yPos;
             } else {
                 // the player is below the block
