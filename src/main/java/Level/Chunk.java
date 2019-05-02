@@ -104,13 +104,13 @@ public class Chunk {
             for (Entity target : entities) {
                 if (entity != target) {
                     if (entity.collisionEntEnt(target)) {
-                        break;
+                        //break;
                     }
 
                 }
             }
             if (entity.collisionEntBlc(blockList)) {
-                break;
+                //break;
             }
         }
 
