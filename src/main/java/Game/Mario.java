@@ -67,7 +67,7 @@ public class Mario extends Entity {
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
         if (!this.isPaused) {
             if (gameloop.holdingLeft != gameloop.holdingRight && this.interactable) {
-                if (gameloop.holdingLeft) {
+                if (gameloop.holdingLeft && (this.chunkIndex >= 0 && this.xPos >= 3 * (Gameloop.TICKDURATION / (double) 1000))) {
                     this.xVelocity = -3 * (Gameloop.TICKDURATION / (double) 1000);
                     if (this.currentState != STATE_MOVING_LEFT && grounded) {
                         this.currentState = STATE_MOVING_LEFT;
@@ -76,7 +76,7 @@ public class Mario extends Entity {
                         this.currentState = STATE_JUMP_LEFT;
                         gameloop.view.setActiveState(this.drawableID, this.currentState);
                     }
-                } else {
+                } else if(gameloop.holdingRight) {
                     this.xVelocity = 3 * (Gameloop.TICKDURATION / (double) 1000);
                     if (this.currentState != STATE_MOVING_RIGHT && grounded) {
                         this.currentState = STATE_MOVING_RIGHT;
@@ -130,6 +130,7 @@ public class Mario extends Entity {
     public void updatePos(){
         this.xPos += this.xVelocity;
         this.yPos += this.yVelocity;
+        System.out.println("[MARIO] Xp/Yp/Xv/Yv/cnk: " + this.xPos + "/" + this.yPos + "/" + this.xVelocity + "/" + this.yVelocity + "/" + this.chunkIndex);
     }
 
     @Override
@@ -155,6 +156,8 @@ public class Mario extends Entity {
                             (mXA + this.width >= target.xPos) &&
                             (mYA <= target.yPos + target.height) &&
                             (mYA + this.height >= target.yPos))) {
+                        target.interactable = false;
+                        //System.out.println("[MARIO] Brick has broken");
                         this.yVelocity = 0;
                         return true;
                     }
@@ -200,8 +203,8 @@ public class Mario extends Entity {
                     (mYA + this.height >= target.yPos)) {
                 if (this.yVelocity < -0.1f * (Gameloop.TICKDURATION/(double)1000)) {
                     //Goomba ded, Mario jumps
+                    this.yVelocity = 3 * (Gameloop.TICKDURATION/(double)1000);
                     target.interactable = false;
-                    this.yVelocity += 1f * (Gameloop.TICKDURATION/(double)1000);
                 } else {
                     //Mario has died.
                     this.yVelocity = 3 * (Gameloop.TICKDURATION/(double)1000);
