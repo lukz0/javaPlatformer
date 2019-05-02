@@ -204,7 +204,7 @@ public class Mario extends Entity {
                     (mXA + this.width >= target.xPos) &&
                     (mYA <= target.yPos + target.height) &&
                     (mYA + this.height >= target.yPos)) {
-                if (this.yVelocity < -0.1f * (Gameloop.TICKDURATION/(double)1000)) {
+                if (this.yVelocity <= -0.15f * (Gameloop.TICKDURATION/(double)1000)) {
                     //Goomba ded, Mario jumps
                     this.yVelocity = 3 * (Gameloop.TICKDURATION/(double)1000);
                     target.interactable = false;
