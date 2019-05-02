@@ -123,7 +123,7 @@ public class GU_Menu {
         this.itemList.get(this.activeItem).right_event(this.view);
         this.delay();
     }
-    private void delay() {
+    public void delay() {
         this.delayLeft = GU_Menu.TICK_DELAY;
     }
 
