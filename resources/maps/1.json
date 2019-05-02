@@ -37,7 +37,7 @@
                 {
                  "name":"x_move",
                  "type":"float",
-                 "value":0.01
+                 "value":0.001
                 }, 
                 {
                  "name":"y_move",
