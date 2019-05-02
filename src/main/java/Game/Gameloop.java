@@ -94,7 +94,7 @@ public class Gameloop implements Runnable {
 
         this.isPaused = true;
         //this.currentMenu = new LevelSelector(this.view, this);
-        this.currentMenu = new GameOver(this.view, this);
+        this.currentMenu = new GameOver(this.view, this, 0);
         this.level.pause(this.view);
 
         GU_Number gun = new GU_Number(this.view, new TextCreator((int)(200* GU_Digit.KERNING), 200, Color.BLACK), 5, 1, -0.9f,

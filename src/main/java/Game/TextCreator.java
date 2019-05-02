@@ -14,7 +14,7 @@ public class TextCreator {
     Color color;
     Font font;
 
-    TextCreator(int width, int height, Color color) {
+    public TextCreator(int width, int height, Color color) {
         this.color = color;
         this.font = new Font("Consolas", Font.PLAIN, (int)(height/1.5f));
         this.width = width;
