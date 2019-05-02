@@ -147,7 +147,12 @@ public class JSONReader {
                     height = (int) (long) jsonProperty.get("value");
                     break;
                 case "x_move":
-                    x_move = (float) (double) jsonProperty.get("value");
+                    try{
+                        x_move = (float) (double) jsonProperty.get("value");
+                    }catch (ClassCastException e){
+                        //NOTE: this is here due to the fact that simple rounds 0.0 into 0 and makes it a long, which cannot be converted to a double
+                        x_move=0f;
+                    }
                     break;
                 case "y_move":
                     y_move = (float) (long) jsonProperty.get("value");
