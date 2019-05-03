@@ -55,6 +55,28 @@ public class JSONReader {
         return new Renderer.Options(width,height,fullscreen,vsync);
     }
 
+    public static void WriteHighscore(String level, int score){
+        JSONObject highscores = ReadFile("highscores.json");
+        if (highscores==null){
+            highscores = new JSONObject();
+        }
+        highscores.put(level,score);
+        try (FileWriter writer = new FileWriter("highscores.json")){
+            writer.write(highscores.toJSONString());
+            writer.flush();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
+    public static int ReadHighscore(String level){
+        JSONObject highscores = ReadFile("highscores.json");
+        if (highscores!=null){
+            return (int) (long) highscores.get(level);
+        }
+        return 0;
+    }
+
     static Level ReadLevel(String path) {
         JSONObject tempmap = ReadFile(path);
         int width = (int) (long) tempmap.get("width");
