@@ -219,13 +219,12 @@ public class Mario extends Entity {
         return false;
     }
 
-    @Override
-    public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target) {
+    public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset) {
         this.grounded = false;
         if (!this.interactable) { return false; }
         boolean collided = false;
 
-        int x = 0, y = 0;
+        int x = chunkOffset*9, y = 0;
         double thisMinX = this.xPos + ((this.xVelocity < 0) ? this.xVelocity : 0),
                 thisMaxX = this.xPos + this.width + ((this.xVelocity > 0) ? this.xVelocity : 0),
                 thisMinY = this.yPos + ((this.yVelocity < 0) ? this.yVelocity : 0),
@@ -244,7 +243,7 @@ public class Mario extends Entity {
                 }
                 x++;
             }
-            x = 0;
+            x = chunkOffset*9;
             y++;
         }
 

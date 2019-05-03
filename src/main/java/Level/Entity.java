@@ -27,7 +27,7 @@ public abstract class Entity {
 
     public abstract boolean collisionEntEnt(Entity target);
 
-    public abstract boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target);
+    public abstract boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset);
 
     public abstract void updatePos();
 

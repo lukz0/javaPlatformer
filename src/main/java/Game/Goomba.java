@@ -94,7 +94,7 @@ public class Goomba extends Entity {
     }
 
     @Override
-    public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target) {
+    public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset) {
         /*double mXA = this.xPos + this.xVelocity;
         double mYA = this.yPos + this.yVelocity;
 

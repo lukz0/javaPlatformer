@@ -54,7 +54,7 @@ public class Brick extends Entity {
     }
 
     @Override
-    public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target) {
+    public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset) {
         return false;
     }
 

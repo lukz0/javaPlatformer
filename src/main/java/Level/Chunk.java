@@ -109,7 +109,7 @@ public class Chunk {
 
                 }
             }
-            if (entity.collisionEntBlc(blockList)) {
+            if (entity.collisionEntBlc(blockList, 0)) {
                 //break;
             }
         }
