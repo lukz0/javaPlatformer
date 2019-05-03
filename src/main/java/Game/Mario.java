@@ -109,7 +109,7 @@ public class Mario extends Entity {
 
                     // TODO: find appropriate value
                 if(this.grounded) {
-                    this.yVelocity = 6.5f * (Gameloop.TICKDURATION/(double)1000);
+                    this.yVelocity = 7f * (Gameloop.TICKDURATION/(double)1000);
                     this.grounded = false;
                 }
                 //}
