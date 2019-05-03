@@ -58,6 +58,7 @@ public class Bowser extends Entity {
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 } else {
                     //jump I guess
+                    yVelocity = 7f * (Gameloop.TICKDURATION/(float)1000);
                     xVelocity = 2.5f * (Gameloop.TICKDURATION/(float)1000);
                     this.currentState = Bowser.STATE_MOVING_RIGHT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
@@ -85,7 +86,7 @@ public class Bowser extends Entity {
             }
         }
 
-
+        this.yVelocity -= 0.15f * (Gameloop.TICKDURATION/(float)1000);
     }
 
     @Override
