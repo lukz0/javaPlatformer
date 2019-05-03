@@ -1,6 +1,7 @@
 package Level;
 
 import Game.*;
+import Level.Block.AbstractBlock;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,7 +80,7 @@ public class Level {
         if (this.player != null) {
             //this.player.doMove(this.chunks, gameloop, timestamp);
             //this.player.collisionEntBlc(this.chunks.get(this.player.chunkIndex).blockList);
-            this.chunks.forEach(cnk -> cnk.moveEntities(this.chunks, gameloop, timestamp));
+            this.chunks.forEach(cnk -> cnk.moveEntities(this.chunks, gameloop, timestamp, this));
             chunkManager(view);
             this.chunks.forEach(chunk -> chunk.updateEntitiesChunk(this.chunks, view));
             //this.player.collisionEntBlc(this.chunks.get(this.player.chunkIndex).blockList);
@@ -139,6 +140,34 @@ public class Level {
         if (this.isPaused) {
             this.isPaused = false;
             this.activeChunks.forEach(chunk -> chunk.unPause(this, view, this.textures.get(), timestamp));
+        }
+    }
+
+    private static ArrayList<ArrayList<AbstractBlock>> EMPTY_BLOCK_LIST = new ArrayList<ArrayList<AbstractBlock>>(9) {
+        {
+            for (int row = 0; row < 9; row++) {
+                super.add(new ArrayList<AbstractBlock>(9) {
+                    {
+                        for (int column = 0; column < 9; column++) {
+                            super.add(null);
+                        }
+                    }
+                });
+            }
+        }
+    };
+
+    ArrayList<ArrayList<AbstractBlock>> getBlockListAtIndex(int i) {
+        Chunk chunk;
+        try {
+            chunk = this.chunks.get(i);
+            if (!chunk.currentlyPaused && chunk.currentlyLoaded) {
+                return chunk.blockList;
+            } else {
+                throw new IndexOutOfBoundsException();
+            }
+        } catch (IndexOutOfBoundsException e) {
+            return this.EMPTY_BLOCK_LIST;
         }
     }
 }

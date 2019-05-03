@@ -7,9 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aae774cb-0e9f-42bf-837b-96f75ab9670a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/Menus/GameOver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Menus/GameOver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Menus/LevelSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Menus/LevelSelector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Menus/PauseMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Menus/PauseMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Level/Chunk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Level/Chunk.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Level/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Level/Level.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -27,7 +26,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Menus/LevelSelector.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
+            <state relative-caret-position="-258">
               <caret line="67" column="22" selection-start-line="67" selection-start-column="22" selection-end-line="67" selection-end-column="22" />
               <folding>
                 <element signature="e#6265#6266#0" expanded="true" />
@@ -50,24 +49,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Game/Mario.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="220" selection-start-line="220" selection-end-line="220" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Game/Brick.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="609">
-              <caret line="56" column="94" selection-start-line="56" selection-start-column="94" selection-end-line="56" selection-end-column="94" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Level/Entity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="463">
@@ -79,8 +60,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Level/Chunk.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="398">
-              <caret line="111" column="51" selection-start-line="111" selection-start-column="51" selection-end-line="111" selection-end-column="51" />
+            <state relative-caret-position="399">
+              <caret line="113" column="12" selection-start-line="113" selection-start-column="12" selection-end-line="113" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Game/Mario.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="285">
+              <caret line="221" column="97" selection-start-line="221" selection-start-column="97" selection-end-line="221" selection-end-column="97" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Level/Level.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="122">
+              <caret line="150" column="64" selection-start-line="150" selection-start-column="64" selection-end-line="150" selection-end-column="64" />
             </state>
           </provider>
         </entry>
@@ -115,11 +114,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Menus/GameOver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="385">
-              <caret line="78" column="43" selection-start-line="78" selection-start-column="43" selection-end-line="78" selection-end-column="43" />
+            <state relative-caret-position="419">
+              <caret line="83" column="76" lean-forward="true" selection-start-line="83" selection-start-column="76" selection-end-line="83" selection-end-column="76" />
             </state>
           </provider>
         </entry>
@@ -149,6 +148,7 @@
       <find>moveT</find>
       <find>moveToChunk</find>
       <find>moveTo</find>
+      <find>blockList</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -183,18 +183,18 @@
         <option value="$PROJECT_DIR$/src/main/java/Game/Renderer.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Controller.java" />
         <option value="$PROJECT_DIR$/src/main/java/Menus/Options.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Level/Level.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/View.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Gameloop.java" />
         <option value="$PROJECT_DIR$/src/main/java/Level/Entity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Game/Mario.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Brick.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Level/Chunk.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Goomba.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Bowser.java" />
         <option value="$PROJECT_DIR$/src/main/java/Menus/LevelSelector.java" />
         <option value="$PROJECT_DIR$/src/main/java/Menus/PauseMenu.java" />
         <option value="$PROJECT_DIR$/src/main/java/Menus/GameOver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Level/Level.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Level/Chunk.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Game/Mario.java" />
       </list>
     </option>
   </component>
@@ -358,7 +358,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18763326" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18763326" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -367,7 +367,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946696" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.47334754" weight="0.20368364" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.47334754" visible="true" weight="0.20368364" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49520257" weight="0.39718616" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -375,7 +375,7 @@
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.52665246" side_tool="true" weight="0.20476706" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info active="true" anchor="bottom" id="Messages" order="10" sideWeight="0.47547975" visible="true" weight="0.13976164" />
+      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.47547975" weight="0.13976164" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -628,13 +628,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Level/Level.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="82" column="31" lean-forward="true" selection-start-line="82" selection-start-column="31" selection-end-line="82" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Game/Renderer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1027">
@@ -689,31 +682,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Level/Entity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="463">
-          <caret line="29" column="103" selection-start-line="29" selection-start-column="103" selection-end-line="29" selection-end-column="103" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Game/Mario.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="220" selection-start-line="220" selection-end-line="220" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Game/Brick.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="609">
           <caret line="56" column="94" selection-start-line="56" selection-start-column="94" selection-end-line="56" selection-end-column="94" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Level/Chunk.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="398">
-          <caret line="111" column="51" selection-start-line="111" selection-start-column="51" selection-end-line="111" selection-end-column="51" />
         </state>
       </provider>
     </entry>
@@ -744,14 +716,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Menus/LevelSelector.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Menus/GameOver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="67" column="22" selection-start-line="67" selection-start-column="22" selection-end-line="67" selection-end-column="22" />
-          <folding>
-            <element signature="e#6265#6266#0" expanded="true" />
-            <element signature="e#6305#6306#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="419">
+          <caret line="83" column="76" lean-forward="true" selection-start-line="83" selection-start-column="76" selection-end-line="83" selection-end-column="76" />
         </state>
       </provider>
     </entry>
@@ -762,10 +730,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Menus/GameOver.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Level/Entity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="78" column="43" selection-start-line="78" selection-start-column="43" selection-end-line="78" selection-end-column="43" />
+        <state relative-caret-position="463">
+          <caret line="29" column="103" selection-start-line="29" selection-start-column="103" selection-end-line="29" selection-end-column="103" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Menus/LevelSelector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-258">
+          <caret line="67" column="22" selection-start-line="67" selection-start-column="22" selection-end-line="67" selection-end-column="22" />
+          <folding>
+            <element signature="e#6265#6266#0" expanded="true" />
+            <element signature="e#6305#6306#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Level/Level.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="150" column="64" selection-start-line="150" selection-start-column="64" selection-end-line="150" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Level/Chunk.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="113" column="12" selection-start-line="113" selection-start-column="12" selection-end-line="113" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Game/Mario.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="221" column="97" selection-start-line="221" selection-start-column="97" selection-end-line="221" selection-end-column="97" />
         </state>
       </provider>
     </entry>

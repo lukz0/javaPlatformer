@@ -220,7 +220,6 @@ public class Mario extends Entity {
     }
 
     public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset) {
-        this.grounded = false;
         if (!this.interactable) { return false; }
         boolean collided = false;
 

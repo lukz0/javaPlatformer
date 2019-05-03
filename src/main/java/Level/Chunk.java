@@ -96,7 +96,7 @@ public class Chunk {
         this.entities.forEach(entity -> entity.updateTranslation(translation.values[0], velocity.values[0], view, timestamp));
     }
 
-    public void moveEntities(ArrayList<Chunk> chunks, Gameloop gameloop, long timestamp) {
+    public void moveEntities(ArrayList<Chunk> chunks, Gameloop gameloop, long timestamp, Level lvl) {
         boolean entCol;
         this.entities.forEach(entity -> entity.doMove(chunks, gameloop, timestamp));
 
@@ -109,9 +109,9 @@ public class Chunk {
 
                 }
             }
-            if (entity.collisionEntBlc(blockList, 0)) {
-                //break;
-            }
+            entity.collisionEntBlc(lvl.getBlockListAtIndex(this.chunkIndex-1), -1);
+            entity.collisionEntBlc(blockList, 0);
+            entity.collisionEntBlc(lvl.getBlockListAtIndex(this.chunkIndex+1), 1);
         }
 
         this.entities.forEach(entity -> entity.updatePos());
