@@ -274,6 +274,7 @@ public class Gameloop implements Runnable {
         this.isPaused = true;
         this.setCurrentMenu(new GameOver(this.view, this));
         this.level.deleteLevel(this.view);
+        this.level = null;
         this.hideScore();
     }
 }
