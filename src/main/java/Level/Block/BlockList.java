@@ -10,6 +10,7 @@ public class BlockList {
             put("Brick", BrickSpawnTile.class);
             put("MarioSpawnTile", MarioSpawnTile.class);
             put("GoombaSpawnTile", GoombaSpawnTile.class);
+            put("Breakablecrick", BreakableBrickSpawnTile.class);
         }
     };
     static public Class<?> getClassForName(String name) {
