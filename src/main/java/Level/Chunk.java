@@ -87,10 +87,11 @@ public class Chunk {
     }
 
     public void deleteChunk(Level level, View view) {
-        this.entities.forEach(entity -> entity.pause(view));
+        /*this.entities.forEach(entity -> entity.pause(view));
         this.entities.clear();
         this.spriteIDs.stream().filter(Objects::nonNull).forEach(view::deleteDrawable);
-        level.chunks.set(this.chunkIndex, null);
+        level.chunks.set(this.chunkIndex, null);*/
+        pause(view);
     }
 
     public void translateChunk(View view, long timestamp, Mario player) {
