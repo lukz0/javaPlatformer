@@ -231,4 +231,14 @@ public class Mario extends Entity {
             this.drawableID = view.addToStage(this.pausedDrawable);
         }
     }
+
+    public double getxPos() {
+        return this.xPos;
+    }
+    public int getChunkIndex() {
+        return this.chunkIndex;
+    }
+    public double getxVelocity() {
+        return this.xVelocity;
+    }
 }

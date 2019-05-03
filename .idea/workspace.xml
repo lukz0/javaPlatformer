@@ -7,7 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aae774cb-0e9f-42bf-837b-96f75ab9670a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Mario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Mario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Level/Chunk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Level/Chunk.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Level/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Level/Level.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -26,8 +28,16 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Game/Mario.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="427">
-              <caret line="120" column="33" selection-start-line="120" selection-start-column="33" selection-end-line="120" selection-end-column="33" />
+            <state relative-caret-position="540">
+              <caret line="240" column="22" selection-start-line="240" selection-start-column="22" selection-end-line="240" selection-end-column="22" />
+              <folding>
+                <element signature="e#10963#10964#0" expanded="true" />
+                <element signature="e#10989#10990#0" expanded="true" />
+                <element signature="e#11024#11025#0" expanded="true" />
+                <element signature="e#11061#11062#0" expanded="true" />
+                <element signature="e#11097#11098#0" expanded="true" />
+                <element signature="e#11118#11119#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -35,7 +45,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Game/Gameloop.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="407">
+            <state relative-caret-position="3249">
               <caret line="273" column="29" lean-forward="true" selection-start-line="273" selection-start-column="29" selection-end-line="273" selection-end-column="29" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -63,8 +73,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Level/Chunk.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="122">
-              <caret line="98" column="98" selection-start-line="98" selection-start-column="98" selection-end-line="98" selection-end-column="98" />
+            <state relative-caret-position="549">
+              <caret line="167" column="37" selection-start-line="167" selection-start-column="22" selection-end-line="167" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -85,10 +95,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Level/Level.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="274">
-              <caret line="76" column="34" selection-start-line="76" selection-start-column="34" selection-end-line="76" selection-end-column="34" />
+            <state relative-caret-position="228">
+              <caret line="91" column="71" selection-start-line="91" selection-start-column="71" selection-end-line="91" selection-end-column="71" />
               <folding>
-                <element signature="e#10547#10548#0" expanded="true" />
+                <element signature="e#10521#10522#0" expanded="true" />
+                <element signature="e#10580#10581#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -149,6 +160,9 @@
       <find>moveToChunk</find>
       <find>moveTo</find>
       <find>blockList</find>
+      <find>translateC</find>
+      <find>translate</find>
+      <find>currentlyLoaded</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -185,7 +199,6 @@
         <option value="$PROJECT_DIR$/src/main/java/Menus/LevelSelector.java" />
         <option value="$PROJECT_DIR$/src/main/java/Menus/PauseMenu.java" />
         <option value="$PROJECT_DIR$/src/main/java/GUI_Utils/GU_Menu.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Level/Chunk.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Bowser.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Goomba.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Brick.java" />
@@ -193,9 +206,10 @@
         <option value="$PROJECT_DIR$/src/main/java/Level/Entity.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/JSONReader.java" />
         <option value="$PROJECT_DIR$/src/main/java/Menus/GameOver.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Game/Mario.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Renderer.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Gameloop.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Game/Mario.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Level/Chunk.java" />
         <option value="$PROJECT_DIR$/src/main/java/Level/Level.java" />
       </list>
     </option>
@@ -380,15 +394,15 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946696" weight="0.32936078" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4696162" visible="true" weight="0.20289855" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.46855012" visible="true" weight="0.20289855" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49520257" weight="0.39718616" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32936078" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.53038377" side_tool="true" visible="true" weight="0.20289855" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5314499" side_tool="true" visible="true" weight="0.20289855" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.4706823" weight="0.2664437" />
+      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.46855012" weight="0.2664437" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -728,13 +742,6 @@
     <entry file="file://$PROJECT_DIR$/config.json">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Game/Mario.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="427">
-          <caret line="120" column="33" selection-start-line="120" selection-start-column="33" selection-end-line="120" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Menus/GameOver.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19">
@@ -749,13 +756,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Level/Entity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1570">
-          <caret line="86" column="47" lean-forward="true" selection-start-line="86" selection-start-column="47" selection-end-line="86" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Game/Renderer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="446">
@@ -767,9 +767,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Game/Mario.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="240" column="22" selection-start-line="240" selection-start-column="22" selection-end-line="240" selection-end-column="22" />
+          <folding>
+            <element signature="e#10963#10964#0" expanded="true" />
+            <element signature="e#10989#10990#0" expanded="true" />
+            <element signature="e#11024#11025#0" expanded="true" />
+            <element signature="e#11061#11062#0" expanded="true" />
+            <element signature="e#11097#11098#0" expanded="true" />
+            <element signature="e#11118#11119#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Level/Chunk.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="549">
+          <caret line="167" column="37" selection-start-line="167" selection-start-column="22" selection-end-line="167" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Level/Entity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1570">
+          <caret line="86" column="47" lean-forward="true" selection-start-line="86" selection-start-column="47" selection-end-line="86" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Game/Gameloop.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
+        <state relative-caret-position="3249">
           <caret line="273" column="29" lean-forward="true" selection-start-line="273" selection-start-column="29" selection-end-line="273" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -784,19 +813,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Level/Chunk.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="98" column="98" selection-start-line="98" selection-start-column="98" selection-end-line="98" selection-end-column="98" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Level/Level.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="76" column="34" selection-start-line="76" selection-start-column="34" selection-end-line="76" selection-end-column="34" />
+        <state relative-caret-position="228">
+          <caret line="91" column="71" selection-start-line="91" selection-start-column="71" selection-end-line="91" selection-end-column="71" />
           <folding>
-            <element signature="e#10547#10548#0" expanded="true" />
+            <element signature="e#10521#10522#0" expanded="true" />
+            <element signature="e#10580#10581#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -91,6 +91,12 @@ public class Chunk {
         level.chunks.set(this.chunkIndex, null);
     }
 
+    public void translateChunk(View view, long timestamp, Mario player) {
+        Vector3f translation = new Vector3f(-(float)(player.xPos+player.chunkIndex*9)+7.5f+this.chunkIndex*9, 0, 0);
+        Vector3f velocity = new Vector3f(-(float)player.xVelocity, 0, 0);
+        view.updatePositions((ArrayList<Async<Integer>>) (this.spriteIDs.stream().filter(Objects::nonNull).collect(Collectors.toList())), translation, velocity, timestamp);
+        this.entities.forEach(entity -> entity.updateTranslation(translation.values[0], velocity.values[0], view, timestamp));
+    }
     public void translateChunk(View view, long timestamp, Vector3f translation, Vector3f velocity) {
         view.updatePositions((ArrayList<Async<Integer>>) (this.spriteIDs.stream().filter(Objects::nonNull).collect(Collectors.toList())), translation, velocity, timestamp);
         this.entities.forEach(entity -> entity.updateTranslation(translation.values[0], velocity.values[0], view, timestamp));
