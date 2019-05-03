@@ -140,58 +140,14 @@ public class Mario extends Entity {
         if(!this.interactable) {return false;}
 
         if(target instanceof Brick) {
-            if(this.xVelocity == 0) {
-                if(this.yVelocity < 0) {
-                    if(((mXA <= target.xPos + target.width) &&
-                            (mXA + this.width >= target.xPos) &&
-                            (mYA <= target.yPos + target.height) &&
-                            (mYA + this.height >= target.yPos))) {
-                        this.yVelocity = 0;
-                        grounded = true;
-                        return true;
-                    }
-                } else {
-                    if(((mXA <= target.xPos + target.width) &&
-                            (mXA + this.width >= target.xPos) &&
-                            (mYA <= target.yPos + target.height) &&
-                            (mYA + this.height >= target.yPos))) {
-                        target.interactable = false;
-                        //System.out.println("[MARIO] Brick has broken");
-                        this.yVelocity = 0;
-                        return true;
-                    }
-                }
-            } else {
-                if(((mXA <= target.xPos + target.width) &&
-                        (mXA + this.width >= target.xPos) &&
-                        (mYA <= target.yPos + target.height) &&
-                        (mYA + this.height >= target.yPos)) &&
-
-                        !((mXA <= target.xPos + target.width) &&
-                                (mXA + this.width >= target.xPos) &&
-                                (this.yPos <= target.yPos + target.height) &&
-                                (this.yPos + this.height >= target.yPos))) {
-                    this.yVelocity = 0;
-                    this.grounded = true;
-                    return true;
-                } else if(((mXA <= target.xPos + target.width) &&
-                        (mXA + this.width >= target.xPos) &&
-                        (mYA <= target.yPos + target.height) &&
-                        (mYA + this.height >= target.yPos)) &&
-
-                        !((this.xPos <= target.xPos + target.width) &&
-                                (this.xPos + this.width >= target.xPos) &&
-                                (mYA <= target.yPos + target.height) &&
-                                (mYA + this.height >= target.yPos))) {
-                    this.xVelocity = 0;
-                    return true;
-                } else if((mXA <= target.xPos + target.width) &&
-                        (mXA + this.width >= target.xPos) &&
-                        (mYA <= target.yPos + target.height) &&
-                        (mYA + this.height >= target.yPos)) {
-                    this.xVelocity = 0;
-                    this.yVelocity = 0;
-                    return true;
+            Brick targetBrick = (Brick)target;
+            double thisMinX = this.xPos + ((this.xVelocity < 0) ? this.xVelocity : 0),
+                    thisMaxX = this.xPos + this.width + ((this.xVelocity > 0) ? this.xVelocity : 0),
+                    thisMinY = this.yPos + ((this.yVelocity < 0) ? this.yVelocity : 0),
+                    thisMaxY = this.yPos + this.height + ((this.yVelocity > 0) ? this.yVelocity : 0);
+            if (thisMinX < targetBrick.xPos+1 && thisMaxX > targetBrick.xPos && thisMinY < targetBrick.yPos+1 && thisMaxY > targetBrick.yPos) {
+                if (handleBlockCollision((int)targetBrick.xPos, (int)targetBrick.yPos) == HitDirection.FROM_BELOW) {
+                    targetBrick.interactable = false;
                 }
             }
         } else {
@@ -230,11 +186,9 @@ public class Mario extends Entity {
         for (ArrayList<AbstractBlock> row : target) {
             for (AbstractBlock block : row) {
                 if (block instanceof StaticAbstractBlock) {
-                    if (thisMinX < x+1 && thisMaxX > x) {
-                        if (thisMinY < y+1 && thisMaxY > y) {
+                    if (thisMinX < x+1 && thisMaxX > x && thisMinY < y+1 && thisMaxY > y) {
                             collided = true;
                             handleBlockCollision(x, y);
-                        }
                     }
                 }
                 x++;
@@ -245,15 +199,17 @@ public class Mario extends Entity {
 
         return collided;
     }
-    private void handleBlockCollision(int blockX, int blockY) {
+    private HitDirection handleBlockCollision(int blockX, int blockY) {
         if (this.yPos < blockY + 1 && this.yPos+this.width > blockY) {
             // the player was on the say y as the block, thus to the side
             if (this.xPos > blockX) {
                 // the player is on the right side of the block
                 this.xVelocity = blockX+1 - this.xPos;
+                return HitDirection.FROM_RIGHT;
             } else {
                 // the player is on the left side of the block
                 this.xVelocity = blockX - (this.xPos + this.width);
+                return HitDirection.FROM_LEFT;
             }
         } else if (this.xPos < blockX + 1 && this.xPos+this.width > blockX) {
             // the player was above or bellow the block
@@ -261,11 +217,14 @@ public class Mario extends Entity {
                 // the player is over the block
                 this.grounded = true;
                 this.yVelocity = blockY+1 - this.yPos;
+                return HitDirection.FROM_ABOVE;
             } else {
                 // the player is below the block
                 this.yVelocity = blockY - (this.yPos + this.height);
+                return HitDirection.FROM_BELOW;
             }
         }
+        return null;
     }
 
     private boolean touchedGround = true;
