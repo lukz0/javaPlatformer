@@ -27,7 +27,7 @@
                 {
                  "name":"relative_move",
                  "type":"float",
-                 "value":0
+                 "value":0.02
                 }, 
                 {
                  "name":"width",
@@ -37,7 +37,7 @@
                 {
                  "name":"x_move",
                  "type":"float",
-                 "value":0.001
+                 "value":0
                 }, 
                 {
                  "name":"y_move",
@@ -73,7 +73,7 @@
                 {
                  "name":"relative_move",
                  "type":"float",
-                 "value":0
+                 "value":0.01
                 }, 
                 {
                  "name":"width",
