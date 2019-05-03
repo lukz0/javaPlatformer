@@ -61,7 +61,14 @@ public class Goomba extends Entity {
 
             return;
         }
-
+        switch (this.moving){
+            case MOVING_LEFT:
+                this.xVelocity=-1f*(Gameloop.TICKDURATION/(float)1000);
+                break;
+            case MOVING_RIGHT:
+                this.xVelocity=1f*(Gameloop.TICKDURATION/(float)1000);
+                break;
+        }
         this.yVelocity-=0.1f * (Gameloop.TICKDURATION/(float)1000);
         /*
         if (nextXPos < 0) {
