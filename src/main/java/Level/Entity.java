@@ -66,4 +66,31 @@ public abstract class Entity {
         this.xPos += (this.chunkIndex-newChunkIndex)*9;
         this.chunkIndex=newChunkIndex;
     }
+
+    public HitDirection handleBlockCollision(int blockX, int blockY) {
+        if (this.yPos < blockY + 1 && this.yPos+this.width > blockY) {
+            // the player was on the say y as the block, thus to the side
+            if (this.xPos > blockX) {
+                // the player is on the right side of the block
+                this.xVelocity = blockX+1 - this.xPos;
+                return HitDirection.FROM_RIGHT;
+            } else {
+                // the player is on the left side of the block
+                this.xVelocity = blockX - (this.xPos + this.width);
+                return HitDirection.FROM_LEFT;
+            }
+        } else if (this.xPos < blockX + 1 && this.xPos+this.width > blockX) {
+            // the player was above or bellow the block
+            if (this.yPos > blockY) {
+                // the player is over the block
+                this.yVelocity = blockY+1 - this.yPos;
+                return HitDirection.FROM_ABOVE;
+            } else {
+                // the player is below the block
+                this.yVelocity = blockY - (this.yPos + this.height);
+                return HitDirection.FROM_BELOW;
+            }
+        }
+        return null;
+    }
 }
