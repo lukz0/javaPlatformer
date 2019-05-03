@@ -110,17 +110,13 @@ public class Mario extends Entity {
                     // TODO: find appropriate value
                 if(this.grounded) {
                     this.yVelocity = 7f * (Gameloop.TICKDURATION/(double)1000);
-                    this.grounded = false;
                 }
-                //}
-                /*else {
-                    this.yVelocity = 0;
-                }*/
             }
 
             // TODO: change
             this.yVelocity -= 0.15f * (Gameloop.TICKDURATION/(double)1000);
         }
+        this.grounded = false;
 
         // TODO: add collision detection before adding velocity to position
         // TODO: changing chunks when translation < 0 or translation > 9
