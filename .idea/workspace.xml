@@ -7,9 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aae774cb-0e9f-42bf-837b-96f75ab9670a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/HitDirection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Game/Mario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Mario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Level/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Level/Entity.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -27,8 +27,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Level/Entity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="27" column="76" selection-start-line="27" selection-start-column="76" selection-end-line="27" selection-end-column="76" />
+            <state relative-caret-position="255">
+              <caret line="84" column="47" selection-start-line="84" selection-start-column="47" selection-end-line="84" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -45,8 +45,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Game/Mario.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="522">
-              <caret line="188" column="58" selection-start-line="188" selection-start-column="58" selection-end-line="188" selection-end-column="58" />
+            <state relative-caret-position="255">
+              <caret line="190" column="85" selection-start-line="190" selection-start-column="85" selection-end-line="190" selection-end-column="85" />
             </state>
           </provider>
         </entry>
@@ -118,7 +118,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/Game/Bowser.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="361">
-              <caret line="91" column="67" selection-start-line="91" selection-start-column="67" selection-end-line="91" selection-end-column="67" />
+              <caret line="92" column="67" selection-start-line="92" selection-start-column="67" selection-end-line="92" selection-end-column="67" />
             </state>
           </provider>
         </entry>
@@ -188,7 +188,6 @@
         <option value="$PROJECT_DIR$/src/main/java/Menus/PauseMenu.java" />
         <option value="$PROJECT_DIR$/src/main/java/Menus/GameOver.java" />
         <option value="$PROJECT_DIR$/src/main/java/GUI_Utils/GU_Menu.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Level/Entity.java" />
         <option value="$PROJECT_DIR$/src/main/java/Level/Chunk.java" />
         <option value="$PROJECT_DIR$/src/main/java/Level/Level.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Bowser.java" />
@@ -196,6 +195,7 @@
         <option value="$PROJECT_DIR$/src/main/java/Game/Brick.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Gameloop.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/HitDirection.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Level/Entity.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Mario.java" />
       </list>
     </option>
@@ -244,6 +244,14 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="Game" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="projectMario" type="b2602c69:ProjectViewProjectNode" />
+              <item name="projectMario" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Level" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -346,15 +354,15 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946696" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.47121534" visible="true" weight="0.20289855" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4706823" visible="true" weight="0.20289855" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49520257" weight="0.39718616" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32936078" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.52878463" side_tool="true" visible="true" weight="0.20289855" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5293177" side_tool="true" visible="true" weight="0.20289855" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.4717484" weight="0.2664437" />
+      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.47121534" weight="0.2664437" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -681,13 +689,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Level/Entity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="27" column="76" selection-start-line="27" selection-start-column="76" selection-end-line="27" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Level/Chunk.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="47">
@@ -705,7 +706,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/Game/Bowser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="361">
-          <caret line="91" column="67" selection-start-line="91" selection-start-column="67" selection-end-line="91" selection-end-column="67" />
+          <caret line="92" column="67" selection-start-line="92" selection-start-column="67" selection-end-line="92" selection-end-column="67" />
         </state>
       </provider>
     </entry>
@@ -743,10 +744,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Level/Entity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="84" column="47" selection-start-line="84" selection-start-column="47" selection-end-line="84" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Game/Mario.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="188" column="58" selection-start-line="188" selection-start-column="58" selection-end-line="188" selection-end-column="58" />
+        <state relative-caret-position="255">
+          <caret line="190" column="85" selection-start-line="190" selection-start-column="85" selection-end-line="190" selection-end-column="85" />
         </state>
       </provider>
     </entry>
