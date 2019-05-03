@@ -62,6 +62,8 @@ public class Goomba extends Entity {
             return;
         }
 
+        this.yVelocity-=0.1f * (Gameloop.TICKDURATION/(float)1000);
+        /*
         if (nextXPos < 0) {
             this.xVelocity = 1 * (Gameloop.TICKDURATION/(float)1000);
             nextXPos = this.xPos + this.xVelocity;
@@ -69,6 +71,7 @@ public class Goomba extends Entity {
             this.xVelocity = -1 * (Gameloop.TICKDURATION/(float)1000);
             nextXPos = this.xPos + this.xVelocity;
         }
+        */
 
         //TODO: add logic regarding choice of direction
         /*Vector3f nextPos = this.translation.add(this.velocity);
@@ -91,24 +94,6 @@ public class Goomba extends Entity {
     public void updatePos(){
         this.xPos += this.xVelocity;
         this.yPos += this.yVelocity;
-    }
-
-    @Override
-    public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset) {
-        /*double mXA = this.xPos + this.xVelocity;
-        double mYA = this.yPos + this.yVelocity;
-
-        if ((mXA <= target.xPos + target.width) && (mXA + this.width >= target.xPos) && (mYA <= target.yPos + target.height) && (mYA + this.height >= target.yPos)) {
-            this.yVelocity = 0;
-            mYA = this.yPos;
-
-        }
-        if ((mXA <= target.xPos + target.width) && (mXA + this.width >= target.xPos) && (mYA <= target.yPos + target.height) && (mYA + this.height >= target.yPos)) {
-            this.xVelocity *= -1;
-            return true;
-        }
-        */
-        return false;
     }
 
     @Override

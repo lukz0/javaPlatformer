@@ -183,6 +183,7 @@ public class Mario extends Entity {
         return false;
     }
 
+    @Override
     public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset) {
         if (!this.interactable) { return false; }
         boolean collided = false;
