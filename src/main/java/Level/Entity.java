@@ -27,7 +27,36 @@ public abstract class Entity {
                 tickstart);
     }
 
-    public abstract boolean collisionEntEnt(Entity target, Gameloop gameloop);
+    public boolean collisionEntEnt(Entity target, Gameloop gameloop){
+        double mXA = this.xPos + this.xVelocity;
+        double mYA = this.yPos + this.yVelocity;
+
+        if(!this.interactable) {return false;}
+        if(!target.interactable) {return false;}
+        double thisMinX = this.xPos + ((this.xVelocity < 0) ? this.xVelocity : 0),
+                    thisMaxX = this.xPos + this.width + ((this.xVelocity > 0) ? this.xVelocity : 0),
+                    thisMinY = this.yPos + ((this.yVelocity < 0) ? this.yVelocity : 0),
+                    thisMaxY = this.yPos + this.height + ((this.yVelocity > 0) ? this.yVelocity : 0);
+        if (thisMinX < target.xPos+target.width && thisMaxX > target.xPos && thisMinY < target.yPos+target.height && thisMaxY > target.yPos) {
+                HitDirection direction = handleBlockCollision((int) target.xPos, (int) target.yPos);
+                if (direction != null) {
+                    switch (direction) {
+                        case FROM_BELOW:
+                            this.yVelocity -= this.yVelocity;
+                            break;
+                        case FROM_RIGHT:
+                            this.xVelocity=Math.abs(this.xVelocity);
+                            break;
+                        case FROM_LEFT:
+                            this.xVelocity=-Math.abs(this.xVelocity);
+                            break;
+                    }
+                    return true;
+                }
+            }
+            return false;
+    }
+
 
     public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset){
         if (!this.interactable) { return false; }
@@ -48,14 +77,14 @@ public abstract class Entity {
                         HitDirection hitdirection = handleBlockCollision(x, y);
                         if (hitdirection!=null){
                             switch (hitdirection){
-                                case FROM_ABOVE:
+                                case FROM_BELOW:
                                     this.yVelocity-=this.yVelocity;
                                     break;
-                                case FROM_LEFT:
-                                    this.xVelocity = Math.abs(this.xVelocity);
-                                    break;
                                 case FROM_RIGHT:
-                                    this.xVelocity=-Math.abs(this.xVelocity);
+                                    this.xVelocity= Math.abs(this.xVelocity);
+                                    break;
+                                case FROM_LEFT:
+                                    this.xVelocity = -Math.abs(this.xVelocity);
                                     break;
                             }
                         }

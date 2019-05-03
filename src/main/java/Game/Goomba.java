@@ -96,6 +96,7 @@ public class Goomba extends Entity {
         this.yPos += this.yVelocity;
     }
 
+    /*
     @Override
     public boolean collisionEntEnt(Entity target, Gameloop gameloop) {
         double mXA = this.xPos + this.xVelocity;
@@ -107,5 +108,5 @@ public class Goomba extends Entity {
             return true;
         }
         return false;
-    }
+    }*/
 }
