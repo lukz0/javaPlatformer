@@ -72,7 +72,8 @@ public class JSONReader {
     public static int ReadHighscore(String level){
         JSONObject highscores = ReadFile("highscores.json");
         if (highscores!=null){
-            return (int) (long) highscores.get(level);
+            Object highscore = highscores.get(level);
+            return (highscore == null) ? 0 : (int) (long) highscore;
         }
         return 0;
     }
