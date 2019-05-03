@@ -7,10 +7,8 @@ import Level.Block.StaticAbstractBlock;
 import Level.Chunk;
 import Level.Level;
 import Level.Tilemap;
-import Menus.GameOver;
-import Menus.LevelSelector;
+import Menus.*;
 import Menus.Menu;
-import Menus.PauseMenu;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -95,12 +93,12 @@ public class Gameloop implements Runnable {
         //Level lvl = loadChunk();
         long tickStart = System.nanoTime();
         //this.setLevel(JSONReader.ReadLevel("resources/maps/plain.json").loadLevel(this.view,tickStart));
-        this.loadLevel("resources/maps/plain.json");
+        //this.loadLevel("resources/maps/plain.json");
 
         this.isPaused = true;
-        this.currentMenu = new LevelSelector(this.view, this);
+        this.currentMenu = new MainMenu(this, this.view);
         //this.currentMenu = new GameOver(this.view, this);
-        this.level.pause(this.view);
+        //this.level.pause(this.view);
 
         GU_Number gun = new GU_Number(this.view, new TextCreator((int)(200* GU_Digit.KERNING), 200, Color.BLACK), 5, 1, -0.9f,
                 new Vector3f(13.5f, 8, 0));
