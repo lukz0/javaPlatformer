@@ -7,11 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aae774cb-0e9f-42bf-837b-96f75ab9670a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/BreakableBrick.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Level/Block/BreakableBrickSpawnTile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Mario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Mario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Level/Block/BlockList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Level/Block/BlockList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Level/Block/BreakableBrickSpawnTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Level/Block/BreakableBrickSpawnTile.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -47,8 +43,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Level/Block/BreakableBrickSpawnTile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="16" column="9" lean-forward="true" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
+            <state relative-caret-position="228">
+              <caret line="12" column="66" selection-start-line="12" selection-start-column="66" selection-end-line="12" selection-end-column="66" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -108,7 +104,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/Level/Entity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="2888">
-              <caret line="166" lean-forward="true" selection-start-line="166" selection-end-line="166" />
+              <caret line="168" lean-forward="true" selection-start-line="168" selection-end-line="168" />
             </state>
           </provider>
         </entry>
@@ -218,10 +214,10 @@
         <option value="$PROJECT_DIR$/src/main/java/Level/Chunk.java" />
         <option value="$PROJECT_DIR$/src/main/java/Menus/MainMenu.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Gameloop.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Level/Block/BreakableBrickSpawnTile.java" />
         <option value="$PROJECT_DIR$/src/main/java/Level/Block/BlockList.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/BreakableBrick.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Mario.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Level/Block/BreakableBrickSpawnTile.java" />
       </list>
     </option>
   </component>
@@ -407,7 +403,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18976545" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18976545" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -416,7 +412,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946696" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.46801707" visible="true" weight="0.20289855" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.46801707" visible="true" weight="0.20289855" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49520257" weight="0.39718616" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -785,7 +781,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/Level/Entity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2888">
-          <caret line="166" lean-forward="true" selection-start-line="166" selection-end-line="166" />
+          <caret line="168" lean-forward="true" selection-start-line="168" selection-end-line="168" />
         </state>
       </provider>
     </entry>
@@ -850,8 +846,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Level/Block/BreakableBrickSpawnTile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="16" column="9" lean-forward="true" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
+        <state relative-caret-position="228">
+          <caret line="12" column="66" selection-start-line="12" selection-start-column="66" selection-end-line="12" selection-end-column="66" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
