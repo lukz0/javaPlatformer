@@ -80,7 +80,7 @@ public class Level {
                     .forEach(chunk -> chunk.updateEntitiesChunk(this.chunks, view));
             this.chunks.stream().filter(cnk -> cnk.currentlyLoaded).filter(cnk -> !cnk.currentlyPaused).forEach(cnk -> cnk.translateChunk(gameloop.view, timestamp, this.player));
             chunkManager(view);
-            this.backgrounds.stream().forEach(b -> b.updateTranslationSum(view, (float)this.player.xPos, (float)this.player.xVelocity, timestamp));
+            this.backgrounds.forEach(b -> b.updateTranslationSum(view, (float)(this.player.xPos+this.player.chunkIndex*9), (float)this.player.xVelocity, timestamp));
         }
     }
     int playerChunkIndex = 0;
@@ -138,7 +138,7 @@ public class Level {
         }
         void updateTranslationSum(View view, float playerTranslation, float playerVelocity, long timestamp) {
             this.tickTranslationSum += this.tickTranslation.values[0];
-            view.updatePosition(this.spriteID, new Vector3f(this.tickTranslationSum-playerTranslation*this.moveTranslation, 0, 0), new Vector3f(this.tickTranslation.values[0] - playerVelocity*this.moveTranslation, 0, 0), timestamp);
+            view.updatePosition(this.spriteID, new Vector3f(this.tickTranslationSum+playerTranslation*this.moveTranslation, 0, 0), new Vector3f(this.tickTranslation.values[0] + playerVelocity*this.moveTranslation, 0, 0), timestamp);
         }
     }
 
