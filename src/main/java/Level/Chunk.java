@@ -103,7 +103,7 @@ public class Chunk {
         for (Entity entity : entities) {
             for (Entity target : entities) {
                 if (entity != target) {
-                    if (entity.collisionEntEnt(target)) {
+                    if (entity.collisionEntEnt(target, gameloop)) {
                         //break;
                     }
 

@@ -25,7 +25,7 @@ public abstract class Entity {
                 tickstart);
     }
 
-    public abstract boolean collisionEntEnt(Entity target);
+    public abstract boolean collisionEntEnt(Entity target, Gameloop gameloop);
 
     public abstract boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset);
 

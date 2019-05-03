@@ -60,6 +60,10 @@ public class Gameloop implements Runnable {
 
 
     Level level;
+    void setLevel(Level level) {
+        this.level = level;
+        this.score = 0;
+    }
 
     private boolean isPaused = false;
     private Menus.Menu currentMenu;
@@ -90,7 +94,7 @@ public class Gameloop implements Runnable {
 
         //Level lvl = loadChunk();
         long tickStart = System.nanoTime();
-        this.level = JSONReader.ReadLevel("resources/maps/plain.json").loadLevel(this.view,tickStart);
+        this.setLevel(JSONReader.ReadLevel("resources/maps/plain.json").loadLevel(this.view,tickStart));
 
         this.isPaused = true;
         //this.currentMenu = new LevelSelector(this.view, this);
@@ -251,6 +255,6 @@ public class Gameloop implements Runnable {
         if (level!=null){
             this.level.deleteLevel(this.view);
         }
-        this.level = JSONReader.ReadLevel(path).loadLevel(this.view, System.nanoTime());
+        this.setLevel(JSONReader.ReadLevel(path).loadLevel(this.view, System.nanoTime()));
     }
 }

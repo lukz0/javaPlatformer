@@ -89,7 +89,7 @@ public class Bowser extends Entity {
     }
 
     @Override
-    public boolean collisionEntEnt(Entity target) {
+    public boolean collisionEntEnt(Entity target, Gameloop gameloop) {
         return false;
     }
 

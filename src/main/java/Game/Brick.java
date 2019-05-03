@@ -62,7 +62,7 @@ public class Brick extends Entity {
     public void updatePos() {}
 
     @Override
-    public boolean collisionEntEnt(Entity target) {
+    public boolean collisionEntEnt(Entity target, Gameloop gameloop) {
         return false;
     }
 }

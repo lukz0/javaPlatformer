@@ -133,7 +133,7 @@ public class Mario extends Entity {
     }
 
     @Override
-    public boolean collisionEntEnt(Entity target) {
+    public boolean collisionEntEnt(Entity target, Gameloop gameloop) {
         double mXA = this.xPos + this.xVelocity;
         double mYA = this.yPos + this.yVelocity;
 
@@ -204,6 +204,7 @@ public class Mario extends Entity {
                     //Goomba ded, Mario jumps
                     this.yVelocity = 3 * (Gameloop.TICKDURATION/(double)1000);
                     target.interactable = false;
+                    gameloop.score += 100;
                 } else {
                     //Mario has died.
                     this.yVelocity = 3 * (Gameloop.TICKDURATION/(double)1000);
