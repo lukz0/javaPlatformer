@@ -3,6 +3,8 @@ package Level;
 import Game.*;
 import Level.Block.AbstractBlock;
 import Level.Block.NonStaticAbstractBlock;
+import Level.Block.StaticAbstractBlock;
+
 import java.util.ArrayList;
 
 public abstract class Entity {
@@ -27,7 +29,46 @@ public abstract class Entity {
 
     public abstract boolean collisionEntEnt(Entity target, Gameloop gameloop);
 
-    public abstract boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset);
+    public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset){
+        if (!this.interactable) { return false; }
+        boolean collided = false;
+
+        int x = chunkOffset*9, y = 0;
+        double thisMinX = this.xPos + ((this.xVelocity < 0) ? this.xVelocity : 0),
+                thisMaxX = this.xPos + this.width + ((this.xVelocity > 0) ? this.xVelocity : 0),
+                thisMinY = this.yPos + ((this.yVelocity < 0) ? this.yVelocity : 0),
+                thisMaxY = this.yPos + this.height + ((this.yVelocity > 0) ? this.yVelocity : 0);
+
+
+        for (ArrayList<AbstractBlock> row : target) {
+            for (AbstractBlock block : row) {
+                if (block instanceof StaticAbstractBlock) {
+                    if (thisMinX < x+1 && thisMaxX > x && thisMinY < y+1 && thisMaxY > y) {
+                        collided = true;
+                        HitDirection hitdirection = handleBlockCollision(x, y);
+                        if (hitdirection!=null){
+                            switch (hitdirection){
+                                case FROM_ABOVE:
+                                    this.yVelocity-=this.yVelocity;
+                                    break;
+                                case FROM_LEFT:
+                                    this.xVelocity = Math.abs(this.xVelocity);
+                                    break;
+                                case FROM_RIGHT:
+                                    this.xVelocity=-Math.abs(this.xVelocity);
+                                    break;
+                            }
+                        }
+                    }
+                }
+                x++;
+            }
+            x = chunkOffset*9;
+            y++;
+        }
+
+        return collided;
+    }
 
     public abstract void updatePos();
 
