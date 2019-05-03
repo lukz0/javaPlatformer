@@ -62,22 +62,24 @@ public class Chunk {
     }
 
     public void loadChunk(Level level, View view, HashMap<String, Async<Texture>> textures, long timestamp) {
-        this.currentlyLoaded = true;
-        this.currentlyPaused = false;
-        for (int y = 0; y < 9; y++) {
-            ArrayList<AbstractBlock> row = this.blockList.get(y);
-            for (int x = 0; x < 9; x++) {
-                AbstractBlock block = row.get(x);
-                if (block != null) {
-                    if (block.isStatic) {
-                        String texturePath = ((StaticAbstractBlock) block).texturePath;
-                        if (!textures.containsKey(texturePath)) {
-                            textures.put(texturePath, view.loadTexture(texturePath));
+        if (!this.currentlyLoaded) {
+            this.currentlyLoaded = true;
+            this.currentlyPaused = false;
+            for (int y = 0; y < 9; y++) {
+                ArrayList<AbstractBlock> row = this.blockList.get(y);
+                for (int x = 0; x < 9; x++) {
+                    AbstractBlock block = row.get(x);
+                    if (block != null) {
+                        if (block.isStatic) {
+                            String texturePath = ((StaticAbstractBlock) block).texturePath;
+                            if (!textures.containsKey(texturePath)) {
+                                textures.put(texturePath, view.loadTexture(texturePath));
+                            }
+                            this.spriteIDs.set(x + y * 9, view.createTexturedRectangle(x, x + 1, y + 1, y, Gameloop.WORLD_LAYER, textures.get(texturePath),
+                                    Vector3f.EMPTY, Vector3f.EMPTY, timestamp));
+                        } else {
+                            ((NonStaticAbstractBlock) block).init(level, view, textures, timestamp, this.chunkIndex, x, y);
                         }
-                        this.spriteIDs.set(x + y * 9, view.createTexturedRectangle(x, x + 1, y + 1, y, Gameloop.WORLD_LAYER, textures.get(texturePath),
-                                Vector3f.EMPTY, Vector3f.EMPTY, timestamp));
-                    } else {
-                        ((NonStaticAbstractBlock) block).init(level, view, textures, timestamp, this.chunkIndex, x, y);
                     }
                 }
             }
@@ -91,6 +93,12 @@ public class Chunk {
         level.chunks.set(this.chunkIndex, null);
     }
 
+    public void translateChunk(View view, long timestamp, Mario player) {
+        Vector3f translation = new Vector3f(-(float)(player.xPos+player.chunkIndex*9)+7.5f+this.chunkIndex*9, 0, 0);
+        Vector3f velocity = new Vector3f(-(float)player.xVelocity, 0, 0);
+        view.updatePositions((ArrayList<Async<Integer>>) (this.spriteIDs.stream().filter(Objects::nonNull).collect(Collectors.toList())), translation, velocity, timestamp);
+        this.entities.forEach(entity -> entity.updateTranslation(translation.values[0], velocity.values[0], view, timestamp));
+    }
     public void translateChunk(View view, long timestamp, Vector3f translation, Vector3f velocity) {
         view.updatePositions((ArrayList<Async<Integer>>) (this.spriteIDs.stream().filter(Objects::nonNull).collect(Collectors.toList())), translation, velocity, timestamp);
         this.entities.forEach(entity -> entity.updateTranslation(translation.values[0], velocity.values[0], view, timestamp));
