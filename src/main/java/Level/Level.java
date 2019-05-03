@@ -14,7 +14,6 @@ public class Level {
     public Mario player = null;
 
     public Level(ArrayList<LevelBackground> backgrounds, Tilemap tilemap) {
-        System.out.println("chunk amount: " + tilemap.chunkAmount);
         this.chunks = new ArrayList<Chunk>(tilemap.chunkAmount);
         for (int chunkIndex = 0; chunkIndex < tilemap.chunkAmount; chunkIndex++) {
             this.chunks.add(new Chunk(chunkIndex));
@@ -81,6 +80,7 @@ public class Level {
                     .forEach(chunk -> chunk.updateEntitiesChunk(this.chunks, view));
             this.chunks.stream().filter(cnk -> cnk.currentlyLoaded).filter(cnk -> !cnk.currentlyPaused).forEach(cnk -> cnk.translateChunk(gameloop.view, timestamp, this.player));
             chunkManager(view);
+            this.backgrounds.stream().forEach(b -> b.updateTranslationSum(view, (float)this.player.xPos, (float)this.player.xVelocity, timestamp));
         }
     }
     int playerChunkIndex = 0;
@@ -128,12 +128,17 @@ public class Level {
         Async<Integer> spriteID;
         final float moveTranslation;
         final Vector3f tickTranslation;
+        float tickTranslationSum = 0;
         public LevelBackground(String imagePath, float aspectRatio, float z_index, float moveTranslation, Vector3f tickTranslation) {
             this.imagePath = imagePath;
             this.aspectRatio = aspectRatio;
             this.z_index = z_index;
             this.moveTranslation = moveTranslation;
             this.tickTranslation = tickTranslation;
+        }
+        void updateTranslationSum(View view, float playerTranslation, float playerVelocity, long timestamp) {
+            this.tickTranslationSum += this.tickTranslation.values[0];
+            view.updatePosition(this.spriteID, new Vector3f(this.tickTranslationSum-playerTranslation*this.moveTranslation, 0, 0), new Vector3f(this.tickTranslation.values[0] - playerVelocity*this.moveTranslation, 0, 0), timestamp);
         }
     }
 
