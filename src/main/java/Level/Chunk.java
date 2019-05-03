@@ -121,9 +121,9 @@ public class Chunk {
         int maxchunk = chunks.size() - 1;
         LinkedList<Entity> entityLinkedList = new LinkedList(this.entities);
         entityLinkedList.forEach(entity -> {
-            if (entity.xPos > 9 && this.chunkIndex != maxchunk) {
+            if (entity.xPos > 9 && this.chunkIndex < maxchunk) {
                     entity.moveToChunk(chunks, this.chunkIndex+1, view);
-            } else if (entity.xPos < 0 && this.chunkIndex != 0) {
+            } else if (entity.xPos < 0 && this.chunkIndex > 0) {
                 entity.moveToChunk(chunks, this.chunkIndex-1, view);
             }
         });
