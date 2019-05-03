@@ -146,8 +146,16 @@ public class Mario extends Entity {
                     thisMinY = this.yPos + ((this.yVelocity < 0) ? this.yVelocity : 0),
                     thisMaxY = this.yPos + this.height + ((this.yVelocity > 0) ? this.yVelocity : 0);
             if (thisMinX < targetBrick.xPos+1 && thisMaxX > targetBrick.xPos && thisMinY < targetBrick.yPos+1 && thisMaxY > targetBrick.yPos) {
-                if (handleBlockCollision((int)targetBrick.xPos, (int)targetBrick.yPos) == HitDirection.FROM_BELOW) {
-                    targetBrick.interactable = false;
+                HitDirection direction = handleBlockCollision((int) targetBrick.xPos, (int) targetBrick.yPos);
+                if (direction != null) {
+                    switch (direction) {
+                        case FROM_BELOW:
+                            targetBrick.interactable = false;
+                            break;
+                        case FROM_ABOVE:
+                            this.grounded = true;
+                            break;
+                    }
                 }
             }
         } else {
