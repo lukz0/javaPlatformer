@@ -76,7 +76,8 @@ public class GameOver extends Menu {
     }
 
     private void selectLevel() {
-        Menu levelSelector = new LevelSelector(super.view, this.gameloop, true);
+        this.gameloop.holdingEnter = false;
+        Menu levelSelector = new LevelSelector(super.view, this.gameloop);
         gameloop.setCurrentMenu(levelSelector);
         this.deleteMenu();
     }
