@@ -75,34 +75,44 @@ public class Level {
 
     public void doPhysics(Gameloop gameloop, long timestamp, View view) {
         if (this.player != null) {
-            //this.player.doMove(this.chunks, gameloop, timestamp);
-            //this.player.collisionEntBlc(this.chunks.get(this.player.chunkIndex).blockList);
-            this.chunks.forEach(cnk -> cnk.moveEntities(this.chunks, gameloop, timestamp, this));
+            this.chunks.stream().filter(cnk -> cnk.currentlyLoaded).filter(cnk -> !cnk.currentlyPaused).forEach(cnk -> cnk.moveEntities(this.chunks, gameloop, timestamp, this));
+            this.chunks.stream().filter(cnk -> cnk.currentlyLoaded).filter(cnk -> !cnk.currentlyPaused).forEach(chunk -> chunk.updateEntitiesChunk(this.chunks, view));
+            this.chunks.stream().filter(cnk -> cnk.currentlyLoaded).filter(cnk -> !cnk.currentlyPaused).forEach(cnk -> cnk.translateChunk(gameloop.view, timestamp, new Vector3f(-(float)(this.player.xPos+this.player.chunkIndex*9)+7.5f+cnk.chunkIndex*9, 0, 0), new Vector3f(-(float)this.player.xVelocity, 0, 0)));
             chunkManager(view);
-            this.chunks.forEach(chunk -> chunk.updateEntitiesChunk(this.chunks, view));
-            //this.player.collisionEntBlc(this.chunks.get(this.player.chunkIndex).blockList);
-            this.chunks.forEach(cnk -> cnk.translateChunk(gameloop.view, timestamp, new Vector3f(-(float)(this.player.xPos+this.player.chunkIndex*9)+7.5f+cnk.chunkIndex*9, 0, 0), new Vector3f(-(float)this.player.xVelocity, 0, 0)));
         }
     }
+    int playerChunkIndex = 0;
     private void chunkManager(View view){
-        //TODO: create a function to unload a chunk
-        if (this.player.chunkIndex>1 && this.chunks.get(this.player.chunkIndex-2).currentlyLoaded){
-            //this.chunks.get(this.player.chunkIndex-2).unload();
-        }
-        if (this.player.chunkIndex>0 && !this.chunks.get(this.player.chunkIndex-1).currentlyLoaded){
-            loadChunk(this.player.chunkIndex-1,view, System.nanoTime());
-            this.activeChunks.add(this.chunks.get(this.player.chunkIndex-1));
-        }
-        if (this.player.chunkIndex<this.chunks.size()-1 && !this.chunks.get(this.player.chunkIndex+1).currentlyLoaded){
-            loadChunk(this.player.chunkIndex+1,view,System.nanoTime());
-            this.activeChunks.add(this.chunks.get(this.player.chunkIndex+1));
-        }
-        if (this.player.chunkIndex<this.chunks.size()-2 && this.chunks.get(this.player.chunkIndex+2).currentlyLoaded){
-            //this.chunks.get(this.player.chunkIndex+2).unload();
+        if (Objects.nonNull(this.player)) {
+            if (this.player.chunkIndex != this.playerChunkIndex) {
+                this.playerChunkIndex = this.player.chunkIndex;
+                Chunk chunk;
+                try {
+                    chunk = this.chunks.get(this.playerChunkIndex + 1);
+                    if (!chunk.currentlyLoaded) {chunk.loadChunk(this,view, this.textures.get(), System.nanoTime());}
+                    if (!chunk.currentlyPaused) {chunk.unPause(this, view, this.textures.get(), System.nanoTime());}
+                } catch (IndexOutOfBoundsException e) {}
+                try {
+                    chunk = this.chunks.get(this.playerChunkIndex - 1);
+                    if (!chunk.currentlyLoaded) {chunk.loadChunk(this,view, this.textures.get(), System.nanoTime());}
+                    if (chunk.currentlyPaused) {chunk.unPause(this, view, this.textures.get(), System.nanoTime());}
+                } catch (IndexOutOfBoundsException e) {}
+                try {
+                    chunk = this.chunks.get(this.playerChunkIndex + 2);
+                    if (!chunk.currentlyLoaded) {chunk.loadChunk(this,view, this.textures.get(), System.nanoTime());}
+                    if (!chunk.currentlyPaused) {chunk.pause(view  );}
+                } catch (IndexOutOfBoundsException e) {}
+                try {
+                    chunk = this.chunks.get(this.playerChunkIndex - 2);
+                    if (!chunk.currentlyLoaded) {chunk.loadChunk(this,view, this.textures.get(), System.nanoTime());}
+                    if (chunk.currentlyPaused) {chunk.pause(view);}
+                } catch (IndexOutOfBoundsException e) {}
+            }
         }
     }
     public void setPlayer(Mario player) {
         this.player = player;
+        this.playerChunkIndex = this.player.chunkIndex;
     }
 
     public void addEntityToChunk(int index, Entity ent, View view) {
