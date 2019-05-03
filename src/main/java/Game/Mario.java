@@ -68,7 +68,7 @@ public class Mario extends Entity {
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
         if (!this.isPaused) {
             if (gameloop.holdingLeft != gameloop.holdingRight && this.interactable) {
-                if (gameloop.holdingLeft && (this.chunkIndex >= 0 && this.xPos >= 3 * (Gameloop.TICKDURATION / (double) 1000))) {
+                if (gameloop.holdingLeft) {
                     this.xVelocity = -3 * (Gameloop.TICKDURATION / (double) 1000);
                     if (this.currentState != STATE_MOVING_LEFT && grounded) {
                         this.currentState = STATE_MOVING_LEFT;
@@ -77,7 +77,7 @@ public class Mario extends Entity {
                         this.currentState = STATE_JUMP_LEFT;
                         gameloop.view.setActiveState(this.drawableID, this.currentState);
                     }
-                } else if(gameloop.holdingRight) {
+                } else {
                     this.xVelocity = 3 * (Gameloop.TICKDURATION / (double) 1000);
                     if (this.currentState != STATE_MOVING_RIGHT && grounded) {
                         this.currentState = STATE_MOVING_RIGHT;
