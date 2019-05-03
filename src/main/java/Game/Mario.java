@@ -117,6 +117,9 @@ public class Mario extends Entity {
             this.yVelocity -= 0.15f * (Gameloop.TICKDURATION/(double)1000);
         }
         this.grounded = false;
+        if (this.yPos < -9f) {
+            gameloop.marioDied();
+        }
 
         // TODO: add collision detection before adding velocity to position
         // TODO: changing chunks when translation < 0 or translation > 9

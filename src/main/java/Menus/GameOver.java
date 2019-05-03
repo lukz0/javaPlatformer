@@ -16,10 +16,10 @@ public class GameOver extends Menu {
     private GU_Number score, highScore;
     private Async<Integer> scoreDrawableID, highScoreDrawableID;
 
-    public GameOver(View view, Gameloop gameloop, String level) {
-        int highScore = JSONReader.ReadHighscore(level);
+    public GameOver(View view, Gameloop gameloop) {
+        int highScore = JSONReader.ReadHighscore(gameloop.currentLevel);
         if (gameloop.score > highScore) {
-            JSONReader.WriteHighscore(level, gameloop.score);
+            JSONReader.WriteHighscore(gameloop.currentLevel, gameloop.score);
             highScore = gameloop.score;
         }
         super.view = view;

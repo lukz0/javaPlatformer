@@ -94,11 +94,12 @@ public class Gameloop implements Runnable {
 
         //Level lvl = loadChunk();
         long tickStart = System.nanoTime();
-        this.setLevel(JSONReader.ReadLevel("resources/maps/plain.json").loadLevel(this.view,tickStart));
+        //this.setLevel(JSONReader.ReadLevel("resources/maps/plain.json").loadLevel(this.view,tickStart));
+        this.loadLevel("resources/maps/plain.json");
 
         this.isPaused = true;
-        //this.currentMenu = new LevelSelector(this.view, this);
-        this.currentMenu = new GameOver(this.view, this, "resources/maps/1.json");
+        this.currentMenu = new LevelSelector(this.view, this);
+        //this.currentMenu = new GameOver(this.view, this);
         this.level.pause(this.view);
 
         GU_Number gun = new GU_Number(this.view, new TextCreator((int)(200* GU_Digit.KERNING), 200, Color.BLACK), 5, 1, -0.9f,
@@ -107,6 +108,11 @@ public class Gameloop implements Runnable {
         while (true) {
             runKeyEventQueue();
             runCommandQueue();
+
+            if (this.awaitsGameOver) {
+                this.awaitsGameOver = false;
+                this.gameOver();
+            }
 
             if (this.isPaused) {
                 this.currentMenu.tick(this);
@@ -251,10 +257,23 @@ public class Gameloop implements Runnable {
         this.controller.stopGame(i);
     }
 
+    public String currentLevel = null;
     public void loadLevel(String path) {
         if (level!=null){
             this.level.deleteLevel(this.view);
         }
+        this.currentLevel = path;
         this.setLevel(JSONReader.ReadLevel(path).loadLevel(this.view, System.nanoTime()));
+    }
+
+    private boolean awaitsGameOver = false;
+    void marioDied() {
+        this.awaitsGameOver = true;
+    }
+    private void gameOver() {
+        this.isPaused = true;
+        this.setCurrentMenu(new GameOver(this.view, this));
+        this.level.deleteLevel(this.view);
+        this.hideScore();
     }
 }

@@ -3,10 +3,7 @@ package Level;
 import Game.*;
 import Level.Block.AbstractBlock;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Vector;
+import java.util.*;
 
 public class Level {
     final ArrayList<Chunk> chunks;
