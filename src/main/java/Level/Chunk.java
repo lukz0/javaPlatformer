@@ -62,22 +62,24 @@ public class Chunk {
     }
 
     public void loadChunk(Level level, View view, HashMap<String, Async<Texture>> textures, long timestamp) {
-        this.currentlyLoaded = true;
-        this.currentlyPaused = false;
-        for (int y = 0; y < 9; y++) {
-            ArrayList<AbstractBlock> row = this.blockList.get(y);
-            for (int x = 0; x < 9; x++) {
-                AbstractBlock block = row.get(x);
-                if (block != null) {
-                    if (block.isStatic) {
-                        String texturePath = ((StaticAbstractBlock) block).texturePath;
-                        if (!textures.containsKey(texturePath)) {
-                            textures.put(texturePath, view.loadTexture(texturePath));
+        if (!this.currentlyLoaded) {
+            this.currentlyLoaded = true;
+            this.currentlyPaused = false;
+            for (int y = 0; y < 9; y++) {
+                ArrayList<AbstractBlock> row = this.blockList.get(y);
+                for (int x = 0; x < 9; x++) {
+                    AbstractBlock block = row.get(x);
+                    if (block != null) {
+                        if (block.isStatic) {
+                            String texturePath = ((StaticAbstractBlock) block).texturePath;
+                            if (!textures.containsKey(texturePath)) {
+                                textures.put(texturePath, view.loadTexture(texturePath));
+                            }
+                            this.spriteIDs.set(x + y * 9, view.createTexturedRectangle(x, x + 1, y + 1, y, Gameloop.WORLD_LAYER, textures.get(texturePath),
+                                    Vector3f.EMPTY, Vector3f.EMPTY, timestamp));
+                        } else {
+                            ((NonStaticAbstractBlock) block).init(level, view, textures, timestamp, this.chunkIndex, x, y);
                         }
-                        this.spriteIDs.set(x + y * 9, view.createTexturedRectangle(x, x + 1, y + 1, y, Gameloop.WORLD_LAYER, textures.get(texturePath),
-                                Vector3f.EMPTY, Vector3f.EMPTY, timestamp));
-                    } else {
-                        ((NonStaticAbstractBlock) block).init(level, view, textures, timestamp, this.chunkIndex, x, y);
                     }
                 }
             }
