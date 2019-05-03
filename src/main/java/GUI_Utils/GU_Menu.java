@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class GU_Menu {
-    private static final long TICK_DELAY = Long.divideUnsigned(Long.divideUnsigned(1000, Gameloop.TICKDURATION), 3);
-    private long delayLeft = 0;
-
     private final View view;
     private final ArrayList<Item> itemList = new ArrayList<>();
     private int activeItem = 0;
@@ -78,53 +75,46 @@ public class GU_Menu {
     }
 
     public void tick(Gameloop gameloop) {
-        if (delayLeft == 0) {
             if (gameloop.holdingEnter) {
+                gameloop.holdingEnter = false;
                 this.handlerEnter();
             } else if (gameloop.holdingUp != gameloop.holdingDown) {
                 if (gameloop.holdingUp) {
+                    gameloop.holdingUp = false;
                     this.handleUp();
                 } else {
+                    gameloop.holdingDown = false;
                     this.handleDown();
                 }
             } else if (gameloop.holdingLeft != gameloop.holdingRight) {
                 if (gameloop.holdingLeft) {
+                    gameloop.holdingLeft = false;
                     this.handleLeft();
                 } else {
+                    gameloop.holdingRight = false;
                     this.handleRight();
                 }
             }
-        } else {
-            delayLeft--;
-        }
     }
 
     private void handlerEnter() {
         this.itemList.get(this.activeItem).enter_event(this.view);
-        this.delay();
     }
     private void handleUp() {
         this.itemList.get(this.activeItem).deactivate(this.view);
         this.activeItem = (this.activeItem == 0) ? this.itemList.size()-1 : this.activeItem - 1;
         this.itemList.get(this.activeItem).activate(this.view);
-        this.delay();
     }
     private void handleDown() {
         this.itemList.get(this.activeItem).deactivate(this.view);
         this.activeItem = (this.activeItem == this.itemList.size()-1) ? 0 : this.activeItem + 1;
         this.itemList.get(this.activeItem).activate(this.view);
-        this.delay();
     }
     private void handleLeft() {
         this.itemList.get(this.activeItem).left_event(this.view);
-        this.delay();
     }
     private void handleRight() {
         this.itemList.get(this.activeItem).right_event(this.view);
-        this.delay();
-    }
-    public void delay() {
-        this.delayLeft = GU_Menu.TICK_DELAY;
     }
 
     private static class ButtonPositionCounter {
