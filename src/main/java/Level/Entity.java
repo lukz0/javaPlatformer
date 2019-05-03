@@ -19,6 +19,8 @@ public abstract class Entity {
     public Async<Integer> drawableID;
     public Async<Renderer.Drawable> pausedDrawable = null;
     private boolean isPaused = false;
+    public enum Moving {MOVING_LEFT,MOVING_RIGHT};
+    public Moving moving = Moving.MOVING_LEFT;
     public abstract void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart);
     public void updateTranslation(double xChunkTranslation, double xChunkVelocity, View view, long tickstart) {
         view.updatePosition(this.drawableID,
@@ -45,10 +47,10 @@ public abstract class Entity {
                             this.yVelocity -= this.yVelocity;
                             break;
                         case FROM_RIGHT:
-                            this.xVelocity=Math.abs(this.xVelocity);
+                            this.moving = Moving.MOVING_LEFT;
                             break;
                         case FROM_LEFT:
-                            this.xVelocity=-Math.abs(this.xVelocity);
+                            this.moving = Moving.MOVING_RIGHT;
                             break;
                     }
                     return true;
@@ -81,10 +83,10 @@ public abstract class Entity {
                                     this.yVelocity-=this.yVelocity;
                                     break;
                                 case FROM_RIGHT:
-                                    this.xVelocity= Math.abs(this.xVelocity);
+                                    this.moving = Moving.MOVING_RIGHT;
                                     break;
                                 case FROM_LEFT:
-                                    this.xVelocity = -Math.abs(this.xVelocity);
+                                    this.moving = Moving.MOVING_LEFT;
                                     break;
                             }
                         }
