@@ -6,7 +6,7 @@ import Game.Texture;
 import Game.View;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.Map.Entry;
 
 public class GU_Menu {
     private final View view;
@@ -15,7 +15,7 @@ public class GU_Menu {
 
     public interface MenuItemInfo {}
 
-    public static class SimpleButtonInfo extends ArrayList<Object> implements Map.Entry<GU_Button.Textures, GU_Button.EnterEventHandler>, MenuItemInfo {
+    public static class SimpleButtonInfo extends ArrayList<Object> implements Entry<GU_Button.Textures, GU_Button.EnterEventHandler>, MenuItemInfo {
         public SimpleButtonInfo(GU_Button.EnterEventHandler handler, Async<Texture> inactive, Async<Texture> active) {
             super(2);
             this.add(new GU_Button.Textures(inactive, active));
@@ -30,7 +30,7 @@ public class GU_Menu {
         public GU_Button.EnterEventHandler setValue(GU_Button.EnterEventHandler value) {return null;}
     }
 
-    public static class SliderInfo extends ArrayList<Object> implements Map.Entry<ArrayList<GU_Button.Textures>, GU_Slider.EventHandlers>, MenuItemInfo {
+    public static class SliderInfo extends ArrayList<Object> implements Entry<ArrayList<GU_Button.Textures>, GU_Slider.EventHandlers>, MenuItemInfo {
         public SliderInfo(GU_Button.EnterEventHandler enterEventHandler, GU_Slider.SlideEventHandler slideEventHandler, ArrayList<GU_Button.Textures> textures, int initialState) {
             super(3);
             this.add(new GU_Slider.EventHandlers(enterEventHandler, slideEventHandler));

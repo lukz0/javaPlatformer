@@ -35,8 +35,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/GUI_Utils/GU_Menu.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="117" column="5" selection-start-line="117" selection-start-column="5" selection-end-line="117" selection-end-column="5" />
+            <state relative-caret-position="-1659">
+              <caret line="17" column="82" selection-start-line="17" selection-start-column="82" selection-end-line="17" selection-end-column="82" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#4184#4185#0" expanded="true" />
@@ -283,7 +283,7 @@
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Console Font" />
+    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -370,13 +370,13 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946696" weight="0.32936078" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.47334754" visible="true" weight="0.20289855" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4728145" visible="true" weight="0.20289855" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49520257" weight="0.39718616" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32936078" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.52665246" side_tool="true" weight="0.20476706" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5271855" side_tool="true" visible="true" weight="0.20289855" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.47547975" weight="0.13976164" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -760,8 +760,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/GUI_Utils/GU_Menu.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="117" column="5" selection-start-line="117" selection-start-column="5" selection-end-line="117" selection-end-column="5" />
+        <state relative-caret-position="-1659">
+          <caret line="17" column="82" selection-start-line="17" selection-start-column="82" selection-end-line="17" selection-end-column="82" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#4184#4185#0" expanded="true" />
