@@ -27,7 +27,7 @@ public class BreakableBrick extends Entity {
         if (!textures.containsKey("brick.png")) {
             textures.put("brick.png", view.loadTexture("resources/images/brick.png"));
         }
-        if (!textures.containsKey("ground.png")) {
+        if (!textures.containsKey("transparent.png")) {
             textures.put("transparent.png", view.loadTexture("resources/images/transparent.png"));
         }
 
@@ -47,7 +47,7 @@ public class BreakableBrick extends Entity {
 
     @Override
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
-        if(!this.interactable) {
+        if(!this.interactable && this.currentState != this.STATE_BROKEN) {
             this.currentState = this.STATE_BROKEN;
             gameloop.view.setActiveState(this.drawableID, this.currentState);
         }
