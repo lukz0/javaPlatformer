@@ -90,15 +90,11 @@ public class Gameloop implements Runnable {
 
     public void run() {
 
-        //Level lvl = loadChunk();
         long tickStart = System.nanoTime();
-        //this.setLevel(JSONReader.ReadLevel("resources/maps/plain.json").loadLevel(this.view,tickStart));
-        //this.loadLevel("resources/maps/plain.json");
 
         this.isPaused = true;
         this.currentMenu = new MainMenu(this, this.view);
-        //this.currentMenu = new GameOver(this.view, this);
-        //this.level.pause(this.view);
+
 
         GU_Number gun = new GU_Number(this.view, new TextCreator((int)(200* GU_Digit.KERNING), 200, Color.BLACK), 5, 1, -0.9f,
                 new Vector3f(13.5f, 8, 0));
@@ -154,7 +150,7 @@ public class Gameloop implements Runnable {
         this.scoreHidden = true;
     }
 
-    // TODO: add a better way to load Levels
+    // Note: Older way to load level, not used anymore
     Level loadChunk() {
         Level.LevelBackground background1 = new Level.LevelBackground("resources/images/backgrounds/plainsSky.png", 64f/288f, Gameloop.SKY_LAYER, 0, new Vector3f(0.01f, 0, 0));
         ArrayList<Level.LevelBackground> backgrounds = new ArrayList<>();
