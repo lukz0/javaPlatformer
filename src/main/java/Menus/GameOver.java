@@ -60,9 +60,7 @@ public class GameOver extends Menu {
     public void deleteMenu() {
         super.menu.pause();
         super.view.deleteDrawable(this.backgroundSpriteID);
-        super.view.deleteDrawable(this.scoreDrawableID);
         super.view.deleteDrawable(this.highScoreDrawableID);
-        this.score.pause(super.view);
         this.highScore.pause(super.view);
         this.textures.values().forEach(super.view::unloadTexture);
     }
