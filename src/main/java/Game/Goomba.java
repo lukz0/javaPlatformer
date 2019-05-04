@@ -15,8 +15,10 @@ public class Goomba extends Entity {
     Vector3f translation = Vector3f.EMPTY, velocity = Vector3f.EMPTY;
     int currentState;
     Level level;
+    private final View view;
 
     public Goomba(View view, HashMap<String, Async<Texture>> textures, long timestamp, double xPos, double yPos, int chunkIndex, Level level) {
+        this.view = view;
         this.width = 1;
         this.height = 1;
         this.level = level;
@@ -34,7 +36,7 @@ public class Goomba extends Entity {
 
         Async<Renderer.Drawable> movingRightSprite = view.getNewAnimatedTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("primeGoomb_fwd.png"),
                 this.translation, this.velocity, 500, timestamp);
-        Async<Renderer.Drawable> movingLeftSprite = view.getNewAnimatedTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("primeGoomb_fwd.png"),
+        Async<Renderer.Drawable> movingLeftSprite = view.getNewAnimatedTexturedRectangle(0, 1, 1, 0, -0.6f, textures.get("primeGoomb_fwd.png"),
                 this.translation, this.velocity, 500, timestamp);
         Async<Renderer.Drawable> deadSprite = view.getNewTexturedRectangle(0, 1, 0, 1, -0.5f, textures.get("primeGoomb.png"),
                 this.translation, this.velocity, timestamp);
@@ -65,9 +67,17 @@ public class Goomba extends Entity {
         }
         switch (this.moving){
             case MOVING_LEFT:
+                if (currentState != STATE_MOVING_LEFT && !super.isPaused) {
+                    currentState = STATE_MOVING_LEFT;
+                    view.setActiveState(this.drawableID, STATE_MOVING_LEFT);
+                }
                 this.xVelocity=-1f*(Gameloop.TICKDURATION/(float)1000);
                 break;
             case MOVING_RIGHT:
+                if (currentState != STATE_MOVING_RIGHT && !super.isPaused) {
+                    currentState = STATE_MOVING_RIGHT;
+                    view.setActiveState(this.drawableID, STATE_MOVING_RIGHT);
+                }
                 this.xVelocity=1f*(Gameloop.TICKDURATION/(float)1000);
                 break;
         }

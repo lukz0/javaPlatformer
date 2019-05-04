@@ -18,7 +18,7 @@ public abstract class Entity {
     public boolean interactable = true;
     public Async<Integer> drawableID;
     public Async<Renderer.Drawable> pausedDrawable = null;
-    private boolean isPaused = false;
+    public boolean isPaused = false;
     public enum Moving {MOVING_LEFT,MOVING_RIGHT};
     public Moving moving = Moving.MOVING_LEFT;
     public abstract void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart);
