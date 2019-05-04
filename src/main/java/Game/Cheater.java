@@ -87,11 +87,14 @@ public class Cheater implements Runnable {
 
         @Override
         void doCommand(Gameloop gameloop) {
-            //gameloop.controller;
             if (gameloop.level!=null){
                 gameloop.level.deleteLevel(gameloop.view);
             }
             gameloop.level = level.loadLevel(gameloop.view, System.nanoTime());
+            if (gameloop.isPaused) {
+                gameloop.currentMenu.deleteMenu();
+                gameloop.isPaused = false;
+            }
         }
     }
 

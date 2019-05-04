@@ -49,7 +49,7 @@ public class GameOver extends Menu {
         //        new Vector3f(13.5f, 8, 0));
         TextCreator tcWhite = new TextCreator((int)(200* GU_Digit.KERNING), 200, Color.WHITE);
         TextCreator tcColor = new TextCreator((int)(4*200), 200, new Color(255, 0, 68));
-        
+
         this.highScore = new GU_Number(this.view, tcWhite, 5, 1, -0.9f,
                 new Vector3f(13.5f, 1, 0));
         this.highScore.setNumber(this.view, highScore);

@@ -17,6 +17,7 @@ class Controller {
         // Creates a window and starts a openGL renderer on a separate thread
         v.startRenderer(new KeyboardHandler(), new WindowCloseHandler(), JSONReader.ReadOptions());
 
+        // Gameloop crates menus and levels
         gameloop = new Gameloop(this, this.v);
         gameloop.start();
 
@@ -30,16 +31,6 @@ class Controller {
             if (gameloop != null) {
                 gameloop.keyEvent(new KeyEvent(key, action, modifier));
             }
-            /*
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-                stopGame(0);
-            } else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
-                v.setRendererBackgroundColor(1.0f, 0.0f, 0.0f);
-            } else if (key == GLFW_KEY_G && action == GLFW_PRESS) {
-                v.setRendererBackgroundColor(0.0f, 1.0f, 0.0f);
-            } else if (key == GLFW_KEY_B && action == GLFW_PRESS) {
-                v.setRendererBackgroundColor(0.0f, 0.0f, 1.0f);
-            }*/
         }
     }
 

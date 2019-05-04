@@ -2,9 +2,6 @@ package Game;
 
 import GUI_Utils.GU_Digit;
 import GUI_Utils.GU_Number;
-import Level.Block.AbstractBlock;
-import Level.Block.StaticAbstractBlock;
-import Level.Chunk;
 import Level.Level;
 import Level.Tilemap;
 import Menus.*;
@@ -13,7 +10,6 @@ import Menus.Menu;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -63,8 +59,8 @@ public class Gameloop implements Runnable {
         this.score = 0;
     }
 
-    private boolean isPaused = false;
-    private Menus.Menu currentMenu;
+    boolean isPaused = false;
+    public Menus.Menu currentMenu;
     public void enterPause() {
         if (!this.isPaused) {
             this.isPaused = true;
@@ -148,16 +144,6 @@ public class Gameloop implements Runnable {
     public void hideScore() {
         this.scoreHiddenChanged = true;
         this.scoreHidden = true;
-    }
-
-    // Note: Older way to load level, not used anymore
-    Level loadChunk() {
-        Level.LevelBackground background1 = new Level.LevelBackground("resources/images/backgrounds/plainsSky.png", 64f/288f, Gameloop.SKY_LAYER, 0, new Vector3f(0.01f, 0, 0));
-        ArrayList<Level.LevelBackground> backgrounds = new ArrayList<>();
-        backgrounds.add(background1);
-        Level lvl = new Level(backgrounds, new Tilemap(2, Temporary.Temporary.doubleGroundStringArray()));
-        lvl.loadLevel(this.view, System.nanoTime());
-        return lvl;
     }
 
     void runKeyEventQueue() {
