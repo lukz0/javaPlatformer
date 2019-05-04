@@ -8,7 +8,7 @@
  "margin":0,
  "name":"C:\/Users\/eplep\/DAT113-2\/project\/resources\/images\/",
  "spacing":0,
- "tilecount":6,
+ "tilecount":7,
  "tiledversion":"1.2.3",
  "tileheight":32,
  "tiles":[
@@ -126,6 +126,18 @@
                  "name":"name",
                  "type":"string",
                  "value":"BreakableBrick"
+                }]
+        }, 
+        {
+         "id":6,
+         "image":"..\/..\/images\/flag.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "properties":[
+                {
+                 "name":"name",
+                 "type":"string",
+                 "value":"FlagSpawnTile"
                 }]
         }],
  "tilewidth":32,
