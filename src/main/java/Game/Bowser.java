@@ -33,10 +33,10 @@ public class Bowser extends Entity {
         if (!textures.containsKey("notBowser.png")) {
             textures.put("notBowser.png", view.loadTexture("resources/images/notBowser.png"));
         }
-        Async<Renderer.Drawable> movingRightSprite = view.getNewAnimatedTexturedRectangle(0, 2, 2, 0, -0.5f, textures.get("notBowser.png"),
-                this.translation, this.velocity, 500, timestamp);
-        Async<Renderer.Drawable> movingLeftSprite = view.getNewAnimatedTexturedRectangle(0, 2, 2, 0, -0.5f, textures.get("notBowser.png"),
-                this.translation, this.velocity, 500, timestamp);
+        Async<Renderer.Drawable> movingRightSprite = view.getNewTexturedRectangle(0, 2, 2, 0, -0.5f, textures.get("notBowser.png"),
+                this.translation, this.velocity, timestamp);
+        Async<Renderer.Drawable> movingLeftSprite = view.getNewTexturedRectangle(2, 0, 2, 0, -0.5f, textures.get("notBowser.png"),
+                this.translation, this.velocity, timestamp);
         Async<Renderer.Drawable> deadSprite = view.getNewTexturedRectangle(0, 2, 0, 2, -0.5f, textures.get("notBowser.png"),
                 this.translation, this.velocity, timestamp);
 
