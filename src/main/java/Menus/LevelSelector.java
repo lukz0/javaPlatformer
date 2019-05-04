@@ -127,23 +127,23 @@ public class LevelSelector extends Menu {
     private void enterLevel() {
         switch (this.sliderState) {
             case 0:
-                this.gameloop.loadLevel("resources/maps/plain.json");
+                this.gameloop.loadLevel("resources/maps/1.json");
                 this.gameloop.exitPause();
                 break;
             case 1:
-                this.gameloop.loadLevel("resources/maps/maptest.json");
+                this.gameloop.loadLevel("resources/maps/2.json");
                 this.gameloop.exitPause();
                 break;
             case 2:
-                this.gameloop.loadLevel("resources/maps/bumpertest.json");
+                this.gameloop.loadLevel("resources/maps/3.json");
                 this.gameloop.exitPause();
                 break;
             case 3:
-                this.gameloop.loadLevel("resources/maps/sebtest.json");
+                this.gameloop.loadLevel("resources/maps/4.json");
                 this.gameloop.exitPause();
                 break;
             case 4:
-                this.gameloop.loadLevel("resources/maps/1.json");
+                this.gameloop.loadLevel("resources/maps/5.json");
                 this.gameloop.exitPause();
                 break;
             case 5:
