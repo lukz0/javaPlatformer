@@ -136,7 +136,8 @@ public class Gameloop implements Runnable {
             }
         }
     }
-    private boolean scoreHidden = true, scoreHiddenChanged = true;
+    public boolean scoreHidden = true;
+    private boolean scoreHiddenChanged = true;
     public void showScore() {
         this.scoreHiddenChanged = true;
         this.scoreHidden = false;

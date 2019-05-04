@@ -44,10 +44,10 @@ public abstract class Entity {
                         this.yVelocity -= this.yVelocity;
                         break;
                     case FROM_RIGHT:
-                        this.moving = Moving.MOVING_LEFT;
+                        this.moving = Moving.MOVING_RIGHT;
                         break;
                     case FROM_LEFT:
-                        this.moving = Moving.MOVING_RIGHT;
+                        this.moving = Moving.MOVING_LEFT;
                         break;
                 }
                 return true;

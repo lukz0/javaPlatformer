@@ -56,8 +56,10 @@ public class Goomba extends Entity {
 
         if(!this.interactable) {
             this.yVelocity -= 0.1 * (Gameloop.TICKDURATION/(float)1000);
-            this.currentState = Goomba.STATE_DEAD;
-            gameloop.view.setActiveState(this.drawableID, this.currentState);
+            if (this.currentState != STATE_DEAD) {
+                this.currentState = Goomba.STATE_DEAD;
+                gameloop.view.setActiveState(this.drawableID, this.currentState);
+            }
 
             return;
         }
