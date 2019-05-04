@@ -7,10 +7,10 @@ import java.util.HashMap;
 public class BlockList {
     static private final HashMap<String, Class<?>> list = new HashMap<String, Class<?>>() {
         {
-            put("Coin", Coin.class);
             put("Ground", Ground.class);
             put("Ground2", Ground2.class);
             put("Brick", BrickSpawnTile.class);
+            put("CoinSpawnTile", CoinSpawnTile.class);
             put("MarioSpawnTile", MarioSpawnTile.class);
             put("GoombaSpawnTile", GoombaSpawnTile.class);
             put("Breakablecrick", BreakableBrickSpawnTile.class);
