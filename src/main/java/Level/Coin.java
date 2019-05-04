@@ -10,6 +10,7 @@ public class Coin  extends Entity {
     Vector3f translation = Vector3f.EMPTY, velocity = Vector3f.EMPTY;
     int currentState;
     Level level;
+    boolean interactable = true;
 
     public Coin(View view, HashMap<String, Async<Texture>> textures, long timestamp, double xPos, double yPos, int chunkIndex, Level level) {
         this.width = 1;
@@ -21,9 +22,9 @@ public class Coin  extends Entity {
         this.yVelocity = 1 * (Gameloop.TICKDURATION/(float)1000);
         this.chunkIndex = chunkIndex;
         if (!textures.containsKey("coin.png")) {
-            textures.put("coin.png", view.loadTexture("resources/images/primeGoomb_fwd.png"));
+            textures.put("coin.png", view.loadTexture("resources/images/coin.png"));
         }
-        Async<Renderer.Drawable> idleSprite = view.getNewTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("primeGoomb_fwd.png"),
+        Async<Renderer.Drawable> idleSprite = view.getNewTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("mario_right.png"),
                 this.translation, this.velocity, timestamp);
 
         HashMap<Integer, Async<Renderer.Drawable>> states = new HashMap<>();
@@ -37,7 +38,6 @@ public class Coin  extends Entity {
 
     @Override
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
-
     }
 
     @Override
