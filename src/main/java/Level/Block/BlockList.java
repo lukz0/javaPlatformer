@@ -1,10 +1,13 @@
 package Level.Block;
 
+import Level.Coin;
+
 import java.util.HashMap;
 
 public class BlockList {
     static private final HashMap<String, Class<?>> list = new HashMap<String, Class<?>>() {
         {
+            put("Coin", Coin.class);
             put("Ground", Ground.class);
             put("Ground2", Ground2.class);
             put("Brick", BrickSpawnTile.class);
