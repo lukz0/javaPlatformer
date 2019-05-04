@@ -1,6 +1,7 @@
 package Game;
 
 import Level.Block.AbstractBlock;
+import Level.Block.StaticAbstractBlock;
 import Level.Chunk;
 import Level.Entity;
 import Level.Level;
@@ -16,6 +17,8 @@ public class Bowser extends Entity {
     int currentState;
     Level level;
     Mario mario;
+    boolean interactable = true;
+    boolean grounded = true;
 
     public Bowser(View view, HashMap<String, Async<Texture>> textures, long timestamp, double xPos, double yPos, int chunkIndex, Level level) {
         this.width = 2;
@@ -30,11 +33,11 @@ public class Bowser extends Entity {
         if (!textures.containsKey("notBowser.png")) {
             textures.put("notBowser.png", view.loadTexture("resources/images/notBowser.png"));
         }
-        Async<Renderer.Drawable> movingRightSprite = view.getNewAnimatedTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("notBowser.png"),
-                this.translation, this.velocity, 500, timestamp);
-        Async<Renderer.Drawable> movingLeftSprite = view.getNewAnimatedTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("notBowser.png"),
-                this.translation, this.velocity, 500, timestamp);
-        Async<Renderer.Drawable> deadSprite = view.getNewTexturedRectangle(0, 1, 0, 1, -0.5f, textures.get("notBowser.png"),
+        Async<Renderer.Drawable> movingRightSprite = view.getNewTexturedRectangle(0, 2, 2, 0, -0.5f, textures.get("notBowser.png"),
+                this.translation, this.velocity, timestamp);
+        Async<Renderer.Drawable> movingLeftSprite = view.getNewTexturedRectangle(2, 0, 2, 0, -0.5f, textures.get("notBowser.png"),
+                this.translation, this.velocity, timestamp);
+        Async<Renderer.Drawable> deadSprite = view.getNewTexturedRectangle(0, 2, 0, 2, -0.5f, textures.get("notBowser.png"),
                 this.translation, this.velocity, timestamp);
 
         HashMap<Integer, Async<Renderer.Drawable>> states = new HashMap<>();
@@ -86,6 +89,11 @@ public class Bowser extends Entity {
             }
         }
 
+        if(!this.interactable) {
+            this.currentState = Bowser.STATE_DEAD;
+            gameloop.view.setActiveState(this.drawableID, this.currentState);
+        }
+
         this.yVelocity -= 0.3f * (Gameloop.TICKDURATION/(float)1000);
     }
 
@@ -96,7 +104,35 @@ public class Bowser extends Entity {
 
     @Override
     public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset) {
-        return false;
+        if (!this.interactable) {
+            return false;
+        }
+        boolean collided = false;
+
+        int x = chunkOffset * 9, y = 0;
+        double thisMinX = this.xPos + ((this.xVelocity < 0) ? this.xVelocity : 0),
+                thisMaxX = this.xPos + this.width + ((this.xVelocity > 0) ? this.xVelocity : 0),
+                thisMinY = this.yPos + ((this.yVelocity < 0) ? this.yVelocity : 0),
+                thisMaxY = this.yPos + this.height + ((this.yVelocity > 0) ? this.yVelocity : 0);
+
+
+        for (ArrayList<AbstractBlock> row : target) {
+            for (AbstractBlock block : row) {
+                if (block instanceof StaticAbstractBlock) {
+                    if (thisMinX < x + 1 && thisMaxX > x && thisMinY < y + 1 && thisMaxY > y) {
+                        collided = true;
+                        if (handleBlockCollision(x, y) == HitDirection.FROM_ABOVE) {
+                            this.grounded = true;
+                        }
+                    }
+                }
+                x++;
+            }
+            x = chunkOffset * 9;
+            y++;
+        }
+
+        return collided;
     }
 
     @Override
