@@ -184,6 +184,9 @@ public class Chunk {
                     }
                 });
             }
+            if (Objects.nonNull(level.player)) {
+                this.translateChunk(view, timestamp, level.player);
+            }
         }
     }
 }
