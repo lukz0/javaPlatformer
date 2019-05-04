@@ -10,20 +10,23 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GameOver extends Menu {
+public class WinMenu extends Menu {
     private HashMap<String, Async<Texture>> textures;
     private final Gameloop gameloop;
     private GU_Number score, highScore;
     private Async<Integer> scoreDrawableID, highScoreDrawableID;
 
-    public GameOver(View view, Gameloop gameloop) {
+    public WinMenu(View view, Gameloop gameloop) {
         int highScore = JSONReader.ReadHighscore(gameloop.currentLevel);
-
+        if (gameloop.score > highScore) {
+            JSONReader.WriteHighscore(gameloop.currentLevel, gameloop.score);
+            highScore = gameloop.score;
+        }
         super.view = view;
         this.gameloop = gameloop;
         this.textures = new HashMap<String, Async<Texture>>() {
             {
-                this.put("background", view.loadTexture("resources/GUI/Backgrounds/gameover.png"));
+                this.put("background", view.loadTexture("resources/GUI/Backgrounds/win.png"));
 
                 this.put("select_level_active", view.loadTexture("resources/GUI/Buttons/select_level_active.png"));
                 this.put("select_level_inactive", view.loadTexture("resources/GUI/Buttons/select_level_inactive.png"));
@@ -49,11 +52,17 @@ public class GameOver extends Menu {
         //        new Vector3f(13.5f, 8, 0));
         TextCreator tcWhite = new TextCreator((int)(200* GU_Digit.KERNING), 200, Color.WHITE);
         TextCreator tcColor = new TextCreator((int)(4*200), 200, new Color(255, 0, 68));
-        
+
+
+        this.score = new GU_Number(this.view, tcWhite, 5, 1, -0.9f,
+                new Vector3f(13.5f, 2, 0));
+        this.score.setNumber(this.view, this.gameloop.score);
         this.highScore = new GU_Number(this.view, tcWhite, 5, 1, -0.9f,
                 new Vector3f(13.5f, 1, 0));
         this.highScore.setNumber(this.view, highScore);
+        textures.put("score", tcColor.renderString(this.view, "score:"));
         textures.put("highScore", tcColor.renderString(this.view, "high-score:"));
+        this.scoreDrawableID = view.createStaticTexturedRectangle(9.5f, 13.5f, 3, 2, -0.9f, textures.get("score"));
         this.highScoreDrawableID = view.createStaticTexturedRectangle(9.5f, 13.5f, 2, 1, -0.9f, textures.get("highScore"));
     }
 
