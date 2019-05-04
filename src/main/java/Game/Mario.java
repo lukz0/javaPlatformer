@@ -5,6 +5,7 @@ import Level.Block.AbstractBlock;
 import Level.Block.NonStaticAbstractBlock;
 import Level.Block.StaticAbstractBlock;
 import Level.Chunk;
+import Level.Coin;
 import Level.Entity;
 
 import java.util.ArrayList;
@@ -198,7 +199,16 @@ public class Mario extends Entity {
                     }
                 }
             }
-        }else {
+        } else if(target instanceof Coin && target.interactable) {
+            if ((mXA <= target.xPos + target.width) &&
+                    (mXA + this.width >= target.xPos) &&
+                    (mYA <= target.yPos + target.height) &&
+                    (mYA + this.height >= target.yPos)) {
+                target.interactable = false;
+                gameloop.score += 50;
+            }
+
+        } else {
             if(!target.interactable) {return false;}
             if ((mXA <= target.xPos + target.width) &&
                     (mXA + this.width >= target.xPos) &&
