@@ -826,8 +826,9 @@ public class Renderer implements Runnable {
         public void doTask(Renderer r) {
             try {
                 this.callbackQueue.put(new TexturedRectangle(this.left, this.right, this.top, this.bottom, this.z_index, this.texture.get(), this.translation, this.velocity, this.updatedTimestamp));
-            } catch (InterruptedException e) {
+            } catch (InterruptedException | NullPointerException e) {
                 e.printStackTrace();
+                System.err.println("Texture is " + this.texture);
             }
         }
     }

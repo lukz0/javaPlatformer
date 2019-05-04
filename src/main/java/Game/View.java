@@ -139,6 +139,7 @@ public class View {
      * The z_index has to be BETWEEN 1.0f and -1.0f to be visible, smaller z_index means in front of
      */
     public Async<Renderer.Drawable> getNewTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long currentTimeNanos) {
+        if (texture == null) {new Error("Missing texture").printStackTrace();}
         return this.rend.getNewTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeNanos);
     }
 

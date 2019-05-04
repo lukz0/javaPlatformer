@@ -27,7 +27,7 @@ public class BreakableBrick extends Entity {
         if (!textures.containsKey("brick.png")) {
             textures.put("brick.png", view.loadTexture("resources/images/brick.png"));
         }
-        if (!textures.containsKey("ground.png")) {
+        if (!textures.containsKey("transparent.png")) {
             textures.put("transparent.png", view.loadTexture("resources/images/transparent.png"));
         }
 
