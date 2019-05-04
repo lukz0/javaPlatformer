@@ -136,7 +136,8 @@ public class Bowser extends Entity {
     }
 
     @Override
-    public void updatePos() {
-
+    public void updatePos(){
+        this.xPos += this.xVelocity;
+        this.yPos += this.yVelocity;
     }
 }
