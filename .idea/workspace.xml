@@ -7,9 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aae774cb-0e9f-42bf-837b-96f75ab9670a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/highscores.json" beforeDir="false" afterPath="$PROJECT_DIR$/highscores.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Game/Brick.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Brick.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Mario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Mario.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -109,10 +107,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Game/Mario.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="235">
+            <state relative-caret-position="370">
               <caret line="161" column="49" selection-start-line="161" selection-start-column="49" selection-end-line="161" selection-end-column="49" />
               <folding>
                 <element signature="e#14282#14283#0" expanded="true" />
@@ -123,14 +121,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Game/Brick.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="550">
-              <caret line="108" column="42" selection-start-line="108" selection-start-column="42" selection-end-line="108" selection-end-column="42" />
+            <state relative-caret-position="595">
+              <caret line="108" column="57" selection-start-line="108" selection-start-column="57" selection-end-line="108" selection-end-column="57" />
               <folding>
-                <element signature="e#2499#2500#0" expanded="true" />
-                <element signature="e#2676#2677#0" expanded="true" />
+                <element signature="e#2507#2508#0" expanded="true" />
+                <element signature="e#2684#2685#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -265,8 +263,8 @@
         <option value="$PROJECT_DIR$/src/main/java/Game/Goomba.java" />
         <option value="$PROJECT_DIR$/src/main/java/Level/Entity.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Gameloop.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Game/Brick.java" />
         <option value="$PROJECT_DIR$/src/main/java/Game/Mario.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Game/Brick.java" />
       </list>
     </option>
   </component>
@@ -907,25 +905,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Game/Brick.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="550">
-          <caret line="108" column="42" selection-start-line="108" selection-start-column="42" selection-end-line="108" selection-end-column="42" />
-          <folding>
-            <element signature="e#2499#2500#0" expanded="true" />
-            <element signature="e#2676#2677#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Game/Mario.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
+        <state relative-caret-position="370">
           <caret line="161" column="49" selection-start-line="161" selection-start-column="49" selection-end-line="161" selection-end-column="49" />
           <folding>
             <element signature="e#14282#14283#0" expanded="true" />
             <element signature="e#14354#14355#0" expanded="true" />
             <element signature="e#14427#14428#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Game/Brick.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="108" column="57" selection-start-line="108" selection-start-column="57" selection-end-line="108" selection-end-column="57" />
+          <folding>
+            <element signature="e#2507#2508#0" expanded="true" />
+            <element signature="e#2684#2685#0" expanded="true" />
           </folding>
         </state>
       </provider>

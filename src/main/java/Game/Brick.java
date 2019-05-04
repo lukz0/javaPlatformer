@@ -99,14 +99,14 @@ public class Brick extends Entity {
     private Async<Renderer.Drawable> pausedCoin = null;
     @Override
     public void pause(View view){
-        if (!super.isPaused && !coinStopped) {
+        if (!super.isPaused && !coinStopped && coinStarted) {
             this.pausedCoin = view.getDrawableByID(this.coinSpriteID);
         }
         super.pause(view);
     }
     @Override
     public void unPause(View view){
-        if (super.isPaused && !coinStopped) {
+        if (super.isPaused && !coinStopped && coinStarted) {
             this.coinSpriteID = view.addToStage(this.pausedCoin);
         }
         super.unPause(view);
