@@ -11,6 +11,7 @@ public class BlockList {
             put("CoinSpawnTile", CoinSpawnTile.class);
             put("FlagSpawnTile", FlagSpawnTile.class);
             put("MarioSpawnTile", MarioSpawnTile.class);
+            put("BowserSpawnTile", BowserSpawnTile.class);
             put("GoombaSpawnTile", GoombaSpawnTile.class);
             put("BreakableBrick", BreakableBrickSpawnTile.class);
         }
