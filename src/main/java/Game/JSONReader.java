@@ -86,7 +86,12 @@ public class JSONReader {
         ArrayList<Level.LevelBackground> levelBackgrounds = new ArrayList<>();
         JSONArray tilesets = (JSONArray) tempmap.get("tilesets");
         String tilesetSource = ((String) ((JSONObject) tilesets.get(0)).get("source"));
-        tilesetSource = Paths.get(path.substring(0, path.lastIndexOf("/")), tilesetSource).toString();
+        if(path.indexOf("/")!=-1){
+            tilesetSource = Paths.get(path.substring(0, path.lastIndexOf("/")), tilesetSource).toString();
+        }
+        else{
+            tilesetSource = Paths.get(tilesetSource).toString();
+        }
         HashMap<Integer, String> tileSet = ReadTileset(tilesetSource);
 
 
@@ -150,7 +155,13 @@ public class JSONReader {
 
     private static Level.LevelBackground readBackground(JSONObject jsonObject, String mainpath) {
         String imgpath = (String) jsonObject.get("image");
-        String actualpath = Paths.get(mainpath.substring(0, mainpath.lastIndexOf("/")), imgpath).toAbsolutePath().toString();
+        String actualpath;
+        if (mainpath.indexOf("/")!=-1){
+            actualpath = Paths.get(mainpath.substring(0, mainpath.lastIndexOf("/")), imgpath).toAbsolutePath().toString();
+        }
+        else {
+            actualpath = Paths.get("./",imgpath).toAbsolutePath().toString();
+        }
         int height = 1;
         int width = 1;
         float z_index = 0f;
