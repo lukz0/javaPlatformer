@@ -14,8 +14,10 @@ public class Brick extends Entity {
     private static final int STATE_BROKEN = 2;
     int currentState;
     Level level;
+    private HashMap<String, Async<Texture>> textures;
 
     public Brick(View view, HashMap<String, Async<Texture>> textures, long timestamp, double xPos, double yPos, int chunkIndex, Level level) {
+        this.textures = textures;
         this.width = 1;
         this.height = 1;
         this.level = level;
@@ -29,6 +31,9 @@ public class Brick extends Entity {
         }
         if (!textures.containsKey("ground.png")) {
             textures.put("ground.png", view.loadTexture("resources/images/ground.png"));
+        }
+        if (!textures.containsKey("coin.png")) {
+            textures.put("coin.png", view.loadTexture("resources/images/coin.png"));
         }
 
         Async<Renderer.Drawable> idleSprite = view.getNewTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("brick.png"),
@@ -64,5 +69,46 @@ public class Brick extends Entity {
     @Override
     public boolean collisionEntEnt(Entity target, Gameloop gameloop, int chunkOffset) {
         return false;
+    }
+
+    private float currentCoinTranslation = 0f;
+    private static final float COIN_SPEED = 0.1f;
+    private boolean coinStarted = false;
+    private boolean coinStopped = false;
+    private Async<Integer> coinSpriteID;
+    @Override
+    public void updateTranslation(double xChunkTranslation, double xChunkVelocity, View view, long tickstart) {
+        super.updateTranslation(xChunkTranslation, xChunkVelocity, view, tickstart);
+        if (this.currentState == STATE_BROKEN) {
+            if (!coinStarted) {
+                coinStarted = true;
+                this.coinSpriteID = view.createTexturedRectangle(0, 1, 1, 0, -0.49f, textures.get("coin.png"),
+                        new Vector3f((float)(this.xPos + xChunkTranslation), (float) this.yPos+currentCoinTranslation, 0),
+                        new Vector3f((float) (this.xVelocity + xChunkVelocity), (float) this.yVelocity+COIN_SPEED, 0), tickstart);
+            } else if (currentCoinTranslation < 1f) {
+                currentCoinTranslation += COIN_SPEED;
+                view.updatePosition(this.coinSpriteID, new Vector3f((float)(this.xPos + xChunkTranslation), (float) this.yPos+currentCoinTranslation, 0),
+                        new Vector3f((float) (this.xVelocity + xChunkVelocity), (float) this.yVelocity+COIN_SPEED, 0), tickstart);
+            } else if (!coinStopped) {
+                coinStopped = true;
+                view.deleteDrawable(this.coinSpriteID);
+            }
+        }
+    }
+
+    private Async<Renderer.Drawable> pausedCoin = null;
+    @Override
+    public void pause(View view){
+        if (!super.isPaused && !coinStopped) {
+            this.pausedCoin = view.getDrawableByID(this.coinSpriteID);
+        }
+        super.pause(view);
+    }
+    @Override
+    public void unPause(View view){
+        if (super.isPaused && !coinStopped) {
+            this.coinSpriteID = view.addToStage(this.pausedCoin);
+        }
+        super.unPause(view);
     }
 }
