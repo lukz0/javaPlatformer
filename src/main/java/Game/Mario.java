@@ -149,7 +149,7 @@ public class Mario extends Entity {
     }
 
     @Override
-    public boolean collisionEntEnt(Entity target, Gameloop gameloop) {
+    public boolean collisionEntEnt(Entity target, Gameloop gameloop, int chunkOffset) {
         double mXA = this.xPos + this.xVelocity;
         double mYA = this.yPos + this.yVelocity;
 
@@ -163,8 +163,8 @@ public class Mario extends Entity {
                     thisMaxX = this.xPos + this.width + ((this.xVelocity > 0) ? this.xVelocity : 0),
                     thisMinY = this.yPos + ((this.yVelocity < 0) ? this.yVelocity : 0),
                     thisMaxY = this.yPos + this.height + ((this.yVelocity > 0) ? this.yVelocity : 0);
-            if (thisMinX < targetBrick.xPos + 1 && thisMaxX > targetBrick.xPos && thisMinY < targetBrick.yPos + 1 && thisMaxY > targetBrick.yPos) {
-                HitDirection direction = handleBlockCollision((int) targetBrick.xPos, (int) targetBrick.yPos);
+            if (thisMinX < targetBrick.xPos + 1 + 9*chunkOffset && thisMaxX > targetBrick.xPos + 9*chunkOffset && thisMinY < targetBrick.yPos + 1 && thisMaxY > targetBrick.yPos) {
+                HitDirection direction = handleBlockCollision((int) targetBrick.xPos+9*chunkOffset, (int) targetBrick.yPos);
                 if (direction != null) {
                     switch (direction) {
                         case FROM_BELOW:
@@ -185,8 +185,8 @@ public class Mario extends Entity {
                         thisMaxX = this.xPos + this.width + ((this.xVelocity > 0) ? this.xVelocity : 0),
                         thisMinY = this.yPos + ((this.yVelocity < 0) ? this.yVelocity : 0),
                         thisMaxY = this.yPos + this.height + ((this.yVelocity > 0) ? this.yVelocity : 0);
-                if (thisMinX < targetBrick.xPos + 1 && thisMaxX > targetBrick.xPos && thisMinY < targetBrick.yPos + 1 && thisMaxY > targetBrick.yPos) {
-                    HitDirection direction = handleBlockCollision((int) targetBrick.xPos, (int) targetBrick.yPos);
+                if (thisMinX < targetBrick.xPos + 1 + 9*chunkOffset && thisMaxX > targetBrick.xPos + 9*chunkOffset && thisMinY < targetBrick.yPos + 1 && thisMaxY > targetBrick.yPos) {
+                    HitDirection direction = handleBlockCollision((int) targetBrick.xPos+9*chunkOffset, (int) targetBrick.yPos);
                     if (direction != null) {
                         switch (direction) {
                             case FROM_BELOW:
@@ -200,8 +200,8 @@ public class Mario extends Entity {
                 }
             }
         } else if(target instanceof Coin && target.interactable) {
-            if ((mXA <= target.xPos + target.width) &&
-                    (mXA + this.width >= target.xPos) &&
+            if ((mXA <= target.xPos + target.width + 9*chunkOffset) &&
+                    (mXA + this.width >= target.xPos + 9*chunkOffset) &&
                     (mYA <= target.yPos + target.height) &&
                     (mYA + this.height >= target.yPos)) {
                 target.interactable = false;
@@ -210,8 +210,8 @@ public class Mario extends Entity {
 
         } else {
             if(!target.interactable) {return false;}
-            if ((mXA <= target.xPos + target.width) &&
-                    (mXA + this.width >= target.xPos) &&
+            if ((mXA <= target.xPos + target.width + 9*chunkOffset) &&
+                    (mXA + this.width >= target.xPos + 9*chunkOffset) &&
                     (mYA <= target.yPos + target.height) &&
                     (mYA + this.height >= target.yPos)) {
                 if (this.yVelocity <= -0.15f * (Gameloop.TICKDURATION/(double)1000) && this.yPos > target.yPos + target.height) {

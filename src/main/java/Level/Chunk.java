@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Chunk {
-    private LinkedList<Entity> entities = new LinkedList<>();
+    public LinkedList<Entity> entities = new LinkedList<>();
     public final int chunkIndex;
     public final double xTranslation;
     boolean currentlyLoaded = false;
@@ -112,11 +112,14 @@ public class Chunk {
         for (Entity entity : entities) {
             for (Entity target : entities) {
                 if (entity != target) {
-                    if (entity.collisionEntEnt(target, gameloop)) {
-                        //break;
-                    }
-
+                    entity.collisionEntEnt(target, gameloop, 0);
                 }
+            }
+            for (Entity target : lvl.getEntityListAtIndex(this.chunkIndex-1)) {
+                entity.collisionEntEnt(target, gameloop, -1);
+            }
+            for (Entity target : lvl.getEntityListAtIndex(this.chunkIndex+1)) {
+                entity.collisionEntEnt(target, gameloop, 1);
             }
             entity.collisionEntBlc(lvl.getBlockListAtIndex(this.chunkIndex-1), -1);
             entity.collisionEntBlc(blockList, 0);

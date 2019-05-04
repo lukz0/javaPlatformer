@@ -29,34 +29,31 @@ public abstract class Entity {
                 tickstart);
     }
 
-    public boolean collisionEntEnt(Entity target, Gameloop gameloop){
-        double mXA = this.xPos + this.xVelocity;
-        double mYA = this.yPos + this.yVelocity;
-
+    public boolean collisionEntEnt(Entity target, Gameloop gameloop, int chunkOffset){
         if(!this.interactable) {return false;}
         if(!target.interactable) {return false;}
         double thisMinX = this.xPos + ((this.xVelocity < 0) ? this.xVelocity : 0),
-                    thisMaxX = this.xPos + this.width + ((this.xVelocity > 0) ? this.xVelocity : 0),
-                    thisMinY = this.yPos + ((this.yVelocity < 0) ? this.yVelocity : 0),
-                    thisMaxY = this.yPos + this.height + ((this.yVelocity > 0) ? this.yVelocity : 0);
-        if (thisMinX < target.xPos+target.width && thisMaxX > target.xPos && thisMinY < target.yPos+target.height && thisMaxY > target.yPos) {
-                HitDirection direction = handleBlockCollision((int) target.xPos, (int) target.yPos);
-                if (direction != null) {
-                    switch (direction) {
-                        case FROM_BELOW:
-                            this.yVelocity -= this.yVelocity;
-                            break;
-                        case FROM_RIGHT:
-                            this.moving = Moving.MOVING_LEFT;
-                            break;
-                        case FROM_LEFT:
-                            this.moving = Moving.MOVING_RIGHT;
-                            break;
-                    }
-                    return true;
+                thisMaxX = this.xPos + this.width + ((this.xVelocity > 0) ? this.xVelocity : 0),
+                thisMinY = this.yPos + ((this.yVelocity < 0) ? this.yVelocity : 0),
+                thisMaxY = this.yPos + this.height + ((this.yVelocity > 0) ? this.yVelocity : 0);
+        if (thisMinX < target.xPos+target.width+9*chunkOffset && thisMaxX > target.xPos + 9*chunkOffset && thisMinY < target.yPos+target.height && thisMaxY > target.yPos) {
+            HitDirection direction = handleBlockCollision((int) target.xPos+9*chunkOffset, (int) target.yPos);
+            if (direction != null) {
+                switch (direction) {
+                    case FROM_BELOW:
+                        this.yVelocity -= this.yVelocity;
+                        break;
+                    case FROM_RIGHT:
+                        this.moving = Moving.MOVING_LEFT;
+                        break;
+                    case FROM_LEFT:
+                        this.moving = Moving.MOVING_RIGHT;
+                        break;
                 }
+                return true;
             }
-            return false;
+        }
+        return false;
     }
 
 

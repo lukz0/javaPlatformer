@@ -157,7 +157,7 @@ public class Level {
         }
     }
 
-    private static ArrayList<ArrayList<AbstractBlock>> EMPTY_BLOCK_LIST = new ArrayList<ArrayList<AbstractBlock>>(9) {
+    private static final ArrayList<ArrayList<AbstractBlock>> EMPTY_BLOCK_LIST = new ArrayList<ArrayList<AbstractBlock>>(9) {
         {
             for (int row = 0; row < 9; row++) {
                 super.add(new ArrayList<AbstractBlock>(9) {
@@ -182,6 +182,21 @@ public class Level {
             }
         } catch (IndexOutOfBoundsException e) {
             return this.EMPTY_BLOCK_LIST;
+        }
+    }
+
+    private static final LinkedList<Entity> EMPTY_ENTITY_LIST = new LinkedList<>();
+    LinkedList<Entity> getEntityListAtIndex(int i) {
+        Chunk chunk;
+        try {
+            chunk = this.chunks.get(i);
+            if (!chunk.currentlyPaused && chunk.currentlyLoaded) {
+                return chunk.entities;
+            } else {
+                throw new IndexOutOfBoundsException();
+            }
+        } catch (IndexOutOfBoundsException e) {
+            return this.EMPTY_ENTITY_LIST;
         }
     }
 }
