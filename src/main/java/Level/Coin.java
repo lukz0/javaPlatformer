@@ -19,12 +19,12 @@ public class Coin  extends Entity {
         this.xPos = xPos;
         this.yPos = yPos;
         this.xVelocity = 0;
-        this.yVelocity = 1 * (Gameloop.TICKDURATION/(float)1000);
+        this.yVelocity = 0;
         this.chunkIndex = chunkIndex;
         if (!textures.containsKey("coin.png")) {
             textures.put("coin.png", view.loadTexture("resources/images/coin.png"));
         }
-        Async<Renderer.Drawable> idleSprite = view.getNewTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("mario_right.png"),
+        Async<Renderer.Drawable> idleSprite = view.getNewTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("coin.png"),
                 this.translation, this.velocity, timestamp);
 
         HashMap<Integer, Async<Renderer.Drawable>> states = new HashMap<>();
