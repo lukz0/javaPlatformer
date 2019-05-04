@@ -103,17 +103,6 @@ public abstract class Entity {
 
     public abstract void updatePos();
 
-    //TODO
-    /*public void currentChunkUpdate(ArrayList<Chunk> chunks) {
-        for (this.xPos > 9 || this.xPos < 0) {
-            if (this.xPos > 9) {
-                if (this.chunkIndex+1 < chunks.size()) {
-
-                }
-            }
-        }
-    }*/
-
     // Called when the entity moves into a chunk that isn't loaded
     // Should be called before the entity is removed so that the entities drawable is not in the renderers stage
     public void pause(View view){
