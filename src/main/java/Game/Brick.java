@@ -27,13 +27,13 @@ public class Brick extends Entity {
         if (!textures.containsKey("brick.png")) {
             textures.put("brick.png", view.loadTexture("resources/images/brick.png"));
         }
-        if (!textures.containsKey("ground.png")) {
-            textures.put("ground.png", view.loadTexture("resources/images/ground.png"));
+        if (!textures.containsKey("brickHit.png")) {
+            textures.put("brickHit.png", view.loadTexture("resources/images/brickHit.png"));
         }
 
         Async<Renderer.Drawable> idleSprite = view.getNewTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("brick.png"),
                 this.translation, this.velocity, timestamp);
-        Async<Renderer.Drawable> brokenSprite = view.getNewTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("ground.png"),
+        Async<Renderer.Drawable> brokenSprite = view.getNewTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("brickHit.png"),
                 this.translation, this.velocity, timestamp);
 
         HashMap<Integer, Async<Renderer.Drawable>> states = new HashMap<>();
