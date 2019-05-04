@@ -14,30 +14,30 @@
          "y":0
         }, 
         {
-         "id":2,
-         "image":"..\/images\/backgrounds\/plainsSky.png",
-         "name":"Image Layer 1",
+         "id":3,
+         "image":"..\/images\/backgrounds\/desertFurther.png",
+         "name":"sun",
          "opacity":1,
          "properties":[
                 {
                  "name":"height",
                  "type":"int",
-                 "value":288
+                 "value":75
                 }, 
                 {
                  "name":"relative_move",
                  "type":"float",
-                 "value":0
+                 "value":0.01
                 }, 
                 {
                  "name":"width",
                  "type":"int",
-                 "value":64
+                 "value":150
                 }, 
                 {
                  "name":"x_move",
                  "type":"float",
-                 "value":0.01
+                 "value":0
                 }, 
                 {
                  "name":"y_move",
@@ -55,11 +55,103 @@
                  "value":0
                 }],
          "type":"imagelayer",
-         "visible":false,
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "id":4,
+         "image":"..\/images\/backgrounds\/desertFar.png",
+         "name":"farback",
+         "opacity":1,
+         "properties":[
+                {
+                 "name":"height",
+                 "type":"int",
+                 "value":75
+                }, 
+                {
+                 "name":"relative_move",
+                 "type":"float",
+                 "value":0.05
+                }, 
+                {
+                 "name":"width",
+                 "type":"int",
+                 "value":150
+                }, 
+                {
+                 "name":"x_move",
+                 "type":"float",
+                 "value":0
+                }, 
+                {
+                 "name":"y_move",
+                 "type":"float",
+                 "value":0
+                }, 
+                {
+                 "name":"z_index",
+                 "type":"float",
+                 "value":0.6
+                }, 
+                {
+                 "name":"z_move",
+                 "type":"float",
+                 "value":0
+                }],
+         "type":"imagelayer",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "id":5,
+         "image":"..\/images\/backgrounds\/desertClose.png",
+         "name":"nearback",
+         "opacity":1,
+         "properties":[
+                {
+                 "name":"height",
+                 "type":"int",
+                 "value":75
+                }, 
+                {
+                 "name":"relative_move",
+                 "type":"float",
+                 "value":0.3
+                }, 
+                {
+                 "name":"width",
+                 "type":"int",
+                 "value":150
+                }, 
+                {
+                 "name":"x_move",
+                 "type":"float",
+                 "value":0
+                }, 
+                {
+                 "name":"y_move",
+                 "type":"float",
+                 "value":0
+                }, 
+                {
+                 "name":"z_index",
+                 "type":"float",
+                 "value":0.2
+                }, 
+                {
+                 "name":"z_move",
+                 "type":"float",
+                 "value":0
+                }],
+         "type":"imagelayer",
+         "visible":true,
          "x":0,
          "y":0
         }],
- "nextlayerid":3,
+ "nextlayerid":6,
  "nextobjectid":1,
  "orientation":"orthogonal",
  "renderorder":"right-down",
