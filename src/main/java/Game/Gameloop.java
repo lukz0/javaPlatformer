@@ -102,6 +102,9 @@ public class Gameloop implements Runnable {
             if (this.awaitsGameOver) {
                 this.awaitsGameOver = false;
                 this.gameOver();
+            } else if (this.awaitsWin) {
+                this.awaitsWin = false;
+                this.useWinMenu();
             }
 
             if (this.isPaused) {
@@ -254,6 +257,18 @@ public class Gameloop implements Runnable {
     private void gameOver() {
         this.isPaused = true;
         this.setCurrentMenu(new GameOver(this.view, this));
+        this.level.deleteLevel(this.view);
+        this.level = null;
+        this.hideScore();
+    }
+
+    private boolean awaitsWin = false;
+    public void win() {
+        this.awaitsWin = true;
+    }
+    public void useWinMenu() {
+        this.isPaused = true;
+        this.setCurrentMenu(new WinMenu(this.view, this));
         this.level.deleteLevel(this.view);
         this.level = null;
         this.hideScore();

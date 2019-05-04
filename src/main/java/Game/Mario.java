@@ -198,6 +198,14 @@ public class Mario extends Entity {
                 gameloop.score += 50;
             }
 
+        } else if (target instanceof Flag) {
+            double thisMinX = this.xPos + ((this.xVelocity < 0) ? this.xVelocity : 0),
+                    thisMaxX = this.xPos + this.width + ((this.xVelocity > 0) ? this.xVelocity : 0),
+                    thisMinY = this.yPos + ((this.yVelocity < 0) ? this.yVelocity : 0),
+                    thisMaxY = this.yPos + this.height + ((this.yVelocity > 0) ? this.yVelocity : 0);
+            if (thisMinX < target.xPos + target.width + 9 * chunkOffset && thisMaxX > target.xPos + 9 * chunkOffset && thisMinY < target.yPos + target.height && thisMaxY > target.yPos) {
+                gameloop.win();
+            }
         } else {  // An enemy, like Goombas and Bowser
             if (!target.interactable) {
                 return false;
