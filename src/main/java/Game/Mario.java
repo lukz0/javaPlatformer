@@ -17,6 +17,7 @@ public class Mario extends Entity {
     private static final int STATE_IDLE_LEFT = 4;
     private static final int STATE_JUMP_RIGHT = 5;
     private static final int STATE_JUMP_LEFT = 6;
+    private static final int STATE_DEAD = 7;
     Vector3f translation = Vector3f.EMPTY, velocity = Vector3f.EMPTY;
     int currentState;
     private boolean grounded = true;
@@ -38,6 +39,9 @@ public class Mario extends Entity {
         if (!textures.containsKey("mario_jump.png")) {
             textures.put("mario_jump.png", view.loadTexture("resources/images/mario_jump.png"));
         }
+        if (!textures.containsKey("mario_dead.png")) {
+            textures.put("mario_dead.png", view.loadTexture("resources/images/mario_dead.png"));
+        }
         Async<Renderer.Drawable> movingRightSprite = view.getNewAnimatedTexturedRectangle(0, 1, 1, 0, -0.5f, textures.get("mario_right.png"),
                 this.translation, this.velocity, 100, timestamp);
         Async<Renderer.Drawable> movingLeftSprite = view.getNewAnimatedTexturedRectangle(1, 0, 1, 0, -0.5f, textures.get("mario_right.png"),
@@ -50,6 +54,8 @@ public class Mario extends Entity {
                 this.translation, this.velocity, timestamp);
         Async<Renderer.Drawable> marioJumpLeft = view.getNewTexturedRectangle(1, 0, 1, 0, -0.5f, textures.get("mario_jump.png"),
                 this.translation, this.velocity, timestamp);
+        Async<Renderer.Drawable> marioDead = view.getNewTexturedRectangle(1, 0, 1, 0, -0.5f, textures.get("mario_dead.png"),
+                this.translation, this.velocity, timestamp);
 
         HashMap<Integer, Async<Renderer.Drawable>> states = new HashMap<>();
         states.put(STATE_MOVING_RIGHT, movingRightSprite);
@@ -58,6 +64,7 @@ public class Mario extends Entity {
         states.put(STATE_IDLE_LEFT, marioIdleLeft);
         states.put(STATE_JUMP_RIGHT, marioJumpRight);
         states.put(STATE_JUMP_LEFT, marioJumpLeft);
+        states.put(STATE_DEAD, marioDead);
 
         this.drawableID = view.createPosUpdateableGroup(this.translation, this.velocity, states, timestamp);
         this.currentState = STATE_IDLE_RIGHT;
@@ -115,6 +122,11 @@ public class Mario extends Entity {
 
             // TODO: change
             this.yVelocity -= 0.3f * (Gameloop.TICKDURATION/(double)1000);
+
+            if(!this.interactable) {
+                this.currentState = STATE_DEAD;
+                gameloop.view.setActiveState(this.drawableID, this.currentState);
+            }
         }
         this.grounded = false;
         if (this.yPos < -9f) {
@@ -199,7 +211,7 @@ public class Mario extends Entity {
                     gameloop.score += 100;
                 } else {
                     //Mario has died.
-                    this.yVelocity = 3 * (Gameloop.TICKDURATION/(double)1000);
+                    this.yVelocity = 6 * (Gameloop.TICKDURATION/(double)1000);
                     this.interactable = false;
                 }
                 return true;
