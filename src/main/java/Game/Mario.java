@@ -75,27 +75,27 @@ public class Mario extends Entity {
 
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
         if (!this.isPaused) {
-            if (gameloop.holdingLeft != gameloop.holdingRight && this.interactable) {
-                if (gameloop.holdingLeft) {
+            if (gameloop.holdingLeft != gameloop.holdingRight && this.interactable) {  // Mario is either going left or right
+                if (gameloop.holdingLeft) { // Holding and moving left
                     this.xVelocity = -3 * (Gameloop.TICKDURATION / (double) 1000);
                     if (this.currentState != STATE_MOVING_LEFT && grounded) {
                         this.currentState = STATE_MOVING_LEFT;
                         gameloop.view.setActiveState(this.drawableID, this.currentState);
-                    } else if(!grounded) {
+                    } else if (!grounded) {
                         this.currentState = STATE_JUMP_LEFT;
                         gameloop.view.setActiveState(this.drawableID, this.currentState);
                     }
-                } else {
+                } else {  // Holding and moving right
                     this.xVelocity = 3 * (Gameloop.TICKDURATION / (double) 1000);
                     if (this.currentState != STATE_MOVING_RIGHT && grounded) {
                         this.currentState = STATE_MOVING_RIGHT;
                         gameloop.view.setActiveState(this.drawableID, this.currentState);
-                    } else if(!grounded) {
+                    } else if (!grounded) {
                         this.currentState = STATE_JUMP_RIGHT;
                         gameloop.view.setActiveState(this.drawableID, this.currentState);
                     }
                 }
-            } else {
+            } else {  // Either both or none of the buttons are pressed; Mario doesn't move
                 this.xVelocity = 0;
                 if ((this.currentState == STATE_MOVING_LEFT || this.currentState == STATE_JUMP_LEFT) && grounded) {
                     this.currentState = STATE_IDLE_LEFT;
@@ -105,47 +105,37 @@ public class Mario extends Entity {
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 }
             }
-            if (gameloop.holdingSpace && this.interactable) {
-                //if(grounded) {
-                    if (this.currentState == STATE_IDLE_LEFT || this.currentState == STATE_MOVING_LEFT) {
-                        this.currentState = STATE_JUMP_LEFT;
-                        gameloop.view.setActiveState(this.drawableID, this.currentState);
-                    } else if (this.currentState == STATE_IDLE_RIGHT || this.currentState == STATE_MOVING_RIGHT) {
-                        this.currentState = STATE_JUMP_RIGHT;
-                        gameloop.view.setActiveState(this.drawableID, this.currentState);
-                    }
-
-                    // TODO: find appropriate value
-                if(this.grounded) {
-                    this.yVelocity = 9f * (Gameloop.TICKDURATION/(double)1000);
+            if (gameloop.holdingSpace && this.interactable) {  // Mario jumps, if he isn't dead
+                if (this.currentState == STATE_IDLE_LEFT || this.currentState == STATE_MOVING_LEFT) {
+                    this.currentState = STATE_JUMP_LEFT;
+                    gameloop.view.setActiveState(this.drawableID, this.currentState);
+                } else if (this.currentState == STATE_IDLE_RIGHT || this.currentState == STATE_MOVING_RIGHT) {
+                    this.currentState = STATE_JUMP_RIGHT;
+                    gameloop.view.setActiveState(this.drawableID, this.currentState);
                 }
-            }
 
-            // TODO: change
-            this.yVelocity -= 0.3f * (Gameloop.TICKDURATION/(double)1000);
+                if (this.grounded) {  // Jumping only increases his Y-velocity if on the ground
+                    this.yVelocity = 9f * (Gameloop.TICKDURATION / (double) 1000);
+                }
+            }  // Gravity
+            this.yVelocity -= 0.3f * (Gameloop.TICKDURATION / (double) 1000);
 
-            if(!this.interactable) {
+            // Mario dies from an enemy
+            if (!this.interactable) {
                 this.currentState = STATE_DEAD;
                 gameloop.view.setActiveState(this.drawableID, this.currentState);
             }
         }
         this.grounded = false;
-        if (this.yPos < -9f) {
+        if (this.yPos < -9f) {  // Mario dies from falling
             gameloop.marioDied();
         }
-
-        // TODO: add collision detection before adding velocity to position
-        // TODO: changing chunks when translation < 0 or translation > 9
-
-
-        //gameloop.view.updatePosition(this.drawableID, this.translation, this.velocity, tickStart);
     }
 
     @Override
-    public void updatePos(){
+    public void updatePos() {
         this.xPos += this.xVelocity;
         this.yPos += this.yVelocity;
-        //System.out.println("[MARIO] Xp/Yp/Xv/Yv/cnk: " + this.xPos + "/" + this.yPos + "/" + this.xVelocity + "/" + this.yVelocity + "/" + this.chunkIndex);
     }
 
     @Override
@@ -157,14 +147,14 @@ public class Mario extends Entity {
             return false;
         }
 
-        if (target instanceof Brick) {
+        if (target instanceof Brick) {  // Handles collision like static blocks
             Brick targetBrick = (Brick) target;
             double thisMinX = this.xPos + ((this.xVelocity < 0) ? this.xVelocity : 0),
                     thisMaxX = this.xPos + this.width + ((this.xVelocity > 0) ? this.xVelocity : 0),
                     thisMinY = this.yPos + ((this.yVelocity < 0) ? this.yVelocity : 0),
                     thisMaxY = this.yPos + this.height + ((this.yVelocity > 0) ? this.yVelocity : 0);
-            if (thisMinX < targetBrick.xPos + 1 + 9*chunkOffset && thisMaxX > targetBrick.xPos + 9*chunkOffset && thisMinY < targetBrick.yPos + 1 && thisMaxY > targetBrick.yPos) {
-                HitDirection direction = handleBlockCollision((int) targetBrick.xPos+9*chunkOffset, (int) targetBrick.yPos);
+            if (thisMinX < targetBrick.xPos + 1 + 9 * chunkOffset && thisMaxX > targetBrick.xPos + 9 * chunkOffset && thisMinY < targetBrick.yPos + 1 && thisMaxY > targetBrick.yPos) {
+                HitDirection direction = handleBlockCollision((int) targetBrick.xPos + 9 * chunkOffset, (int) targetBrick.yPos);
                 if (direction != null) {
                     switch (direction) {
                         case FROM_BELOW:
@@ -176,7 +166,7 @@ public class Mario extends Entity {
                     }
                 }
             }
-        } else if (target instanceof BreakableBrick) {
+        } else if (target instanceof BreakableBrick) {  // Handles like static blocks, until it breaks
             BreakableBrick targetBrick = (BreakableBrick) target;
             if (targetBrick.isBroken()) {
                 return false;
@@ -185,8 +175,8 @@ public class Mario extends Entity {
                         thisMaxX = this.xPos + this.width + ((this.xVelocity > 0) ? this.xVelocity : 0),
                         thisMinY = this.yPos + ((this.yVelocity < 0) ? this.yVelocity : 0),
                         thisMaxY = this.yPos + this.height + ((this.yVelocity > 0) ? this.yVelocity : 0);
-                if (thisMinX < targetBrick.xPos + 1 + 9*chunkOffset && thisMaxX > targetBrick.xPos + 9*chunkOffset && thisMinY < targetBrick.yPos + 1 && thisMaxY > targetBrick.yPos) {
-                    HitDirection direction = handleBlockCollision((int) targetBrick.xPos+9*chunkOffset, (int) targetBrick.yPos);
+                if (thisMinX < targetBrick.xPos + 1 + 9 * chunkOffset && thisMaxX > targetBrick.xPos + 9 * chunkOffset && thisMinY < targetBrick.yPos + 1 && thisMaxY > targetBrick.yPos) {
+                    HitDirection direction = handleBlockCollision((int) targetBrick.xPos + 9 * chunkOffset, (int) targetBrick.yPos);
                     if (direction != null) {
                         switch (direction) {
                             case FROM_BELOW:
@@ -199,29 +189,31 @@ public class Mario extends Entity {
                     }
                 }
             }
-        } else if(target instanceof Coin && target.interactable) {
-            if ((mXA <= target.xPos + target.width + 9*chunkOffset) &&
-                    (mXA + this.width >= target.xPos + 9*chunkOffset) &&
+        } else if (target instanceof Coin && target.interactable) {  // Collide with coins to pick them up
+            if ((mXA <= target.xPos + target.width + 9 * chunkOffset) &&
+                    (mXA + this.width >= target.xPos + 9 * chunkOffset) &&
                     (mYA <= target.yPos + target.height) &&
                     (mYA + this.height >= target.yPos)) {
                 target.interactable = false;
                 gameloop.score += 50;
             }
 
-        } else {
-            if(!target.interactable) {return false;}
-            if ((mXA <= target.xPos + target.width + 9*chunkOffset) &&
-                    (mXA + this.width >= target.xPos + 9*chunkOffset) &&
+        } else {  // An enemy, like Goombas and Bowser
+            if (!target.interactable) {
+                return false;
+            }
+            if ((mXA <= target.xPos + target.width + 9 * chunkOffset) &&
+                    (mXA + this.width >= target.xPos + 9 * chunkOffset) &&
                     (mYA <= target.yPos + target.height) &&
                     (mYA + this.height >= target.yPos)) {
-                if (this.yVelocity <= -0.15f * (Gameloop.TICKDURATION/(double)1000) && this.yPos > target.yPos + target.height) {
-                    //Goomba ded, Mario jumps
-                    this.yVelocity = 3 * (Gameloop.TICKDURATION/(double)1000);
+                if (this.yVelocity <= -0.15f * (Gameloop.TICKDURATION / (double) 1000) && this.yPos > target.yPos + target.height) {
+                    // The Goomba diedd, Mario bounces off
+                    this.yVelocity = 3 * (Gameloop.TICKDURATION / (double) 1000);
                     target.interactable = false;
                     gameloop.score += 100;
                 } else {
-                    //Mario has died.
-                    this.yVelocity = 6 * (Gameloop.TICKDURATION/(double)1000);
+                    //Mario dies
+                    this.yVelocity = 6 * (Gameloop.TICKDURATION / (double) 1000);
                     this.interactable = false;
                 }
                 return true;
@@ -232,10 +224,12 @@ public class Mario extends Entity {
 
     @Override
     public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset) {
-        if (!this.interactable) { return false; }
+        if (!this.interactable) {
+            return false;
+        }
         boolean collided = false;
 
-        int x = chunkOffset*9, y = 0;
+        int x = chunkOffset * 9, y = 0;
         double thisMinX = this.xPos + ((this.xVelocity < 0) ? this.xVelocity : 0),
                 thisMaxX = this.xPos + this.width + ((this.xVelocity > 0) ? this.xVelocity : 0),
                 thisMinY = this.yPos + ((this.yVelocity < 0) ? this.yVelocity : 0),
@@ -245,23 +239,21 @@ public class Mario extends Entity {
         for (ArrayList<AbstractBlock> row : target) {
             for (AbstractBlock block : row) {
                 if (block instanceof StaticAbstractBlock) {
-                    if (thisMinX < x+1 && thisMaxX > x && thisMinY < y+1 && thisMaxY > y) {
-                            collided = true;
-                            if (handleBlockCollision(x, y) == HitDirection.FROM_ABOVE) {
-                                this.grounded = true;
-                            }
+                    if (thisMinX < x + 1 && thisMaxX > x && thisMinY < y + 1 && thisMaxY > y) {
+                        collided = true;
+                        if (handleBlockCollision(x, y) == HitDirection.FROM_ABOVE) {
+                            this.grounded = true;
+                        }
                     }
                 }
                 x++;
             }
-            x = chunkOffset*9;
+            x = chunkOffset * 9;
             y++;
         }
 
         return collided;
     }
-
-    private boolean touchedGround = true;
 
     private boolean isPaused = false;
     private Async<Renderer.Drawable> pausedDrawable = null;
@@ -283,9 +275,11 @@ public class Mario extends Entity {
     public double getxPos() {
         return this.xPos;
     }
+
     public int getChunkIndex() {
         return this.chunkIndex;
     }
+
     public double getxVelocity() {
         return this.xVelocity;
     }
