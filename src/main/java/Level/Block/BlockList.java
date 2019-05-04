@@ -1,7 +1,5 @@
 package Level.Block;
 
-import Level.Coin;
-
 import java.util.HashMap;
 
 public class BlockList {
@@ -11,6 +9,7 @@ public class BlockList {
             put("Ground2", Ground2.class);
             put("Brick", BrickSpawnTile.class);
             put("CoinSpawnTile", CoinSpawnTile.class);
+            put("FlagSpawnTile", FlagSpawnTile.class);
             put("MarioSpawnTile", MarioSpawnTile.class);
             put("GoombaSpawnTile", GoombaSpawnTile.class);
             put("BreakableBrick", BreakableBrickSpawnTile.class);
