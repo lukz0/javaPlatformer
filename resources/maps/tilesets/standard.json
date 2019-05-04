@@ -8,9 +8,9 @@
  "margin":0,
  "name":"C:\/Users\/eplep\/DAT113-2\/project\/resources\/images\/",
  "spacing":0,
- "tilecount":7,
+ "tilecount":8,
  "tiledversion":"1.2.3",
- "tileheight":32,
+ "tileheight":33,
  "tiles":[
         {
          "id":0,
@@ -138,6 +138,18 @@
                  "name":"name",
                  "type":"string",
                  "value":"FlagSpawnTile"
+                }]
+        }, 
+        {
+         "id":7,
+         "image":"..\/..\/images\/notBowser.png",
+         "imageheight":33,
+         "imagewidth":32,
+         "properties":[
+                {
+                 "name":"name",
+                 "type":"string",
+                 "value":"BowserSpawnTile"
                 }]
         }],
  "tilewidth":32,
