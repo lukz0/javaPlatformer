@@ -8,7 +8,7 @@
  "margin":0,
  "name":"C:\/Users\/eplep\/DAT113-2\/project\/resources\/images\/",
  "spacing":0,
- "tilecount":5,
+ "tilecount":6,
  "tiledversion":"1.2.3",
  "tileheight":32,
  "tiles":[
@@ -113,7 +113,19 @@
                 {
                  "name":"name",
                  "type":"string",
-                 "value":"Coin"
+                 "value":"CoinSpawnTile"
+                }]
+        }, 
+        {
+         "id":5,
+         "image":"..\/..\/images\/brick.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "properties":[
+                {
+                 "name":"name",
+                 "type":"string",
+                 "value":"BreakableBrick"
                 }]
         }],
  "tilewidth":32,

@@ -13,7 +13,7 @@ public class BlockList {
             put("CoinSpawnTile", CoinSpawnTile.class);
             put("MarioSpawnTile", MarioSpawnTile.class);
             put("GoombaSpawnTile", GoombaSpawnTile.class);
-            put("Breakablecrick", BreakableBrickSpawnTile.class);
+            put("BreakableBrick", BreakableBrickSpawnTile.class);
         }
     };
     static public Class<?> getClassForName(String name) {
