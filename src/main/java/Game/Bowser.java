@@ -18,7 +18,7 @@ public class Bowser extends Entity {
     Level level;
     Mario mario;
     boolean interactable = true;
-    boolean grounded = true;
+    boolean grounded = false;
 
     public Bowser(View view, HashMap<String, Async<Texture>> textures, long timestamp, double xPos, double yPos, int chunkIndex, Level level) {
         this.width = 2;
@@ -52,6 +52,7 @@ public class Bowser extends Entity {
 
     @Override
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
+        System.out.println("[BOWSER] " + this.xPos + "/" + this.yPos);
         int dist = (int) (this.mario.xPos - this.xPos); // 9*chunkindex + xPos så Bowser går mot Mario selv fra en annen chunk?
         if(Math.abs(dist) < 2) {
             if(dist < 0) {
@@ -60,8 +61,10 @@ public class Bowser extends Entity {
                     this.currentState = Bowser.STATE_MOVING_LEFT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 } else {
-                    //jump I guess
-                    yVelocity = 6.5f * (Gameloop.TICKDURATION/(float)1000);
+                    // Bowser jumps
+                    if(!this.grounded) {
+                        yVelocity = 6.5f * (Gameloop.TICKDURATION/(float)1000);
+                    }
                     xVelocity = 2.5f * (Gameloop.TICKDURATION/(float)1000);
                     this.currentState = Bowser.STATE_MOVING_RIGHT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
