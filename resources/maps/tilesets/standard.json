@@ -8,13 +8,13 @@
  "margin":0,
  "name":"C:\/Users\/eplep\/DAT113-2\/project\/resources\/images\/",
  "spacing":0,
- "tilecount":4,
+ "tilecount":5,
  "tiledversion":"1.2.3",
- "tileheight":19,
+ "tileheight":32,
  "tiles":[
         {
          "id":0,
-         "image":"..\/images\/ground.png",
+         "image":"..\/..\/images\/ground.png",
          "imageheight":16,
          "imagewidth":16,
          "objectgroup":
@@ -48,7 +48,7 @@
         }, 
         {
          "id":1,
-         "image":"..\/images\/brick.png",
+         "image":"..\/..\/images\/brick.png",
          "imageheight":16,
          "imagewidth":16,
          "objectgroup":
@@ -82,7 +82,7 @@
         }, 
         {
          "id":2,
-         "image":"..\/images\/mario.png",
+         "image":"..\/..\/images\/mario.png",
          "imageheight":16,
          "imagewidth":16,
          "properties":[
@@ -94,7 +94,7 @@
         }, 
         {
          "id":3,
-         "image":"..\/images\/primeGoomb.png",
+         "image":"..\/..\/images\/primeGoomb.png",
          "imageheight":19,
          "imagewidth":16,
          "properties":[
@@ -103,8 +103,20 @@
                  "type":"string",
                  "value":"GoombaSpawnTile"
                 }]
+        }, 
+        {
+         "id":4,
+         "image":"..\/..\/images\/coin.png",
+         "imageheight":32,
+         "imagewidth":32,
+         "properties":[
+                {
+                 "name":"name",
+                 "type":"string",
+                 "value":"Coin"
+                }]
         }],
- "tilewidth":16,
+ "tilewidth":32,
  "type":"tileset",
  "version":1.2
 }
