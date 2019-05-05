@@ -61,7 +61,6 @@ public abstract class Entity {
 
 
     public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset){
-        System.out.println(this.grounded);
         if (!this.interactable) { return false; }
         boolean collided = false;
 
@@ -101,8 +100,6 @@ public abstract class Entity {
             x = chunkOffset*9;
             y++;
         }
-        System.out.println(">" + this.grounded);
-
         return collided;
     }
 

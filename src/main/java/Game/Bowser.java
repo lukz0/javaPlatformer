@@ -17,8 +17,6 @@ public class Bowser extends Entity {
     int currentState;
     Level level;
     Mario mario;
-    boolean interactable = true;
-    boolean grounded = true;
 
     public Bowser(View view, HashMap<String, Async<Texture>> textures, long timestamp, double xPos, double yPos, int chunkIndex, Level level) {
         this.width = 2;
@@ -103,7 +101,6 @@ public class Bowser extends Entity {
         }
 
         this.yVelocity -= 0.3f * (Gameloop.TICKDURATION/(float)1000);
-        System.out.println(this.grounded);
     }
 
     @Override
