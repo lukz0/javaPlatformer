@@ -16,6 +16,7 @@ public abstract class Entity {
     public double width;
     public double height;
     public boolean interactable = true;
+    public boolean grounded = true;
     public Async<Integer> drawableID;
     public Async<Renderer.Drawable> pausedDrawable = null;
     public boolean isPaused = false;
@@ -60,6 +61,7 @@ public abstract class Entity {
 
 
     public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset){
+        System.out.println(this.grounded);
         if (!this.interactable) { return false; }
         boolean collided = false;
 
@@ -87,6 +89,9 @@ public abstract class Entity {
                                 case FROM_LEFT:
                                     this.moving = Moving.MOVING_LEFT;
                                     break;
+                                case FROM_ABOVE:
+                                    this.grounded = true;
+                                    break;
                             }
                         }
                     }
@@ -96,6 +101,7 @@ public abstract class Entity {
             x = chunkOffset*9;
             y++;
         }
+        System.out.println(">" + this.grounded);
 
         return collided;
     }

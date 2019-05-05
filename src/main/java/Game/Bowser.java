@@ -18,7 +18,7 @@ public class Bowser extends Entity {
     Level level;
     Mario mario;
     boolean interactable = true;
-    boolean grounded = false;
+    boolean grounded = true;
 
     public Bowser(View view, HashMap<String, Async<Texture>> textures, long timestamp, double xPos, double yPos, int chunkIndex, Level level) {
         this.width = 2;
@@ -56,36 +56,42 @@ public class Bowser extends Entity {
         if(Math.abs(dist) < 4) {
             if(dist < 0) {
                 if(mario.yPos > this.yPos) {
-                    xVelocity = 2.5f * (Gameloop.TICKDURATION/(float)1000);
+                    xVelocity = 2f * (Gameloop.TICKDURATION/(float)1000);
                     this.currentState = Bowser.STATE_MOVING_RIGHT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 } else {
                     // Bowser jumps
-                    if(!this.grounded) {
+                    if(this.grounded) {
                         yVelocity = 6.5f * (Gameloop.TICKDURATION/(float)1000);
+                        grounded = false;
                     }
-                    xVelocity = -2.5f * (Gameloop.TICKDURATION/(float)1000);
+                    xVelocity = -2f * (Gameloop.TICKDURATION/(float)1000);
                     this.currentState = Bowser.STATE_MOVING_LEFT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 }
             } else {
                 if(mario.yPos > this.yPos) {
-                    xVelocity = -2.5f * (Gameloop.TICKDURATION/(float)1000);
+                    xVelocity = -2f * (Gameloop.TICKDURATION/(float)1000);
                     this.currentState = Bowser.STATE_MOVING_LEFT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 } else {
-                    xVelocity = 2.5f * (Gameloop.TICKDURATION/(float)1000);
+                    // Bowser jumps
+                    if(this.grounded) {
+                        yVelocity = 6.5f * (Gameloop.TICKDURATION/(float)1000);
+                        grounded = false;
+                    }
+                    xVelocity = 2f * (Gameloop.TICKDURATION/(float)1000);
                     this.currentState = Bowser.STATE_MOVING_RIGHT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 }
             }
         } else {
             if(dist < 0) {
-                xVelocity = -2.5f * (Gameloop.TICKDURATION/(float)1000);
+                xVelocity = -2f * (Gameloop.TICKDURATION/(float)1000);
                 this.currentState = Bowser.STATE_MOVING_LEFT;
                 gameloop.view.setActiveState(this.drawableID, this.currentState);
             } else {
-                xVelocity = 2.5f * (Gameloop.TICKDURATION/(float)1000);
+                xVelocity = 2f * (Gameloop.TICKDURATION/(float)1000);
                 this.currentState = Bowser.STATE_MOVING_RIGHT;
                 gameloop.view.setActiveState(this.drawableID, this.currentState);
             }
@@ -97,45 +103,8 @@ public class Bowser extends Entity {
         }
 
         this.yVelocity -= 0.3f * (Gameloop.TICKDURATION/(float)1000);
+        System.out.println(this.grounded);
     }
-
-    @Override
-    public boolean collisionEntEnt(Entity target, Gameloop gameloop, int chunkOffset) {
-        return false;
-    }
-
-    /*@Override
-    public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset) {
-        if (!this.interactable) {
-            return false;
-        }
-        boolean collided = false;
-
-        int x = chunkOffset * 9, y = 0;
-        double thisMinX = this.xPos + ((this.xVelocity < 0) ? this.xVelocity : 0),
-                thisMaxX = this.xPos + this.width + ((this.xVelocity > 0) ? this.xVelocity : 0),
-                thisMinY = this.yPos + ((this.yVelocity < 0) ? this.yVelocity : 0),
-                thisMaxY = this.yPos + this.height + ((this.yVelocity > 0) ? this.yVelocity : 0);
-
-
-        for (ArrayList<AbstractBlock> row : target) {
-            for (AbstractBlock block : row) {
-                if (block instanceof StaticAbstractBlock) {
-                    if (thisMinX < x + 1 && thisMaxX > x && thisMinY < y + 1 && thisMaxY > y) {
-                        collided = true;
-                        if (handleBlockCollision(x, y) == HitDirection.FROM_ABOVE) {
-                            this.grounded = true;
-                        }
-                    }
-                }
-                x++;
-            }
-            x = chunkOffset * 9;
-            y++;
-        }
-
-        return collided;
-    }*/
 
     @Override
     public void updatePos() {
