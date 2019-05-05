@@ -1,9 +1,9 @@
 package Game;
 
 import Level.Block.AbstractBlock;
+import Level.Chunk;
 import Level.Entity;
 import Level.Level;
-import Level.Chunk;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +47,7 @@ public class BreakableBrick extends Entity {
 
     @Override
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
-        if(!this.interactable && this.currentState != this.STATE_BROKEN) {
+        if (!this.interactable && this.currentState != this.STATE_BROKEN) {
             this.currentState = this.STATE_BROKEN;
             gameloop.view.setActiveState(this.drawableID, this.currentState);
         }
@@ -59,7 +59,8 @@ public class BreakableBrick extends Entity {
     }
 
     @Override
-    public void updatePos() {}
+    public void updatePos() {
+    }
 
     @Override
     public boolean collisionEntEnt(Entity target, Gameloop gameloop, int chunkOffset) {

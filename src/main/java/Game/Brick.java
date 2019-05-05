@@ -52,7 +52,7 @@ public class Brick extends Entity {
 
     @Override
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
-        if(!this.interactable) {
+        if (!this.interactable) {
             this.currentState = Brick.STATE_BROKEN;
             gameloop.view.setActiveState(this.drawableID, this.currentState);
         }
@@ -64,7 +64,8 @@ public class Brick extends Entity {
     }
 
     @Override
-    public void updatePos() {}
+    public void updatePos() {
+    }
 
     @Override
     public boolean collisionEntEnt(Entity target, Gameloop gameloop, int chunkOffset) {
@@ -76,6 +77,7 @@ public class Brick extends Entity {
     private boolean coinStarted = false;
     private boolean coinStopped = false;
     private Async<Integer> coinSpriteID;
+
     @Override
     public void updateTranslation(double xChunkTranslation, double xChunkVelocity, View view, long tickstart) {
         super.updateTranslation(xChunkTranslation, xChunkVelocity, view, tickstart);
@@ -83,12 +85,12 @@ public class Brick extends Entity {
             if (!coinStarted) {
                 coinStarted = true;
                 this.coinSpriteID = view.createTexturedRectangle(0, 1, 1, 0, -0.49f, textures.get("coin.png"),
-                        new Vector3f((float)(this.xPos + xChunkTranslation), (float) this.yPos+currentCoinTranslation, 0),
-                        new Vector3f((float) (this.xVelocity + xChunkVelocity), (float) this.yVelocity+COIN_SPEED, 0), tickstart);
+                        new Vector3f((float) (this.xPos + xChunkTranslation), (float) this.yPos + currentCoinTranslation, 0),
+                        new Vector3f((float) (this.xVelocity + xChunkVelocity), (float) this.yVelocity + COIN_SPEED, 0), tickstart);
             } else if (currentCoinTranslation < 1f) {
                 currentCoinTranslation += COIN_SPEED;
-                view.updatePosition(this.coinSpriteID, new Vector3f((float)(this.xPos + xChunkTranslation), (float) this.yPos+currentCoinTranslation, 0),
-                        new Vector3f((float) (this.xVelocity + xChunkVelocity), (float) this.yVelocity+COIN_SPEED, 0), tickstart);
+                view.updatePosition(this.coinSpriteID, new Vector3f((float) (this.xPos + xChunkTranslation), (float) this.yPos + currentCoinTranslation, 0),
+                        new Vector3f((float) (this.xVelocity + xChunkVelocity), (float) this.yVelocity + COIN_SPEED, 0), tickstart);
             } else if (!coinStopped) {
                 coinStopped = true;
                 view.deleteDrawable(this.coinSpriteID);
@@ -97,15 +99,17 @@ public class Brick extends Entity {
     }
 
     private Async<Renderer.Drawable> pausedCoin = null;
+
     @Override
-    public void pause(View view){
+    public void pause(View view) {
         if (!super.isPaused && !coinStopped && coinStarted) {
             this.pausedCoin = view.getDrawableByID(this.coinSpriteID);
         }
         super.pause(view);
     }
+
     @Override
-    public void unPause(View view){
+    public void unPause(View view) {
         if (super.isPaused && !coinStopped && coinStarted) {
             this.coinSpriteID = view.addToStage(this.pausedCoin);
         }

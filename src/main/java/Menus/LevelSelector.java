@@ -47,7 +47,7 @@ public class LevelSelector extends Menu {
             }
         };
 
-        this.backgroundSpriteID = view.createBackground(0, textures.get("background"), Vector3f.EMPTY,  new Vector3f(-0.02f, 0.01f, 0), System.nanoTime(), 1);
+        this.backgroundSpriteID = view.createBackground(0, textures.get("background"), Vector3f.EMPTY, new Vector3f(-0.02f, 0.01f, 0), System.nanoTime(), 1);
 
         try {
             this.menu = new GU_Menu(this.view, new ArrayList<GU_Menu.MenuItemInfo>() {
@@ -90,6 +90,7 @@ public class LevelSelector extends Menu {
 
 
     private Async<Renderer.Drawable> pausedLevelImage;
+
     public void pause() {
         if (!super.isPaused) {
             this.pausedLevelImage = view.getDrawableByID(this.levelImageID);
@@ -124,6 +125,7 @@ public class LevelSelector extends Menu {
             enterLevel();
         }
     }
+
     private void enterLevel() {
         switch (this.sliderState) {
             case 0:

@@ -39,16 +39,21 @@ public class View {
         this.rend.setBackgroundColor(r, g, b);
     }
 
-    /** Creates a texture object and loads the texture itself into GPUs memory
-     * Use unloadTexture on the returned Texture to remove it from GPUs memory */
+    /**
+     * Creates a texture object and loads the texture itself into GPUs memory
+     * Use unloadTexture on the returned Texture to remove it from GPUs memory
+     */
     public Async<Texture> loadTexture(String path) {
         return this.rend.loadTexture(path);
     }
+
     Async<Texture> loadTexture(Texture.ArrayAndSize params) {
         return this.rend.loadTexture(params);
     }
 
-    /** Removes a texture from GPUs memory, call this if the texture is no longer in use */
+    /**
+     * Removes a texture from GPUs memory, call this if the texture is no longer in use
+     */
     public void unloadTexture(Async<Texture> texture) {
         this.rend.unloadTexture(texture);
     }
@@ -139,7 +144,9 @@ public class View {
      * The z_index has to be BETWEEN 1.0f and -1.0f to be visible, smaller z_index means in front of
      */
     public Async<Renderer.Drawable> getNewTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long currentTimeNanos) {
-        if (texture == null) {new Error("Missing texture").printStackTrace();}
+        if (texture == null) {
+            new Error("Missing texture").printStackTrace();
+        }
         return this.rend.getNewTexturedRectangle(left, right, top, bottom, z_index, texture, translation, velocity, currentTimeNanos);
     }
 

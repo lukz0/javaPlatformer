@@ -3,7 +3,6 @@ package Game;
 import GUI_Utils.GU_Digit;
 import GUI_Utils.GU_Number;
 import Level.Level;
-import Level.Tilemap;
 import Menus.*;
 import Menus.Menu;
 
@@ -54,6 +53,7 @@ public class Gameloop implements Runnable {
 
 
     Level level;
+
     void setLevel(Level level) {
         this.level = level;
         this.score = 0;
@@ -61,6 +61,7 @@ public class Gameloop implements Runnable {
 
     boolean isPaused = false;
     public Menus.Menu currentMenu;
+
     public void enterPause() {
         if (!this.isPaused) {
             this.isPaused = true;
@@ -92,7 +93,7 @@ public class Gameloop implements Runnable {
         this.currentMenu = new MainMenu(this, this.view);
 
 
-        GU_Number gun = new GU_Number(this.view, new TextCreator((int)(200* GU_Digit.KERNING), 200, Color.BLACK), 5, 1, -0.9f,
+        GU_Number gun = new GU_Number(this.view, new TextCreator((int) (200 * GU_Digit.KERNING), 200, Color.BLACK), 5, 1, -0.9f,
                 new Vector3f(13.5f, 8, 0));
 
         while (true) {
@@ -128,23 +129,26 @@ public class Gameloop implements Runnable {
 
             long tickEnd = System.nanoTime();
             try {
-                long sleepDur = TICKDURATION*1000000-(tickEnd-tickStart);
+                long sleepDur = TICKDURATION * 1000000 - (tickEnd - tickStart);
                 if (sleepDur < 0) {
                     sleepDur = 0;
                 }
                 TimeUnit.NANOSECONDS.sleep(sleepDur);
-                tickStart = tickEnd+sleepDur;
+                tickStart = tickEnd + sleepDur;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
+
     public boolean scoreHidden = true;
     private boolean scoreHiddenChanged = true;
+
     public void showScore() {
         this.scoreHiddenChanged = true;
         this.scoreHidden = false;
     }
+
     public void hideScore() {
         this.scoreHiddenChanged = true;
         this.scoreHidden = true;
@@ -160,6 +164,7 @@ public class Gameloop implements Runnable {
             } while (!this.keyEventQueue.isEmpty());
         }
     }
+
     void runCommandQueue() {
         if (!this.commandQueue.isEmpty()) {
             ArrayList<Cheater.Command> commands = new ArrayList<>();
@@ -242,8 +247,9 @@ public class Gameloop implements Runnable {
     }
 
     public String currentLevel = null;
+
     public void loadLevel(String path) {
-        if (level!=null){
+        if (level != null) {
             this.level.deleteLevel(this.view);
         }
         this.currentLevel = path;
@@ -251,9 +257,11 @@ public class Gameloop implements Runnable {
     }
 
     private boolean awaitsGameOver = false;
+
     void marioDied() {
         this.awaitsGameOver = true;
     }
+
     private void gameOver() {
         this.isPaused = true;
         this.setCurrentMenu(new GameOver(this.view, this));
@@ -263,9 +271,11 @@ public class Gameloop implements Runnable {
     }
 
     private boolean awaitsWin = false;
+
     public void win() {
         this.awaitsWin = true;
     }
+
     public void useWinMenu() {
         this.isPaused = true;
         this.setCurrentMenu(new WinMenu(this.view, this));

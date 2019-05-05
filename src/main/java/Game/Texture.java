@@ -11,14 +11,15 @@ public class Texture {
     public Texture(String path) {
         textureID = load(path);
     }
+
     public Texture(ArrayAndSize parameters) {
         this.textureID = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, this.textureID);
         this.width = parameters.width;
         this.height = parameters.height;
 
-        int[] data = new int[parameters.width*parameters.height];
-        for (int i = 0; i < parameters.width*parameters.height; i++) {
+        int[] data = new int[parameters.width * parameters.height];
+        for (int i = 0; i < parameters.width * parameters.height; i++) {
             int b = (parameters.array[i] & 0xff);
             int g = (parameters.array[i] & 0xff00) >> 8;
             int r = (parameters.array[i] & 0xff0000) >> 16;
@@ -36,6 +37,7 @@ public class Texture {
     static class ArrayAndSize {
         final int width, height;
         final int[] array;
+
         ArrayAndSize(int[] array, int width, int height) {
             this.array = array;
             this.width = width;

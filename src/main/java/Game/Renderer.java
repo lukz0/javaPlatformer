@@ -15,7 +15,6 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
@@ -39,25 +38,32 @@ public class Renderer implements Runnable {
     private GLFWWindowCloseCallback closeHandler;
 
     public ArrayList<Boolean> usedDrawnElementIDs = new ArrayList<>();
+
     public interface Drawable {
         // If it changes glActiveTexture, it should be reset to GL_TEXTURE_0 at the end
         void draw(long currentTimeStamp);
+
         void delete();
     }
+
     interface PosUpdateable extends Drawable {
         void updatePosition(Vector3f translation, Vector3f velocity, long currentTimeNano);
+
         void draw(float[] translationSum, long currentTimeStamp);
     }
+
     public HashMap<Integer, Drawable> drawnElements = new HashMap<>();
 
     static interface Task {
         void doTask(Renderer r);
     }
+
     ArrayBlockingQueue<Task> taskQueue = new ArrayBlockingQueue<>(1000);
 
     public static class Options {
         public final int width, height;
         public final boolean fullscreen, vsync;
+
         public Options(int width, int height, boolean fullscreen, boolean vsync) {
             this.width = width;
             this.height = height;
@@ -65,6 +71,7 @@ public class Renderer implements Runnable {
             this.vsync = vsync;
         }
     }
+
     final Options currentOptions;
 
     Renderer(GLFWKeyCallback keyHandler, GLFWWindowCloseCallback closeHandler, Options options) {
@@ -300,6 +307,7 @@ public class Renderer implements Runnable {
         int animatedTexturedRectTranslationLoc;
         int animatedTexturedRectFirstFrameLoc;
         boolean animatedTexturedRectFirstFrameVal = false;
+
         Shaders() {
             this.staticTexturedRectangle = ShaderUtils.load("resources/shaders/staticTexRect/shader.vert", "resources/shaders/staticTexRect/shader.frag");
             this.staticTexturedRectangleTexSamplerLoc = glGetUniformLocation(this.staticTexturedRectangle, "textureSampler");
@@ -369,17 +377,18 @@ public class Renderer implements Runnable {
             }
         }
     }
+
     private Shaders shaders;
 
     class StaticTexturedRectangle implements Drawable {
         // 0 - array_buffer, 1 - index_buffer
-        private int[] buffers = new int[] {0, 0};
+        private int[] buffers = new int[]{0, 0};
         private int VAO;
         private Texture texture;
 
         StaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Texture texture) {
             this.texture = texture;
-            int[] VAOs = new int[] {0};
+            int[] VAOs = new int[]{0};
             glGenVertexArrays(VAOs);
             this.VAO = VAOs[0];
             glBindVertexArray(this.VAO);
@@ -400,10 +409,10 @@ public class Renderer implements Runnable {
             glBufferData(GL_ARRAY_BUFFER, positions, GL_STATIC_DRAW);
 
             glEnableVertexAttribArray(0);
-            glVertexAttribPointer(0, 3, GL_FLOAT, false, 5*4/*5 floats*/, 0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, false, 5 * 4/*5 floats*/, 0);
 
             glEnableVertexAttribArray(1);
-            glVertexAttribPointer(1, 2, GL_FLOAT, false, 5*4, 3*4);
+            glVertexAttribPointer(1, 2, GL_FLOAT, false, 5 * 4, 3 * 4);
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this.buffers[1]);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
@@ -425,7 +434,7 @@ public class Renderer implements Runnable {
 
     class TexturedRectangle implements PosUpdateable {
         // 0 - array_buffer, 1 - index_buffer
-        private int[] buffers = new int[] {0, 0};
+        private int[] buffers = new int[]{0, 0};
         private int VAO;
         private Texture texture;
 
@@ -456,10 +465,10 @@ public class Renderer implements Runnable {
             glBufferData(GL_ARRAY_BUFFER, positions, GL_STATIC_DRAW);
 
             glEnableVertexAttribArray(0);
-            glVertexAttribPointer(0, 3, GL_FLOAT, false, 5*4, 0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, false, 5 * 4, 0);
 
             glEnableVertexAttribArray(1);
-            glVertexAttribPointer(1, 2, GL_FLOAT, false, 5*4, 3*4);
+            glVertexAttribPointer(1, 2, GL_FLOAT, false, 5 * 4, 3 * 4);
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this.buffers[1]);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
@@ -468,18 +477,20 @@ public class Renderer implements Runnable {
         public void draw(long currentTimeStamp) {
             glBindVertexArray(this.VAO);
 
-            long delta = (currentTimeStamp - this.updatedTimestamp)/(1000000* Gameloop.TICKDURATION);
+            long delta = (currentTimeStamp - this.updatedTimestamp) / (1000000 * Gameloop.TICKDURATION);
             shaders.activateTexturedRectangle(0, this.translation.add(this.velocity.multiply(delta)).getOpenGLvector());
             this.texture.bind();
 
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
+
         public void draw(float[] translationSum, long currentTimestamp) {
             glBindVertexArray(this.VAO);
             shaders.activateTexturedRectangle(0, translationSum);
             this.texture.bind();
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
+
         public void delete() {
             glBindVertexArray(this.VAO);
             glDeleteBuffers(this.buffers);
@@ -495,13 +506,14 @@ public class Renderer implements Runnable {
 
     class Background implements PosUpdateable {
         // 0 - array_buffer, 1 - index_buffer
-        private int[] buffers = new int[] {0, 0};
+        private int[] buffers = new int[]{0, 0};
         private int VAO;
         private Texture texture;
 
         private long updatedTimestamp;
         Vector3f translation;
         Vector3f velocity;
+
         Background(float z_index, Texture texture, Vector3f translation, Vector3f velocity, long updatedTimestamp, float aspectRatio) {
             this.texture = texture;
             this.translation = translation;
@@ -521,7 +533,7 @@ public class Renderer implements Runnable {
             // aspectRatio = width/height = 32/9
             // textureRight = 0.5
             // textureRight = 1/aspectRatio*9/16
-            float textureRight = 1/((aspectRatio*9)/16);
+            float textureRight = 1 / ((aspectRatio * 9) / 16);
             float[] positions = {
                     -1, 1, z_index, 0, 0,
                     -1, -1, z_index, 0, 1,
@@ -538,31 +550,35 @@ public class Renderer implements Runnable {
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
 
             glEnableVertexAttribArray(0);
-            glVertexAttribPointer(0, 3, GL_FLOAT, false, 5*4, 0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, false, 5 * 4, 0);
 
             glEnableVertexAttribArray(1);
-            glVertexAttribPointer(1, 2, GL_FLOAT, false, 5*4, 3*4);
+            glVertexAttribPointer(1, 2, GL_FLOAT, false, 5 * 4, 3 * 4);
         }
+
         public void draw(long currentTimeStamp) {
             glBindVertexArray(this.VAO);
 
-            long delta = (currentTimeStamp - this.updatedTimestamp)/(1000000*Gameloop.TICKDURATION);
+            long delta = (currentTimeStamp - this.updatedTimestamp) / (1000000 * Gameloop.TICKDURATION);
             shaders.activateBackground(0, this.translation.add(this.velocity.multiply(delta)).getOpenGLvector());
             this.texture.bind();
 
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
+
         public void draw(float[] translationSum, long currentTimestamp) {
             glBindVertexArray(this.VAO);
             shaders.activateBackground(0, translationSum);
             this.texture.bind();
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
+
         public void delete() {
             glBindVertexArray(this.VAO);
             glDeleteBuffers(this.buffers);
             glDeleteVertexArrays(this.VAO);
         }
+
         public void updatePosition(Vector3f translation, Vector3f velocity, long currentTimeNano) {
             this.translation = translation;
             this.velocity = velocity;
@@ -572,7 +588,7 @@ public class Renderer implements Runnable {
 
     class AnimatedTexturedRectangle implements PosUpdateable {
         // 0 - array_buffer, 1 - index_buffer
-        private int[] buffers = new int[] {0, 0};
+        private int[] buffers = new int[]{0, 0};
         private int VAO;
         private Texture texture;
 
@@ -606,13 +622,13 @@ public class Renderer implements Runnable {
             glBufferData(GL_ARRAY_BUFFER, positions, GL_STATIC_DRAW);
 
             glEnableVertexAttribArray(0);
-            glVertexAttribPointer(0, 3, GL_FLOAT, false, 7*4, 0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, false, 7 * 4, 0);
 
             glEnableVertexAttribArray(1);
-            glVertexAttribPointer(1, 2, GL_FLOAT, false, 7*4, 3*4);
+            glVertexAttribPointer(1, 2, GL_FLOAT, false, 7 * 4, 3 * 4);
 
             glEnableVertexAttribArray(2);
-            glVertexAttribPointer(2, 2, GL_FLOAT, false, 7*4, 5*4);
+            glVertexAttribPointer(2, 2, GL_FLOAT, false, 7 * 4, 5 * 4);
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this.buffers[1]);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
@@ -620,17 +636,19 @@ public class Renderer implements Runnable {
 
         public void draw(long currentTimestamp) {
             glBindVertexArray(this.VAO);
-            long delta = (currentTimestamp - this.updatedTimestamp)/(1000000*Gameloop.TICKDURATION);
-            shaders.activateAnimatedTexturedRect(0, this.translation.add(this.velocity.multiply(delta)).getOpenGLvector(), ((currentTimestamp/1000000)/frameDurationMilis)%2==0);
+            long delta = (currentTimestamp - this.updatedTimestamp) / (1000000 * Gameloop.TICKDURATION);
+            shaders.activateAnimatedTexturedRect(0, this.translation.add(this.velocity.multiply(delta)).getOpenGLvector(), ((currentTimestamp / 1000000) / frameDurationMilis) % 2 == 0);
             this.texture.bind();
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
+
         public void draw(float[] translationSum, long currentTimestamp) {
             glBindVertexArray(this.VAO);
-            shaders.activateAnimatedTexturedRect(0, translationSum, ((currentTimestamp/1000000)/frameDurationMilis)%2==0);
+            shaders.activateAnimatedTexturedRect(0, translationSum, ((currentTimestamp / 1000000) / frameDurationMilis) % 2 == 0);
             this.texture.bind();
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
+
         public void delete() {
             glBindVertexArray(this.VAO);
             glDeleteBuffers(this.buffers);
@@ -657,16 +675,18 @@ public class Renderer implements Runnable {
             this.velocity = velocity;
             this.updatedTimestamp = updatedTimestamp;
             this.states = states;
-            this.activeState = (int)(this.states.keySet().toArray()[0]);
+            this.activeState = (int) (this.states.keySet().toArray()[0]);
         }
 
         public void draw(long currentTimestamp) {
-            long delta = (currentTimestamp - this.updatedTimestamp)/(1000000*Gameloop.TICKDURATION);
+            long delta = (currentTimestamp - this.updatedTimestamp) / (1000000 * Gameloop.TICKDURATION);
             this.states.get(this.activeState).draw(this.translation.add(this.velocity.multiply(delta)).getOpenGLvector(), currentTimestamp);
         }
+
         public void draw(float[] translationSum, long currentTimestamp) {
             this.states.get(this.activeState).draw(translationSum, currentTimestamp);
         }
+
         public void delete() {
             states.forEach((stateID, state) -> state.delete());
         }
@@ -680,11 +700,13 @@ public class Renderer implements Runnable {
 
     static class SetBackgroundColorTask implements Task {
         private float red, green, blue;
+
         SetBackgroundColorTask(float r, float g, float b) {
             this.red = r;
             this.green = g;
             this.blue = b;
         }
+
         public void doTask(Renderer r) {
             r.background_color_red = this.red;
             r.background_color_green = this.green;
@@ -692,6 +714,7 @@ public class Renderer implements Runnable {
             glClearColor(r.background_color_red, r.background_color_green, r.background_color_blue, 1.0f);
         }
     }
+
     void setBackgroundColor(float r, float g, float b) {
         try {
             this.taskQueue.put(new SetBackgroundColorTask(r, g, b));
@@ -716,6 +739,7 @@ public class Renderer implements Runnable {
             }
         }
     }
+
     Async<Texture> loadTexture(String path) {
         LoadTextureTask tsk = new LoadTextureTask(path);
         try {
@@ -743,6 +767,7 @@ public class Renderer implements Runnable {
             }
         }
     }
+
     Async<Texture> loadTexture(Texture.ArrayAndSize params) {
         LoadTextureFromBitmapTask tsk = new LoadTextureFromBitmapTask(params);
         try {
@@ -756,13 +781,16 @@ public class Renderer implements Runnable {
 
     static class UnloadTextureTask implements Task {
         private Async<Texture> texture;
+
         UnloadTextureTask(Async<Texture> texture) {
             this.texture = texture;
         }
+
         public void doTask(Renderer r) {
             this.texture.get().unload();
         }
     }
+
     void unloadTexture(Async<Texture> texture) {
         try {
             this.taskQueue.put(new UnloadTextureTask(texture));
@@ -775,6 +803,7 @@ public class Renderer implements Runnable {
         ArrayBlockingQueue<Drawable> callbackQueue = new ArrayBlockingQueue<>(1);
         private float left, right, top, bottom, z_index;
         private Async<Texture> texture;
+
         GetNewStaticTexturedRectangleTask(float left, float right, float top, float bottom, float z_index, Async<Texture> texture) {
             this.left = left;
             this.right = right;
@@ -783,6 +812,7 @@ public class Renderer implements Runnable {
             this.z_index = z_index;
             this.texture = texture;
         }
+
         public void doTask(Renderer r) {
             try {
                 this.callbackQueue.put(new StaticTexturedRectangle(this.left, this.right, this.top, this.bottom, this.z_index, this.texture.get()));
@@ -791,6 +821,7 @@ public class Renderer implements Runnable {
             }
         }
     }
+
     Async<Drawable> getNewStaticTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture) {
         GetNewStaticTexturedRectangleTask tsk = new GetNewStaticTexturedRectangleTask(
                 convertToOpenGLX(left),
@@ -812,6 +843,7 @@ public class Renderer implements Runnable {
         private final Async<Texture> texture;
         private final Vector3f translation, velocity;
         private final long updatedTimestamp;
+
         GetNewTexturedRectangleTask(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp) {
             this.left = left;
             this.right = right;
@@ -823,6 +855,7 @@ public class Renderer implements Runnable {
             this.velocity = velocity;
             this.updatedTimestamp = updatedTimestamp;
         }
+
         public void doTask(Renderer r) {
             try {
                 this.callbackQueue.put(new TexturedRectangle(this.left, this.right, this.top, this.bottom, this.z_index, this.texture.get(), this.translation, this.velocity, this.updatedTimestamp));
@@ -832,6 +865,7 @@ public class Renderer implements Runnable {
             }
         }
     }
+
     Async<Drawable> getNewTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp) {
         GetNewTexturedRectangleTask tsk = new GetNewTexturedRectangleTask(
                 convertToOpenGLX(left),
@@ -854,6 +888,7 @@ public class Renderer implements Runnable {
         private final Async<Texture> texture;
         private final Vector3f translation, velocity;
         private final long updatedTimestamp;
+
         GetNewBackgroundTask(float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp, float aspectRatio) {
             this.z_index = z_index;
             this.texture = texture;
@@ -862,6 +897,7 @@ public class Renderer implements Runnable {
             this.updatedTimestamp = updatedTimestamp;
             this.aspectRatio = aspectRatio;
         }
+
         public void doTask(Renderer r) {
             try {
                 this.callbackQueue.put(new Background(this.z_index, this.texture.get(), this.translation, this.velocity, this.updatedTimestamp, this.aspectRatio));
@@ -870,6 +906,7 @@ public class Renderer implements Runnable {
             }
         }
     }
+
     Async<Drawable> getNewBackground(float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long updatedTimestamp, float aspectRatio) {
         GetNewBackgroundTask tsk = new GetNewBackgroundTask(z_index, texture, translation, velocity, updatedTimestamp, aspectRatio);
         try {
@@ -887,6 +924,7 @@ public class Renderer implements Runnable {
         private final Async<Texture> texture;
         private final Vector3f translation, velocity;
         private final long frameDurationMilis, updatedTimestamp;
+
         GetNewAnimatedTexturedRectangleTask(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long frameDurationMilis, long updatedTimestamp) {
             this.left = left;
             this.right = right;
@@ -908,6 +946,7 @@ public class Renderer implements Runnable {
             }
         }
     }
+
     Async<Drawable> getNewAnimatedTexturedRectangle(float left, float right, float top, float bottom, float z_index, Async<Texture> texture, Vector3f translation, Vector3f velocity, long frameDurationMilis, long updatedTimestamp) {
         GetNewAnimatedTexturedRectangleTask tsk = new GetNewAnimatedTexturedRectangleTask(convertToOpenGLX(left), convertToOpenGLX(right),
                 convertToOpenGLY(top), convertToOpenGLY(bottom), z_index, texture, translation, velocity, frameDurationMilis, updatedTimestamp);
@@ -938,7 +977,7 @@ public class Renderer implements Runnable {
             states.forEach((key, value) -> {
                 try {
                     nonasyncStates.put(key, (PosUpdateable) value.get());
-                } catch(Exception e) {
+                } catch (Exception e) {
                     System.err.println("Drawable with ID ".concat(Integer.toString(key).concat(" doesn't implement PosUpdateable")));
                 }
             });
@@ -949,6 +988,7 @@ public class Renderer implements Runnable {
             }
         }
     }
+
     Async<Drawable> getNewPosUpdateableGroup(Vector3f translation, Vector3f velocity, HashMap<Integer, Async<Drawable>> states, long updatedTimestamp) {
         GetNewPosUpdateableGroupTask tsk = new GetNewPosUpdateableGroupTask(translation, velocity, updatedTimestamp, states);
         try {
@@ -963,14 +1003,17 @@ public class Renderer implements Runnable {
     private class SetActiveStateTask implements Task {
         private final Async<Integer> id;
         private final int state;
+
         SetActiveStateTask(Async<Integer> id, int state) {
             this.id = id;
             this.state = state;
         }
+
         public void doTask(Renderer r) {
-            ((PosUpdateableGroup)r.drawnElements.get(id.get())).activeState = this.state;
+            ((PosUpdateableGroup) r.drawnElements.get(id.get())).activeState = this.state;
         }
     }
+
     void setActiveState(Async<Integer> id, int state) {
         SetActiveStateTask tsk = new SetActiveStateTask(id, state);
         try {
@@ -983,9 +1026,11 @@ public class Renderer implements Runnable {
     private class AddToStageTask implements Task {
         ArrayBlockingQueue<Integer> callbackQueue = new ArrayBlockingQueue<>(1);
         private final Async<Drawable> drawable;
+
         AddToStageTask(Async<Drawable> drawable) {
             this.drawable = drawable;
         }
+
         public void doTask(Renderer r) {
             int unusedIndex = r.usedDrawnElementIDs.indexOf(false);
             int id;
@@ -1004,6 +1049,7 @@ public class Renderer implements Runnable {
             }
         }
     }
+
     Async<Integer> addToStage(Async<Drawable> drawable) {
         AddToStageTask tsk = new AddToStageTask(drawable);
         try {
@@ -1019,20 +1065,23 @@ public class Renderer implements Runnable {
         private final Async<Integer> id;
         private final Vector3f translation, velocity;
         private final long timestamp;
+
         UpdatePositionTask(Async<Integer> id, Vector3f translation, Vector3f velocity, long timestamp) {
             this.id = id;
             this.translation = translation;
             this.velocity = velocity;
             this.timestamp = timestamp;
         }
+
         public void doTask(Renderer r) {
             try {
                 ((PosUpdateable) r.drawnElements.get(id.get())).updatePosition(this.translation, this.velocity, this.timestamp);
-            } catch(NullPointerException e) {
+            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
         }
     }
+
     void updatePosition(Async<Integer> id, Vector3f translation, Vector3f velocity, long timestamp) {
         UpdatePositionTask tsk = new UpdatePositionTask(id, translation, velocity, timestamp);
         try {
@@ -1045,9 +1094,11 @@ public class Renderer implements Runnable {
     private static class DeleteDrawableTask implements Task {
         ArrayBlockingQueue<Boolean> callbackQueue = new ArrayBlockingQueue<>(1);
         private Async<Integer> id;
+
         DeleteDrawableTask(Async<Integer> id) {
             this.id = id;
         }
+
         public void doTask(Renderer r) {
             r.usedDrawnElementIDs.set(this.id.get(), false);
             r.drawnElements.get(this.id.get()).delete();
@@ -1058,6 +1109,7 @@ public class Renderer implements Runnable {
             }
         }
     }
+
     Async<Boolean> deleteDrawable(Async<Integer> id) {
         DeleteDrawableTask tsk = new DeleteDrawableTask(id);
         try {
@@ -1072,9 +1124,11 @@ public class Renderer implements Runnable {
     private static class GetDrawableByIDTask implements Task {
         private final Async<Integer> id;
         final ArrayBlockingQueue<Drawable> callbackQueue = new ArrayBlockingQueue<>(1);
+
         GetDrawableByIDTask(Async<Integer> id) {
             this.id = id;
         }
+
         public void doTask(Renderer r) {
             try {
                 this.callbackQueue.put(r.drawnElements.remove(this.id.get()));
@@ -1083,6 +1137,7 @@ public class Renderer implements Runnable {
             }
         }
     }
+
     Async<Drawable> getDrawableByID(Async<Integer> id) {
         GetDrawableByIDTask tsk = new GetDrawableByIDTask(id);
         try {
@@ -1095,9 +1150,10 @@ public class Renderer implements Runnable {
     }
 
     private float convertToOpenGLX(float x) {
-        return ((x*2f)/16f)-1f;
+        return ((x * 2f) / 16f) - 1f;
     }
+
     private float convertToOpenGLY(float y) {
-        return ((y*2f)/9f)-1f;
+        return ((y * 2f) / 9f) - 1f;
     }
 }

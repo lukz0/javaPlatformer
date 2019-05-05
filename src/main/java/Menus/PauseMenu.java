@@ -6,7 +6,6 @@ import Game.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 
 public class PauseMenu extends Menu {
@@ -70,11 +69,13 @@ public class PauseMenu extends Menu {
             gameloop.exitPause();
         }
     }
+
     private class ExitHandler extends GU_Button.EnterEventHandler {
         public void enter() {
             gameloop.stopGame(0);
         }
     }
+
     private class OptionsHandler extends GU_Button.EnterEventHandler {
         public void enter() {
             Options optionsMenu = new Options(that, that.gameloop, that.view);
@@ -89,6 +90,7 @@ public class PauseMenu extends Menu {
         gameloop.setCurrentMenu(levelSelector);
         this.deleteMenu();
     }
+
     private class LevelSelectorHandler extends GU_Button.EnterEventHandler {
         public void enter() {
             selectLevel();

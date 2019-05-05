@@ -2,7 +2,6 @@ package Game;
 
 
 import Level.Block.AbstractBlock;
-import Level.Block.NonStaticAbstractBlock;
 import Level.Block.StaticAbstractBlock;
 import Level.Chunk;
 import Level.Coin;

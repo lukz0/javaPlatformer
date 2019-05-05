@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 public class BrickSpawnTile extends NonStaticAbstractBlock {
     private boolean alreadyUsed = false;
+
     public void init(Level level, View view, HashMap<String, Async<Texture>> textures, long timestamp, int chunkIndex, int xPos, int yPos) {
         if (!alreadyUsed) {
             alreadyUsed = true;

@@ -13,6 +13,7 @@ public abstract class Menu {
 
     private Async<Renderer.Drawable> pausedBackground = null;
     public boolean isPaused = false;
+
     public void pause() {
         if (!this.isPaused) {
             this.isPaused = true;
@@ -30,5 +31,6 @@ public abstract class Menu {
     }
 
     public abstract void deleteMenu();
+
     public abstract void tick(Gameloop gameloop);
 }

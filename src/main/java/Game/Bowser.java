@@ -1,7 +1,5 @@
 package Game;
 
-import Level.Block.AbstractBlock;
-import Level.Block.StaticAbstractBlock;
 import Level.Chunk;
 import Level.Entity;
 import Level.Level;
@@ -51,56 +49,56 @@ public class Bowser extends Entity {
     @Override
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
         int dist = (int) (9 * this.mario.chunkIndex + this.mario.xPos - 9 * this.chunkIndex - this.xPos); // 9*chunkindex + xPos så Bowser går mot Mario selv fra en annen chunk?
-        if(Math.abs(dist) < 4) {
-            if(dist < 0) {
-                if(mario.yPos > this.yPos) {
-                    xVelocity = 2f * (Gameloop.TICKDURATION/(float)1000);
+        if (Math.abs(dist) < 4) {
+            if (dist < 0) {
+                if (mario.yPos > this.yPos) {
+                    xVelocity = 2f * (Gameloop.TICKDURATION / (float) 1000);
                     this.currentState = Bowser.STATE_MOVING_RIGHT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 } else {
                     // Bowser jumps
-                    if(this.grounded) {
-                        yVelocity = 6.5f * (Gameloop.TICKDURATION/(float)1000);
+                    if (this.grounded) {
+                        yVelocity = 6.5f * (Gameloop.TICKDURATION / (float) 1000);
                         grounded = false;
                     }
-                    xVelocity = -2f * (Gameloop.TICKDURATION/(float)1000);
+                    xVelocity = -2f * (Gameloop.TICKDURATION / (float) 1000);
                     this.currentState = Bowser.STATE_MOVING_LEFT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 }
             } else {
-                if(mario.yPos > this.yPos) {
-                    xVelocity = -2f * (Gameloop.TICKDURATION/(float)1000);
+                if (mario.yPos > this.yPos) {
+                    xVelocity = -2f * (Gameloop.TICKDURATION / (float) 1000);
                     this.currentState = Bowser.STATE_MOVING_LEFT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 } else {
                     // Bowser jumps
-                    if(this.grounded) {
-                        yVelocity = 6.5f * (Gameloop.TICKDURATION/(float)1000);
+                    if (this.grounded) {
+                        yVelocity = 6.5f * (Gameloop.TICKDURATION / (float) 1000);
                         grounded = false;
                     }
-                    xVelocity = 2f * (Gameloop.TICKDURATION/(float)1000);
+                    xVelocity = 2f * (Gameloop.TICKDURATION / (float) 1000);
                     this.currentState = Bowser.STATE_MOVING_RIGHT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 }
             }
         } else {
-            if(dist < 0) {
-                xVelocity = -2f * (Gameloop.TICKDURATION/(float)1000);
+            if (dist < 0) {
+                xVelocity = -2f * (Gameloop.TICKDURATION / (float) 1000);
                 this.currentState = Bowser.STATE_MOVING_LEFT;
                 gameloop.view.setActiveState(this.drawableID, this.currentState);
             } else {
-                xVelocity = 2f * (Gameloop.TICKDURATION/(float)1000);
+                xVelocity = 2f * (Gameloop.TICKDURATION / (float) 1000);
                 this.currentState = Bowser.STATE_MOVING_RIGHT;
                 gameloop.view.setActiveState(this.drawableID, this.currentState);
             }
         }
 
-        if(!this.interactable) {
+        if (!this.interactable) {
             this.currentState = Bowser.STATE_DEAD;
             gameloop.view.setActiveState(this.drawableID, this.currentState);
         }
 
-        this.yVelocity -= 0.3f * (Gameloop.TICKDURATION/(float)1000);
+        this.yVelocity -= 0.3f * (Gameloop.TICKDURATION / (float) 1000);
     }
 
     @Override

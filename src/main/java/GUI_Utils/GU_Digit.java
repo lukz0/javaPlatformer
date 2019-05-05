@@ -11,7 +11,7 @@ public class GU_Digit {
     GU_Digit(View view, TextCreator tc, float height, float z_index, Vector3f translation) {
         HashMap<Integer, Async<Renderer.Drawable>> digitSymbols = new HashMap<>();
         for (int i = 0; i <= 9; i++) {
-            digitSymbols.put(i ,view.getNewTexturedRectangle(0, height* GU_Digit.KERNING, height, 0, z_index, tc.renderString(view, Integer.toString(i)),
+            digitSymbols.put(i, view.getNewTexturedRectangle(0, height * GU_Digit.KERNING, height, 0, z_index, tc.renderString(view, Integer.toString(i)),
                     Vector3f.EMPTY, Vector3f.EMPTY, 0));
         }
 
@@ -24,12 +24,14 @@ public class GU_Digit {
 
     private boolean isPaused = false;
     private Async<Renderer.Drawable> pausedSprite = null;
+
     public void pause(View view) {
         if (!this.isPaused) {
             this.isPaused = true;
             this.pausedSprite = view.getDrawableByID(this.spriteID);
         }
     }
+
     public void unPause(View view) {
         if (this.isPaused) {
             this.isPaused = false;

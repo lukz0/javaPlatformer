@@ -28,50 +28,51 @@ public class JSONReader {
         return obj;
     }
 
-    public static void WriteOptions(Renderer.Options options){
+    public static void WriteOptions(Renderer.Options options) {
         JSONObject filecontent = new JSONObject();
-        filecontent.put("width",options.width);
-        filecontent.put("heigth",options.height);
+        filecontent.put("width", options.width);
+        filecontent.put("heigth", options.height);
         filecontent.put("Vsync", options.vsync);
         filecontent.put("fullscreen", options.fullscreen);
-        try (FileWriter writer = new FileWriter("config.json")){
+        try (FileWriter writer = new FileWriter("config.json")) {
             writer.write(filecontent.toJSONString());
             writer.flush();
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static Renderer.Options ReadOptions(){
+    public static Renderer.Options ReadOptions() {
         JSONObject filecontent = ReadFile("config.json");
         //it's null if the readfile failed, which means we fix it with default arguments
-        if (filecontent==null){
-            WriteOptions(new Renderer.Options(1280,720,false,true));
+        if (filecontent == null) {
+            WriteOptions(new Renderer.Options(1280, 720, false, true));
         }
-        int width = (int)(long)filecontent.get("width");
-        int height = (int)(long)filecontent.get("heigth");
-        boolean vsync = (boolean)filecontent.get("Vsync");
-        boolean fullscreen = (boolean)filecontent.get("fullscreen");
-        return new Renderer.Options(width,height,fullscreen,vsync);
+        int width = (int) (long) filecontent.get("width");
+        int height = (int) (long) filecontent.get("heigth");
+        boolean vsync = (boolean) filecontent.get("Vsync");
+        boolean fullscreen = (boolean) filecontent.get("fullscreen");
+        return new Renderer.Options(width, height, fullscreen, vsync);
     }
 
-    public static void WriteHighscore(String level, int score){
+    public static void WriteHighscore(String level, int score) {
         JSONObject highscores = ReadFile("highscores.json");
-        if (highscores==null){
+        if (highscores == null) {
             highscores = new JSONObject();
         }
-        highscores.put(level,score);
-        try (FileWriter writer = new FileWriter("highscores.json")){
+        highscores.put(level, score);
+        try (FileWriter writer = new FileWriter("highscores.json")) {
             writer.write(highscores.toJSONString());
             writer.flush();
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
-    public static int ReadHighscore(String level){
+
+    public static int ReadHighscore(String level) {
         JSONObject highscores = ReadFile("highscores.json");
-        if (highscores!=null && highscores.get(level)!=null){
+        if (highscores != null && highscores.get(level) != null) {
             return (int) (long) highscores.get(level);
         }
         return 0;
@@ -86,10 +87,9 @@ public class JSONReader {
         ArrayList<Level.LevelBackground> levelBackgrounds = new ArrayList<>();
         JSONArray tilesets = (JSONArray) tempmap.get("tilesets");
         String tilesetSource = ((String) ((JSONObject) tilesets.get(0)).get("source"));
-        if(path.indexOf("/")!=-1){
+        if (path.indexOf("/") != -1) {
             tilesetSource = Paths.get(path.substring(0, path.lastIndexOf("/")), tilesetSource).toString();
-        }
-        else{
+        } else {
             tilesetSource = Paths.get(tilesetSource).toString();
         }
         HashMap<Integer, String> tileSet = ReadTileset(tilesetSource);
@@ -156,11 +156,10 @@ public class JSONReader {
     private static Level.LevelBackground readBackground(JSONObject jsonObject, String mainpath) {
         String imgpath = (String) jsonObject.get("image");
         String actualpath;
-        if (mainpath.indexOf("/")!=-1){
+        if (mainpath.indexOf("/") != -1) {
             actualpath = Paths.get(mainpath.substring(0, mainpath.lastIndexOf("/")), imgpath).toAbsolutePath().toString();
-        }
-        else {
-            actualpath = Paths.get("./",imgpath).toAbsolutePath().toString();
+        } else {
+            actualpath = Paths.get("./", imgpath).toAbsolutePath().toString();
         }
         int height = 1;
         int width = 1;
@@ -180,24 +179,24 @@ public class JSONReader {
                     height = (int) (long) jsonProperty.get("value");
                     break;
                 case "x_move":
-                    try{
+                    try {
                         x_move = (float) (double) jsonProperty.get("value");
-                    }catch (ClassCastException e){
+                    } catch (ClassCastException e) {
                         //NOTE: this is here due to the fact that simple rounds 0.0 into 0 and makes it a long, which cannot be converted to a double
-                        x_move=0f;
+                        x_move = 0f;
                     }
                     break;
                 case "y_move":
                     try {
                         y_move = (float) (double) jsonProperty.get("value");
-                    }catch (ClassCastException e){
-                        y_move=0f;
+                    } catch (ClassCastException e) {
+                        y_move = 0f;
                     }
                     break;
                 case "z_move":
-                    try{
+                    try {
                         z_move = (float) (long) jsonProperty.get("value");
-                    }catch (ClassCastException e){
+                    } catch (ClassCastException e) {
                         z_move = 0f;
                     }
                     break;
@@ -205,9 +204,9 @@ public class JSONReader {
                     z_index = (float) (double) jsonProperty.get("value");
                     break;
                 case "relative_move":
-                    try{
+                    try {
                         relative_move = (float) (double) jsonProperty.get("value");
-                    }catch (ClassCastException e){
+                    } catch (ClassCastException e) {
                         relative_move = 0f;
                     }
                     break;

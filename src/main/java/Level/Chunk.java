@@ -1,10 +1,16 @@
 package Level;
 
 import Game.*;
-import Level.Block.*;
+import Level.Block.AbstractBlock;
+import Level.Block.BlockList;
+import Level.Block.NonStaticAbstractBlock;
+import Level.Block.StaticAbstractBlock;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Chunk {
@@ -95,11 +101,12 @@ public class Chunk {
     }
 
     public void translateChunk(View view, long timestamp, Mario player) {
-        Vector3f translation = new Vector3f(-(float)(player.xPos+player.chunkIndex*9)+7.5f+this.chunkIndex*9, 0, 0);
-        Vector3f velocity = new Vector3f(-(float)player.xVelocity, 0, 0);
+        Vector3f translation = new Vector3f(-(float) (player.xPos + player.chunkIndex * 9) + 7.5f + this.chunkIndex * 9, 0, 0);
+        Vector3f velocity = new Vector3f(-(float) player.xVelocity, 0, 0);
         view.updatePositions((ArrayList<Async<Integer>>) (this.spriteIDs.stream().filter(Objects::nonNull).collect(Collectors.toList())), translation, velocity, timestamp);
         this.entities.forEach(entity -> entity.updateTranslation(translation.values[0], velocity.values[0], view, timestamp));
     }
+
     public void translateChunk(View view, long timestamp, Vector3f translation, Vector3f velocity) {
         view.updatePositions((ArrayList<Async<Integer>>) (this.spriteIDs.stream().filter(Objects::nonNull).collect(Collectors.toList())), translation, velocity, timestamp);
         this.entities.forEach(entity -> entity.updateTranslation(translation.values[0], velocity.values[0], view, timestamp));
@@ -115,15 +122,15 @@ public class Chunk {
                     entity.collisionEntEnt(target, gameloop, 0);
                 }
             }
-            for (Entity target : lvl.getEntityListAtIndex(this.chunkIndex-1)) {
+            for (Entity target : lvl.getEntityListAtIndex(this.chunkIndex - 1)) {
                 entity.collisionEntEnt(target, gameloop, -1);
             }
-            for (Entity target : lvl.getEntityListAtIndex(this.chunkIndex+1)) {
+            for (Entity target : lvl.getEntityListAtIndex(this.chunkIndex + 1)) {
                 entity.collisionEntEnt(target, gameloop, 1);
             }
-            entity.collisionEntBlc(lvl.getBlockListAtIndex(this.chunkIndex-1), -1);
+            entity.collisionEntBlc(lvl.getBlockListAtIndex(this.chunkIndex - 1), -1);
             entity.collisionEntBlc(blockList, 0);
-            entity.collisionEntBlc(lvl.getBlockListAtIndex(this.chunkIndex+1), 1);
+            entity.collisionEntBlc(lvl.getBlockListAtIndex(this.chunkIndex + 1), 1);
         }
 
         this.entities.forEach(entity -> entity.updatePos());
@@ -134,9 +141,9 @@ public class Chunk {
         LinkedList<Entity> entityLinkedList = new LinkedList(this.entities);
         entityLinkedList.forEach(entity -> {
             if (entity.xPos > 9 && this.chunkIndex < maxchunk) {
-                    entity.moveToChunk(chunks, this.chunkIndex+1, view);
+                entity.moveToChunk(chunks, this.chunkIndex + 1, view);
             } else if (entity.xPos < 0 && this.chunkIndex > 0) {
-                entity.moveToChunk(chunks, this.chunkIndex-1, view);
+                entity.moveToChunk(chunks, this.chunkIndex - 1, view);
             }
         });
     }

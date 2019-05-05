@@ -1,11 +1,7 @@
 package Game;
 
-import GUI_Utils.GU_Digit;
-import GUI_Utils.GU_Number;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWWindowCloseCallback;
-
-import java.awt.*;
 
 class Controller {
     private View v;

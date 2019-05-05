@@ -32,7 +32,7 @@ public class GameOver extends Menu {
                 this.put("exit_inactive", view.loadTexture("resources/GUI/Buttons/exit_inactive.png"));
             }
         };
-        this.backgroundSpriteID = super.view.createBackground(0, this.textures.get("background"), Vector3f.EMPTY, Vector3f.EMPTY, 0, 16f/9f);
+        this.backgroundSpriteID = super.view.createBackground(0, this.textures.get("background"), Vector3f.EMPTY, Vector3f.EMPTY, 0, 16f / 9f);
 
         try {
             this.menu = new GU_Menu(super.view, new ArrayList<GU_Menu.MenuItemInfo>() {
@@ -47,8 +47,8 @@ public class GameOver extends Menu {
         }
         //GU_Number gun = new GU_Number(this.view, new TextCreator((int)(200* GU_Digit.KERNING), 200, Color.BLACK), 5, 1, -0.9f,
         //        new Vector3f(13.5f, 8, 0));
-        TextCreator tcWhite = new TextCreator((int)(200* GU_Digit.KERNING), 200, Color.WHITE);
-        TextCreator tcColor = new TextCreator((int)(4*200), 200, new Color(255, 0, 68));
+        TextCreator tcWhite = new TextCreator((int) (200 * GU_Digit.KERNING), 200, Color.WHITE);
+        TextCreator tcColor = new TextCreator((int) (4 * 200), 200, new Color(255, 0, 68));
 
         this.highScore = new GU_Number(this.view, tcWhite, 5, 1, -0.9f,
                 new Vector3f(13.5f, 1, 0));
@@ -75,6 +75,7 @@ public class GameOver extends Menu {
         gameloop.setCurrentMenu(levelSelector);
         this.deleteMenu();
     }
+
     private class LevelSelectorHandler extends GU_Button.EnterEventHandler {
         public void enter() {
             selectLevel();
@@ -84,6 +85,7 @@ public class GameOver extends Menu {
     private void exitGame() {
         gameloop.stopGame(0);
     }
+
     private class ExitHandler extends GU_Button.EnterEventHandler {
         public void enter() {
             exitGame();

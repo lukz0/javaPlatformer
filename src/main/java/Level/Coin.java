@@ -5,7 +5,7 @@ import Game.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Coin  extends Entity {
+public class Coin extends Entity {
     private static final int STATE_IDLE = 1;
     private static final int STATE_BROKEN = 2;
     Vector3f translation = Vector3f.EMPTY, velocity = Vector3f.EMPTY;

@@ -1,6 +1,5 @@
 package Game;
 
-import Level.Block.AbstractBlock;
 import Level.Chunk;
 import Level.Entity;
 import Level.Level;
@@ -24,7 +23,7 @@ public class Goomba extends Entity {
         this.level = level;
         this.xPos = xPos;
         this.yPos = yPos;
-        this.xVelocity = 1 * (Gameloop.TICKDURATION/(float)1000);
+        this.xVelocity = 1 * (Gameloop.TICKDURATION / (float) 1000);
         this.yVelocity = 0;
         this.chunkIndex = chunkIndex;
         if (!textures.containsKey("primeGoomb_fwd.png")) {
@@ -56,8 +55,8 @@ public class Goomba extends Entity {
         //System.out.println("[GOOMBA] This Goomba's velocity is " + this.xVelocity);
         double nextXPos = this.xPos + this.xVelocity;
 
-        if(!this.interactable) {
-            this.yVelocity -= 0.1 * (Gameloop.TICKDURATION/(float)1000);
+        if (!this.interactable) {
+            this.yVelocity -= 0.1 * (Gameloop.TICKDURATION / (float) 1000);
             if (this.currentState != STATE_DEAD) {
                 this.currentState = Goomba.STATE_DEAD;
                 gameloop.view.setActiveState(this.drawableID, this.currentState);
@@ -65,23 +64,23 @@ public class Goomba extends Entity {
 
             return;
         }
-        switch (this.moving){
+        switch (this.moving) {
             case MOVING_LEFT:
                 if (currentState != STATE_MOVING_LEFT && !super.isPaused) {
                     currentState = STATE_MOVING_LEFT;
                     view.setActiveState(this.drawableID, STATE_MOVING_LEFT);
                 }
-                this.xVelocity=-1f*(Gameloop.TICKDURATION/(float)1000);
+                this.xVelocity = -1f * (Gameloop.TICKDURATION / (float) 1000);
                 break;
             case MOVING_RIGHT:
                 if (currentState != STATE_MOVING_RIGHT && !super.isPaused) {
                     currentState = STATE_MOVING_RIGHT;
                     view.setActiveState(this.drawableID, STATE_MOVING_RIGHT);
                 }
-                this.xVelocity=1f*(Gameloop.TICKDURATION/(float)1000);
+                this.xVelocity = 1f * (Gameloop.TICKDURATION / (float) 1000);
                 break;
         }
-        this.yVelocity-=0.1f * (Gameloop.TICKDURATION/(float)1000);
+        this.yVelocity -= 0.1f * (Gameloop.TICKDURATION / (float) 1000);
         /*
         if (nextXPos < 0) {
             this.xVelocity = 1 * (Gameloop.TICKDURATION/(float)1000);
@@ -110,7 +109,7 @@ public class Goomba extends Entity {
     }
 
     @Override
-    public void updatePos(){
+    public void updatePos() {
         this.xPos += this.xVelocity;
         this.yPos += this.yVelocity;
     }

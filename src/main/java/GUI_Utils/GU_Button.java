@@ -42,6 +42,7 @@ public class GU_Button implements GU_Menu.Item {
             view.setActiveState(this.spriteID, GU_Button.ACTIVE);
         }
     }
+
     public void deactivate(View view) {
         if (!this.isPaused) {
             view.setActiveState(this.spriteID, GU_Button.INACTIVE);
@@ -50,17 +51,23 @@ public class GU_Button implements GU_Menu.Item {
 
     public static class Textures {
         public final Async<Texture> texture_inactive, texture_active;
+
         public Textures(Async<Texture> texture_inactive, Async<Texture> texture_Active) {
             this.texture_inactive = texture_inactive;
             this.texture_active = texture_Active;
         }
     }
 
-    public void left_event(View view) {}
-    public void right_event(View view) {}
+    public void left_event(View view) {
+    }
+
+    public void right_event(View view) {
+    }
+
     public void enter_event(View view) {
         this.enterEventHandler.enter();
     }
+
     public static abstract class EnterEventHandler {
         public abstract void enter();
     }

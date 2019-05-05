@@ -11,6 +11,7 @@ public class MainMenu extends Menu {
     private final MainMenu that;
     private HashMap<String, Async<Texture>> textures;
     private Gameloop gameloop;
+
     public MainMenu(Gameloop gameloop, View view) {
         this.that = this;
         super.view = view;
@@ -61,12 +62,14 @@ public class MainMenu extends Menu {
             deleteMenu();
         }
     }
+
     private class OptionsHandler extends GU_Button.EnterEventHandler {
         public void enter() {
             gameloop.setCurrentMenu(new Options(that, gameloop, view));
             pause();
         }
     }
+
     private class ExitHandler extends GU_Button.EnterEventHandler {
         public void enter() {
             gameloop.stopGame(0);

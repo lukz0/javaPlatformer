@@ -7,7 +7,6 @@ import Game.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Options extends Menu {
     private final Menu parent;
@@ -18,6 +17,7 @@ public class Options extends Menu {
     static class SliderStates {
         boolean vsync, fullscreen;
         int width, height;
+
         SliderStates() {
             Renderer.Options options = JSONReader.ReadOptions();
             this.fullscreen = options.fullscreen;
@@ -25,6 +25,7 @@ public class Options extends Menu {
             this.width = options.width;
             this.vsync = options.vsync;
         }
+
         boolean equalsInitial() {
             return this.vsync == Main.INITIAL_RENDERING_OPTIONS.vsync &&
                     this.fullscreen == Main.INITIAL_RENDERING_OPTIONS.fullscreen &&
@@ -32,6 +33,7 @@ public class Options extends Menu {
                     this.height == Main.INITIAL_RENDERING_OPTIONS.height;
         }
     }
+
     SliderStates sliderStates = new SliderStates();
 
     Options(Menu parent, Gameloop gameloop, View view) {
@@ -110,6 +112,7 @@ public class Options extends Menu {
     }
 
     private long enterMenuDelay = Long.divideUnsigned(Long.divideUnsigned(1000, Gameloop.TICKDURATION), 3);
+
     public void tick(Gameloop gameloop) {
         if (enterMenuDelay == 0) {
             this.menu.tick(gameloop);
@@ -123,6 +126,7 @@ public class Options extends Menu {
             deleteMenu();
         }
     }
+
     private class ApplyHandler extends GU_Button.EnterEventHandler {
         public void enter() {
             deleteMenu();
@@ -132,37 +136,49 @@ public class Options extends Menu {
             }
         }
     }
+
     private static class EmptyEnterHandler extends GU_Button.EnterEventHandler {
-        public void enter() {}
+        public void enter() {
+        }
     }
+
     private static class StateChangePrinter extends GU_Slider.SlideEventHandler {
         public void state(int state) {
             System.out.println("[OPTIONS] Changed state to ".concat(Integer.toString(state)));
         }
     }
+
     private static class VsyncStateChanger extends GU_Slider.SlideEventHandler {
         private final SliderStates states;
+
         VsyncStateChanger(SliderStates states) {
             this.states = states;
         }
+
         public void state(int state) {
             this.states.vsync = (state == 0);
         }
     }
+
     private static class FullscreenStateChanger extends GU_Slider.SlideEventHandler {
         private final SliderStates states;
+
         FullscreenStateChanger(SliderStates states) {
             this.states = states;
         }
+
         public void state(int state) {
             this.states.fullscreen = (state == 0);
         }
     }
+
     private static class ResolutionStateChanger extends GU_Slider.SlideEventHandler {
         private final SliderStates states;
+
         ResolutionStateChanger(SliderStates states) {
             this.states = states;
         }
+
         public void state(int state) {
             switch (state) {
                 case 0:

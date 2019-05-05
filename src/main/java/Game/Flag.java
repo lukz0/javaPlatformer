@@ -1,6 +1,8 @@
 package Game;
 
-import Level.*;
+import Level.Chunk;
+import Level.Entity;
+import Level.Level;
 
 import java.util.ArrayList;
 import java.util.HashMap;

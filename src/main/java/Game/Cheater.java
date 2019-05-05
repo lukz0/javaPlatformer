@@ -38,7 +38,7 @@ public class Cheater implements Runnable {
             String levelpath = command.substring(10);
             //TODO: create a setlevel function in controller
             System.out.println("[CHEATER] started level " + levelpath);
-            gameloop.runCommand(new LevelCommand(JSONReader.ReadLevel("resources/maps/"+levelpath+".json")));
+            gameloop.runCommand(new LevelCommand(JSONReader.ReadLevel("resources/maps/" + levelpath + ".json")));
         } else if (command.startsWith("set mario")) {
             String state = command.substring(10);
             //TODO: have ways to set mario invincible etc
@@ -87,7 +87,7 @@ public class Cheater implements Runnable {
 
         @Override
         void doCommand(Gameloop gameloop) {
-            if (gameloop.level!=null){
+            if (gameloop.level != null) {
                 gameloop.level.deleteLevel(gameloop.view);
             }
             gameloop.level = level.loadLevel(gameloop.view, System.nanoTime());
@@ -100,9 +100,11 @@ public class Cheater implements Runnable {
 
     static class SetScoreCommand extends Command {
         private final int score;
+
         SetScoreCommand(int score) {
             this.score = score;
         }
+
         void doCommand(Gameloop gameloop) {
             gameloop.score = this.score;
         }

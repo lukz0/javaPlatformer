@@ -1,7 +1,5 @@
 package Game;
 
-import Game.Async;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -16,13 +14,14 @@ public class TextCreator {
 
     public TextCreator(int width, int height, Color color) {
         this.color = color;
-        this.font = new Font("Consolas", Font.PLAIN, (int)(height/1.5f));
+        this.font = new Font("Consolas", Font.PLAIN, (int) (height / 1.5f));
         this.width = width;
         this.height = height;
     }
+
     TextCreator(int width, int height, Color color, String fontname) {
         this.color = color;
-        this.font = new Font(fontname, Font.PLAIN, (int)(height/1.5f));
+        this.font = new Font(fontname, Font.PLAIN, (int) (height / 1.5f));
         this.width = width;
         this.height = height;
     }
@@ -32,8 +31,8 @@ public class TextCreator {
         this.g = bufImg.getGraphics();
         this.g.setColor(this.color);
         this.g.setFont(this.font);
-        this.g.drawString(s, 0, (int)(this.height*(3/(float)4)));
-        int[] pixelValues = new int[this.width*this.height];
+        this.g.drawString(s, 0, (int) (this.height * (3 / (float) 4)));
+        int[] pixelValues = new int[this.width * this.height];
         this.bufImg.getRGB(0, 0, this.width, this.height, pixelValues, 0, this.width);
         /*
         JFrame frame = new JFrame();

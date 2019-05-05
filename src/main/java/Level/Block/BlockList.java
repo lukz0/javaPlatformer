@@ -16,6 +16,7 @@ public class BlockList {
             put("BreakableBrick", BreakableBrickSpawnTile.class);
         }
     };
+
     static public Class<?> getClassForName(String name) {
         Class<?> clazz = BlockList.list.get(name);
         if (clazz != null) {
