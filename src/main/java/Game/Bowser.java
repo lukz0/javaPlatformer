@@ -33,9 +33,9 @@ public class Bowser extends Entity {
         if (!textures.containsKey("notBowser.png")) {
             textures.put("notBowser.png", view.loadTexture("resources/images/notBowser.png"));
         }
-        Async<Renderer.Drawable> movingRightSprite = view.getNewTexturedRectangle(0, 2, 2, 0, -0.5f, textures.get("notBowser.png"),
+        Async<Renderer.Drawable> movingRightSprite = view.getNewTexturedRectangle(2, 0, 2, 0, -0.5f, textures.get("notBowser.png"),
                 this.translation, this.velocity, timestamp);
-        Async<Renderer.Drawable> movingLeftSprite = view.getNewTexturedRectangle(2, 0, 2, 0, -0.5f, textures.get("notBowser.png"),
+        Async<Renderer.Drawable> movingLeftSprite = view.getNewTexturedRectangle(0, 2, 2, 0, -0.5f, textures.get("notBowser.png"),
                 this.translation, this.velocity, timestamp);
         Async<Renderer.Drawable> deadSprite = view.getNewTexturedRectangle(0, 2, 0, 2, -0.5f, textures.get("notBowser.png"),
                 this.translation, this.velocity, timestamp);
@@ -52,42 +52,41 @@ public class Bowser extends Entity {
 
     @Override
     public void doMove(ArrayList<Chunk> chunks, Gameloop gameloop, long tickStart) {
-        System.out.println("[BOWSER] " + this.xPos + "/" + this.yPos);
-        int dist = (int) (this.mario.xPos - this.xPos); // 9*chunkindex + xPos så Bowser går mot Mario selv fra en annen chunk?
-        if(Math.abs(dist) < 2) {
+        int dist = (int) (9 * this.mario.chunkIndex + this.mario.xPos - 9 * this.chunkIndex - this.xPos); // 9*chunkindex + xPos så Bowser går mot Mario selv fra en annen chunk?
+        if(Math.abs(dist) < 4) {
             if(dist < 0) {
                 if(mario.yPos > this.yPos) {
-                    xVelocity = -2.5f * (Gameloop.TICKDURATION/(float)1000);
-                    this.currentState = Bowser.STATE_MOVING_LEFT;
+                    xVelocity = 2.5f * (Gameloop.TICKDURATION/(float)1000);
+                    this.currentState = Bowser.STATE_MOVING_RIGHT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 } else {
                     // Bowser jumps
                     if(!this.grounded) {
                         yVelocity = 6.5f * (Gameloop.TICKDURATION/(float)1000);
                     }
-                    xVelocity = 2.5f * (Gameloop.TICKDURATION/(float)1000);
-                    this.currentState = Bowser.STATE_MOVING_RIGHT;
+                    xVelocity = -2.5f * (Gameloop.TICKDURATION/(float)1000);
+                    this.currentState = Bowser.STATE_MOVING_LEFT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 }
             } else {
                 if(mario.yPos > this.yPos) {
-                    xVelocity = 2.5f * (Gameloop.TICKDURATION/(float)1000);
-                    this.currentState = Bowser.STATE_MOVING_RIGHT;
-                    gameloop.view.setActiveState(this.drawableID, this.currentState);
-                } else {
                     xVelocity = -2.5f * (Gameloop.TICKDURATION/(float)1000);
                     this.currentState = Bowser.STATE_MOVING_LEFT;
+                    gameloop.view.setActiveState(this.drawableID, this.currentState);
+                } else {
+                    xVelocity = 2.5f * (Gameloop.TICKDURATION/(float)1000);
+                    this.currentState = Bowser.STATE_MOVING_RIGHT;
                     gameloop.view.setActiveState(this.drawableID, this.currentState);
                 }
             }
         } else {
             if(dist < 0) {
-                xVelocity = 2.5f * (Gameloop.TICKDURATION/(float)1000);
-                this.currentState = Bowser.STATE_MOVING_RIGHT;
-                gameloop.view.setActiveState(this.drawableID, this.currentState);
-            } else {
                 xVelocity = -2.5f * (Gameloop.TICKDURATION/(float)1000);
                 this.currentState = Bowser.STATE_MOVING_LEFT;
+                gameloop.view.setActiveState(this.drawableID, this.currentState);
+            } else {
+                xVelocity = 2.5f * (Gameloop.TICKDURATION/(float)1000);
+                this.currentState = Bowser.STATE_MOVING_RIGHT;
                 gameloop.view.setActiveState(this.drawableID, this.currentState);
             }
         }
@@ -105,7 +104,7 @@ public class Bowser extends Entity {
         return false;
     }
 
-    @Override
+    /*@Override
     public boolean collisionEntBlc(ArrayList<ArrayList<AbstractBlock>> target, int chunkOffset) {
         if (!this.interactable) {
             return false;
@@ -136,10 +135,11 @@ public class Bowser extends Entity {
         }
 
         return collided;
-    }
+    }*/
 
     @Override
     public void updatePos() {
-
+        this.xPos += this.xVelocity;
+        this.yPos += this.yVelocity;
     }
 }
