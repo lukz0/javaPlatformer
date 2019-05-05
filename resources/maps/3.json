@@ -14,6 +14,52 @@
          "y":0
         }, 
         {
+         "id":6,
+         "image":"..\/images\/backgrounds\/clouds.png",
+         "name":"clouds",
+         "opacity":1,
+         "properties":[
+                {
+                 "name":"height",
+                 "type":"int",
+                 "value":75
+                }, 
+                {
+                 "name":"relative_move",
+                 "type":"float",
+                 "value":0.05
+                }, 
+                {
+                 "name":"width",
+                 "type":"int",
+                 "value":150
+                }, 
+                {
+                 "name":"x_move",
+                 "type":"float",
+                 "value":0.001
+                }, 
+                {
+                 "name":"y_move",
+                 "type":"float",
+                 "value":0
+                }, 
+                {
+                 "name":"z_index",
+                 "type":"float",
+                 "value":0.72
+                }, 
+                {
+                 "name":"z_move",
+                 "type":"float",
+                 "value":0
+                }],
+         "type":"imagelayer",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
          "id":2,
          "image":"..\/images\/backgrounds\/mountClose.png",
          "name":"background",
@@ -55,7 +101,7 @@
                  "value":0
                 }],
          "type":"imagelayer",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }, 
@@ -101,7 +147,7 @@
                  "value":0
                 }],
          "type":"imagelayer",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }, 
@@ -147,11 +193,11 @@
                  "value":0
                 }],
          "type":"imagelayer",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }],
- "nextlayerid":6,
+ "nextlayerid":7,
  "nextobjectid":1,
  "orientation":"orthogonal",
  "renderorder":"right-down",
