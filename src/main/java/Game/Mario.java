@@ -158,8 +158,10 @@ public class Mario extends Entity {
                 if (direction != null) {
                     switch (direction) {
                         case FROM_BELOW:
-                            targetBrick.interactable = false;
-                            gameloop.score += 50;
+                            if (targetBrick.interactable) {
+                                gameloop.score += 50;
+                                targetBrick.interactable = false;
+                            }
                             break;
                         case FROM_ABOVE:
                             this.grounded = true;
