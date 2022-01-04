@@ -1,3 +1,2 @@
-# Project Mario
-Any similarities to other people, real or virtual, is purely 
-coincidental
+# Java project
+Platformer game made in java without the use a game engine as a part of a software development course.
